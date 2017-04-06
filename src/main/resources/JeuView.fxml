@@ -18,15 +18,7 @@
                <children>
                   <SplitPane dividerPositions="0.6457286432160804" orientation="VERTICAL" prefHeight="598.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <ImageView fx:id="plateau" fitHeight="527.0" fitWidth="914.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@images/Plateau.jpeg" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
+                        <fx:include fx:id="dialog1" source="plateau.fxml"/>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="607.0">
                            <children>
                               <SplitPane dividerPositions="0.12719298245614036" layoutY="14.0" prefHeight="278.0" prefWidth="914.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
