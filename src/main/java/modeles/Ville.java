@@ -1,4 +1,4 @@
-package Modeles;
+package modeles;
 
 public class Ville {
 	private String nom;

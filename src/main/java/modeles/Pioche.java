@@ -1,6 +1,6 @@
-package Modeles;
+package modeles;
 
-import Outil.OutilDialog;
+import outil.OutilDialog;
 
 import java.util.*;
 
@@ -9,8 +9,7 @@ public abstract class Pioche {
 	protected ArrayList<Carte> cartes = new ArrayList<Carte>();
 	protected ArrayList<Carte> cartesDefaussees = new ArrayList<Carte>();
 
-	protected OutilDialog outilDialog = new OutilDialog();
-	
+
 	public Pioche(ArrayList<Carte> cartes) {
 		super();
 		this.cartes = cartes;
@@ -26,7 +25,8 @@ public abstract class Pioche {
 	}
 
 	public Carte piocherCarte() {
-		//modifier les null perrin n'est pas pour
+		Carte carteTransportRetournee = null;
+
 		int indexDernierElement=this.cartes.size() - 1;
 
 		if(indexDernierElement>=0){
@@ -34,17 +34,20 @@ public abstract class Pioche {
 
 			this.cartes.remove(indexDernierElement);
 			
-			return cartePiochee;	
+			carteTransportRetournee = cartePiochee;
 		}else{
 			boolean resultat = reconstruirePiocheAvecDefausse();
-			if(resultat)
-				outilDialog.montrerDialogPiocheEpuisee();
+			if(resultat){
+				carteTransportRetournee = new CarteTransport(CarteTransport.PIOCHE_REFAITE, false);
+			}else{
+				carteTransportRetournee = new CarteTransport(CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE, false);
+			}
 		}
-		//return special card or if null
-		return null;
+		return carteTransportRetournee;
 	}
 
-	private boolean reconstruirePiocheAvecDefausse(){
+	//All is working here tested manually..
+	public boolean reconstruirePiocheAvecDefausse(){
 		//Si on a bien une defausse avec des cartes
 		if(this.cartesDefaussees.size()>=1){
 			//On met les cartes defaussees dans la pioche
@@ -57,7 +60,6 @@ public abstract class Pioche {
 			melanger();
 			return true;
 		}else{
-			outilDialog.montrerDialogDefausseVide("?");
 			return false;
 		}
 	}
@@ -65,7 +67,11 @@ public abstract class Pioche {
 	public void ajouterCarte(Carte c) {
 		this.cartes.add(c);
 	}
-	
+
+	public void ajouterCarteDefausse(Carte carteDefaussee){
+		this.cartesDefaussees.add(carteDefaussee);
+	}
+
 	public abstract int taille();
 
 	public ArrayList<Carte> getCartes() {
@@ -76,5 +82,7 @@ public abstract class Pioche {
 		this.cartes = cartes;
 	}
 
-
+	public ArrayList<Carte> getCartesDefaussees() {
+		return cartesDefaussees;
+	}
 }

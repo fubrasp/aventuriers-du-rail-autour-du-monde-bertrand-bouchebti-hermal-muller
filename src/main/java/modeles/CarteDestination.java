@@ -1,7 +1,6 @@
-package Modeles;
+package modeles;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class CarteDestination extends Carte {
 	private int pointsScoreAssoccies;

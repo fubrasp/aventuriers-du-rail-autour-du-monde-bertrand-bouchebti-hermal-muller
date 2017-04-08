@@ -1,11 +1,9 @@
-package Modeles;
-import Vues.PiochesController;
+package modeles;
 
 public class CarteTransportWagon extends CarteTransport {
 
 	public CarteTransportWagon(String couleur, boolean port) {
 		super(couleur, port);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -22,6 +20,5 @@ public class CarteTransportWagon extends CarteTransport {
 		str+=this.couleur;
 		return str;
 	}
-
 
 }

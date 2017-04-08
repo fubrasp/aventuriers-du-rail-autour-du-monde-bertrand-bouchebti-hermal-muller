@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Vues.PiochesController">
+<AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PiochesController">
    <children>
       <SplitPane dividerPositions="0.768170426065163" layoutX="14.0" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -18,7 +18,7 @@
                <children>
                   <SplitPane dividerPositions="0.6457286432160804" orientation="VERTICAL" prefHeight="598.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                        <fx:include fx:id="dialog1" source="plateau.fxml"/>
+                        <fx:include fx:id="dialog1" source="plateau.fxml" />
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="607.0">
                            <children>
                               <SplitPane dividerPositions="0.12719298245614036" layoutY="14.0" prefHeight="278.0" prefWidth="914.0" AnchorPane.bottomAnchor="-14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
@@ -67,18 +67,18 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Button fx:id="bouttonPiocheBateau" mnemonicParsing="false" onAction="#handlePiocheBateau" text="PTB">
+                        <Button fx:id="bouttonPiocheBateau" mnemonicParsing="false" onAction="#handlePiocheBateau">
                            <graphic>
-                              <ImageView fx:id="btnW" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="btnW" fitHeight="95.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/cartes/transport/bateaux/bateauxPioche.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="bouttonPiocheWagon" mnemonicParsing="false" onAction="#handlePiocheWagon" prefHeight="100.0" prefWidth="159.0" text="PTW">
+                        <Button fx:id="bouttonPiocheWagon" mnemonicParsing="false" onAction="#handlePiocheWagon" prefHeight="100.0" prefWidth="159.0">
                            <graphic>
-                              <ImageView pickOnBounds="true">
+                              <ImageView fitHeight="95.0" fitWidth="150.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@images/cartes/transport/wagons/wagonsPioche.jpeg" />
                                  </image>
@@ -87,7 +87,7 @@
                         </Button>
                      </children>
                   </VBox>
-                  <VBox fx:id="listeBouttonsCartesVisibles" layoutY="185.0" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="listeBouttonsCartesVisibles" layoutY="209.0" prefHeight="200.0" prefWidth="100.0" />
                </children>
             </AnchorPane>
         </items>

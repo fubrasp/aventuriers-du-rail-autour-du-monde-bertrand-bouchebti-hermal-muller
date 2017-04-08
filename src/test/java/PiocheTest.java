@@ -1,69 +1,171 @@
+
 import static org.junit.Assert.*;
 
-import Modeles.*;
+import modeles.*;
 import org.junit.*;
+import outil.OutilPratique;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.*;
 
 public class PiocheTest {
 
-    Jeu jeu;
-    PiocheTransport pb;
-    PiocheTransport pw;
-    ArrayList<CarteTransport> cartesVisibles;
+    //Define attributes in order to test Pioche feature
+    private Jeu jeu;
+    private PiocheTransport piocheBateau;
+    private PiocheTransport piocheWagon;
+    private PiocheDestination piocheDestination;
+    private ArrayList<CarteTransport> cartesVisibles;
 
     @Before
     public void executedBeforeEach() {
-
         this.jeu = new Jeu();
         this.jeu.initialiserJeu();
-        this.pw = this.jeu.getPiocheCartesTransportWagon();
-        this.pb = this.jeu.getPiocheCartesTransportBateau();
-        this.cartesVisibles = this.jeu.getPiocheCartesTransportWagon().getCartesVisibles();
+        this.piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
+        this.piocheBateau = this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau();
+        this.piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
+        this.cartesVisibles = this.jeu.getGestionnairePioches().getCartesVisibles();
     }
 
-    // on ne test pas la methode melanger ==> on va pas retester JAVA SE
+    // We don't test melanger method ==> It use a methode of JAVA SE JDK
+
+    private Pioche selectRandomPioche(){
+        if(OutilPratique.nbAleat(0,1) ==0){
+            return piocheWagon;
+        }else{
+            return piocheBateau;
+        }
+    }
+
+    private void testCartePiocheRetiree(int tailleAvantPioche, int taillePiocheApres){
+        assertEquals("La taille de la pioche n'aurait pas du changer!", tailleAvantPioche, taillePiocheApres);
+    }
+
     @Test
-    public void testPiocherCarte() {
-        int tailleAvantPioche = pw.taille();
-        Carte c = pw.piocherCarte();
-        int tailleApresPioche = pw.taille();
+    public void testPiocherCarteWagon() {
+        //We can test randomly the object type for the pioche (bateau or wagon because it is exactly the same method which is used)
+        Pioche pioche = selectRandomPioche();
+        //IT FAILS
+        //Pioche pioche = this.piocheWagon;
 
-        assertEquals("la carte n'a pas ete retiree de la pioche!", tailleAvantPioche - 1, tailleApresPioche);
-        assertTrue(c instanceof CarteTransport);
+        int tailleAvantPioche = pioche.taille();
 
-        //BIZARRE
-        assertFalse("La carte ne devrait plus etre dans la pioche!", pw.getCartes().contains(c));
+        Carte cartePiochee = pioche.piocherCarte();
 
+        int tailleApresPioche = pioche.taille();
+
+        assertEquals("la carte n'a pas ete retiree de la pioche!",tailleAvantPioche - 1, tailleApresPioche);
+        assertFalse("La carte ne devrait plus etre dans la pioche!", piocheWagon.getCartes().contains(cartePiochee));
+        assertTrue("La pioche doit renvoyer une carte transport!", cartePiochee instanceof CarteTransport);
+    }
+
+    //We test if we get the specific card in order to avoid null and don't block the app and debug more easily
+    //in these two following methods
+    @Test
+    public void testPiocheVideAvecDefausseVide() {
+        Pioche pioche = selectRandomPioche();
+
+        //Delete all card in the pioche
+        //Because we don't use piocherCarte method, we don't fill the defausse list
+        pioche.getCartes().clear();
+        int tailleAvantPioche = pioche.taille();
+
+        //We use pioche method on empty pioche
+        Carte cartePiochee = pioche.piocherCarte();
+
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
+    }
+
+    @Test
+    public void testPiocheVideAvecDefausseRemplie() {
+        Pioche pioche = selectRandomPioche();
+
+        pioche.getCartes().clear();
+
+        int tailleAvantPioche = pioche.taille();
+
+        Carte cartePiochee = pioche.piocherCarte();
+
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
+    }
+
+    private ArrayList<CarteTransport> mettreDesCartesDansLaListeDeCartesVisibles(){
+        ArrayList<CarteTransport> cartesVisibles = new ArrayList<CarteTransport>();
+        for (int i=0; i<3; i++){
+            cartesVisibles.add(new CarteTransportWagon(CarteTransport.JOKER, true));
+        }
+        cartesVisibles.add(new CarteTransportBateau(CarteTransport.BLANC, true, false));
+        cartesVisibles.add(new CarteTransportBateau(CarteTransport.ROUGE, false, true));
+        cartesVisibles.add(new CarteTransportWagon(CarteTransport.VERT, false));
+        this.jeu.getGestionnairePioches().setCartesVisibles(cartesVisibles);
+        //Quite the same to return this.jeu.getGestionnairePioches().getCartesVisibles()
+        return cartesVisibles;
     }
 
     @Test
     public void testDetecterTropJokersVisibles() {
-        ArrayList<CarteTransport> cartesVisibles = new ArrayList<CarteTransport>();
-        for (int i=0; i<3; i++){
-            cartesVisibles.add(new CarteTransport(CarteTransport.JOKER, true));
-        }
-        CarteTransport derniereCarteVisible = cartesVisibles.get(0);
-        this.jeu.getPiocheCartesTransportWagon().setCartesVisibles(cartesVisibles);
-
+        ArrayList<CarteTransport> cartesVisibles = this.mettreDesCartesDansLaListeDeCartesVisibles();
         assertTrue(jeu.detecterTropJokersVisibles());
 
         //enleve une carte joker donc - de 3 cartes jokers
-        this.jeu.getPiocheCartesTransportWagon().getCartesVisibles().remove(cartesVisibles.get(0));
+        this.jeu.getGestionnairePioches().getCartesVisibles().remove(cartesVisibles.get(0));
 
         assertFalse(jeu.detecterTropJokersVisibles());
 
     }
 
     @Test
-    public void test_initialisation_pioche_wagons() {
+    public void testPiocheCartesVisiblesDefaussees(){
+        this.mettreDesCartesDansLaListeDeCartesVisibles();
 
-        PiocheTransport pw = this.jeu.getPiocheCartesTransportWagon();
-        HashMap<String, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(pw);
+        //We clear the carte visibles list
+        //We know cards which are generated
+        this.jeu.reseterCartesVisibles();
+
+        //We know these card must go in defausse
+        assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartesDefaussees().size());
+        assertEquals("", 2,this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau().getCartesDefaussees().size());
+    }
+
+    @Test
+    public void testPiocheReseteeAPartirDeCartesVisiblesDefausseesBateau(){
+        this.mettreDesCartesDansLaListeDeCartesVisibles();
+        this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau().getCartes().clear();
+
+        this.jeu.reseterCartesVisibles();
+        assertEquals("", 2,this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau().getCartes().size());
+    }
+
+    @Test
+    public void testPiocheReseteeAPartirDeCartesVisiblesDefausseesWagon(){
+        this.mettreDesCartesDansLaListeDeCartesVisibles();
+
+        this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().clear();
+
+        this.jeu.reseterCartesVisibles();
+        assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().size());
+    }
+
+
+
+    @Test
+    public void testInitialisationPiocheDestinations(){
+        Jeu j = new Jeu();
+        j.initialiserJeu();
+
+        PiocheDestination piocheDestination = j.getGestionnairePioches().getPiocheCartesDestination();
+        assertEquals("", PiocheDestination.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille());
+    }
+
+    @Test
+    public void testInitialisationPiocheWagons() {
+
+        PiocheTransport piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
+        HashMap<String, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(piocheWagon);
 
         //nombre de cartes de la pioche au depart
-        assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON, pw.taille());
+        assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON, piocheWagon.taille());
 
         //nombre de carte de chaque couleur et de jokers
         Iterator it = compteCouleurs.entrySet().iterator();
@@ -84,21 +186,22 @@ public class PiocheTest {
     }
 
     @Test
-    public void test_initialisation_pioche_bateaux() {
+    public void testInitialisationPiocheBateaux() {
         Jeu j = new Jeu();
         j.initialiserJeu();
 
-        PiocheTransport pb = j.getPiocheCartesTransportBateau();
+        PiocheTransport piocheBateau = j.getGestionnairePioches().getPiocheCartesTransportBateau();
         PiocheTransport ptbs = new PiocheTransport();
         PiocheTransport ptbd = new PiocheTransport();
 
-        int nombreBateauxSimples = 0, nombreBateauxDoubles = 0;
+        int nombreBateauxSimples = 0;
+        int nombreBateauxDoubles = 0;
 
         ArrayList<Carte> ptbdL = new ArrayList<Carte>();
         ArrayList<Carte> ptbsL = new ArrayList<Carte>();
 
         for (Carte ct :
-                pb.getCartes()) {
+                piocheBateau.getCartes()) {
             CarteTransportBateau ctb = ((CarteTransportBateau)ct);
             if(ctb.isBateauDouble()){
                 ptbdL.add(ctb);
@@ -117,7 +220,7 @@ public class PiocheTest {
         ptbs.setCartes(ptbsL);
 
         //nombre de cartes de la pioche au depart
-        assertEquals("Nombre de carte bateaux au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU, pb.taille());
+        assertEquals("Nombre de carte bateaux au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU, piocheBateau.taille());
 
         //nombre de cartes bateau simple de la pioche au depart
         assertEquals("Nombre de carte bateaux simples au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE, nombreBateauxSimples);

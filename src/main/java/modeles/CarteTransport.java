@@ -1,9 +1,6 @@
-package Modeles;
+package modeles;
 
-import Outil.OutilES;
-import Vues.PiochesController;
-
-import java.util.ArrayList;
+import outil.OutilES;
 
 public class CarteTransport extends Carte {
 	protected String couleur;
@@ -16,6 +13,8 @@ public class CarteTransport extends Carte {
 	public final static String NOIR="Noir";
 	public final static String BLANC="Blanc";
 	public final static String VIOLET="Violet";
+	public final static String PIOCHE_REFAITE="PIOCHE_REFAITE";
+	public final static String PAS_DE_CARTE_DANS_LA_DEFAUSSE="PIOCHE_PAS_REFAITE";
 
 	public CarteTransport(String couleur, boolean port) {
 		super();

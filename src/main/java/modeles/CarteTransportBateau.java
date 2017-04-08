@@ -1,6 +1,4 @@
-package Modeles;
-
-import Vues.PiochesController;
+package modeles;
 
 public class CarteTransportBateau extends CarteTransport {
 	private Boolean bateauDouble;

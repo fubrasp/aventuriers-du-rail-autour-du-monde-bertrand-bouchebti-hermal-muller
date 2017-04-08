@@ -1,20 +1,23 @@
-package Application;
+package application;
 
-import java.io.IOException;
+import java.io.*;
 
-import Modeles.Jeu;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import modeles.Jeu;
+import javafx.application.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
 public class MainApp extends Application {
 	
 	private static final String CHEMIN_ROOT_LAYOUT = "/RootLayout.fxml";
 	private static final String CHEMIN_VUE_JEU = "/JeuView.fxml";
 	private static final String TITRE_APPLICATION = "Les aventuriers du rail autour du monde : BERTRAND - BOUCHEBTI - HERMAL - MULLER";
+
+
+    private Stage primaryStage;
+    private BorderPane rootLayout;
 
 	private Jeu jeu;
 
@@ -23,9 +26,6 @@ public class MainApp extends Application {
 	    this.jeu.initialiserJeu();
 	    this.jeu.preparerLesPioches();
     }
-
-    private Stage primaryStage;
-    private BorderPane rootLayout;
 
     @Override
     public void start(Stage primaryStage) {

@@ -1,4 +1,4 @@
-package Modeles;
+package modeles;
 
 public class Route {
 	private Ville villeDepart;
@@ -56,6 +56,5 @@ public class Route {
 		this.possesseur = possesseur;
 	}
 	
-	
-	
+
 }

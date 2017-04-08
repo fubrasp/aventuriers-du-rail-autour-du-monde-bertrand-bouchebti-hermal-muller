@@ -1,21 +1,13 @@
-package Outil;
+package outil;
 
-import Modeles.CarteDestination;
-import Modeles.CarteTransport;
-import Vues.PiochesController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
+import modeles.CarteDestination;
+import controllers.PiochesController;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import javafx.scene.layout.*;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by bertran95u on 03/04/2017.
@@ -24,14 +16,13 @@ public class OutilDialog {
     public static String nomFichier = "src/main/resources/images/cartes/destinations/CarteDestinationCasablancaMarseille.png";
 
     //controls needed for app:
-    //CheckBox chksport1, chksport2, chksport3, chksport4;
     public static ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
-    ArrayList<ImageView> imagesViewsCartesDestinations = new ArrayList<ImageView>();
+    private ArrayList<ImageView> imagesViewsCartesDestinations = new ArrayList<ImageView>();
 
     public static Label lbltotal, lbllist;
 
     //2 VBoxes for the labels and checkboxes
-    HBox vbchecks, vblabels;
+    private HBox vbchecks, vblabels;
 
     private Alert alert;
 
@@ -52,10 +43,16 @@ public class OutilDialog {
         setDialogTitreTexte(titreDialog, messageDialog);
     }
 
+    //We have to create a new object in order to make it working
     public void montrerDialogErreurPiocheDestination() {
         String titreDialog = "INFORMATION : PIOCHE DESTINATION";
         String messageDialog = "Il n'y a plus de cartes destinations dans la pioche.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        Alert alertErreurPiocheDestination = new Alert(Alert.AlertType.INFORMATION);
+        alertErreurPiocheDestination.setHeaderText(null);
+        alertErreurPiocheDestination.setTitle(titreDialog);
+        alertErreurPiocheDestination.setContentText(messageDialog);
+        alertErreurPiocheDestination.showAndWait();
+
     }
 
     public void montrerDialogPiocheEpuisee() {
@@ -122,14 +119,11 @@ public class OutilDialog {
         root.getChildren().addAll(vbchecks, vblabels);
 
         this.alert.getDialogPane().contentProperty().set(root);
-        //this.alert.showAndWait();
         Optional<ButtonType> result = this.alert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            if(checkBoxes.isEmpty()){
+        if (result.isPresent() && result.get() == ButtonType.OK && checkBoxes.isEmpty()) {
                 montrerDialogAuMoinsUnerCarte();
                 montrerDialogChoixCartesDestination(cartesAChoisir);
-            }
         }
     }
 
