@@ -113,8 +113,10 @@ public class OutilDialog {
         }
         vblabels.getChildren().addAll(lbltotal, lbllist);
 
-        //create main container and add 2 vboxes to it
+        //create main container and add vboxes to it
         FlowPane root = new FlowPane();
+        root.setMinWidth(800);
+        root.setMinHeight(200);
         root.setHgap(20);
         root.getChildren().addAll(vbchecks, vblabels);
 

@@ -24,7 +24,7 @@ public class MainApp extends Application {
 	public MainApp(){
 	    this.jeu = new Jeu();
 	    this.jeu.initialiserJeu();
-	    this.jeu.preparerLesPioches();
+	    this.jeu.getGestionnairePioches().preparerPioches();
     }
 
     @Override

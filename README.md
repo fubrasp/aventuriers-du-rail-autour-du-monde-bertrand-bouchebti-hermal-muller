@@ -46,3 +46,6 @@
     * bug carte destinations
     * test cartes destinations
     * suppimer methodes jeu
+    * alert moins de 1 destinations choisie
+    * modifier fenetre destinations
+    * refractor non repris d'exemple

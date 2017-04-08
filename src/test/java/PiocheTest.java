@@ -121,7 +121,7 @@ public class PiocheTest {
 
         //We clear the carte visibles list
         //We know cards which are generated
-        this.jeu.reseterCartesVisibles();
+        this.jeu.getGestionnairePioches().reseterCartesVisibles();
 
         //We know these card must go in defausse
         assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartesDefaussees().size());
@@ -133,7 +133,7 @@ public class PiocheTest {
         this.mettreDesCartesDansLaListeDeCartesVisibles();
         this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau().getCartes().clear();
 
-        this.jeu.reseterCartesVisibles();
+        this.jeu.getGestionnairePioches().reseterCartesVisibles();
         assertEquals("", 2,this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau().getCartes().size());
     }
 
@@ -143,7 +143,7 @@ public class PiocheTest {
 
         this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().clear();
 
-        this.jeu.reseterCartesVisibles();
+        this.jeu.getGestionnairePioches().reseterCartesVisibles();
         assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().size());
     }
 

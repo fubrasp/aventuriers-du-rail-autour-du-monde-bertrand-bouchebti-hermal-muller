@@ -69,16 +69,8 @@ public class Jeu {
 		this.gestionnairePioches.initialiserPioches();
 	}
 
-	public void preparerLesPioches(){
-		this.gestionnairePioches.preparerPioches();
-	}
-
 	public Joueur getJoueurCourant() {
 		return joueurCourant;
-	}
-
-	public void reseterCartesVisibles(){
-		this.gestionnairePioches.reseterCartesVisibles();
 	}
 
 	public GestionnairePioches getGestionnairePioches() {
