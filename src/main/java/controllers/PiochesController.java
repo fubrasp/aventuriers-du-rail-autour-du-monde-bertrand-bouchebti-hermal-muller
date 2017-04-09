@@ -12,6 +12,7 @@ import modeles.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.event.*;
+
 import java.net.*;
 import java.util.*;
 
@@ -89,26 +90,26 @@ public class PiochesController implements Initializable {
         }
     }
 
-    private void piocher(int typePioche){
+    private void piocher(int typePioche) {
         CarteTransport carteTransportPiochee;
         String nomPiocheVide = "";
-        if(typePioche==PIOCHE_BATEAU){
+        if (typePioche == PIOCHE_BATEAU) {
             //We directly pioche carte transport bateau
             carteTransportPiochee = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
             nomPiocheVide = "BATEAUX";
-        }else{
+        } else {
             carteTransportPiochee = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             nomPiocheVide = "WAGONS";
         }
 
-        if(carteTransportPiochee.getCouleur().equals(CarteTransport.PIOCHE_REFAITE)){
+        if (carteTransportPiochee.getCouleur().equals(CarteTransport.PIOCHE_REFAITE)) {
             outilDialog.montrerDialogPiocheEpuisee();
             //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
             handlePiocheBateau();
-        }else{
-            if(carteTransportPiochee.getCouleur().equals(CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE)){
+        } else {
+            if (carteTransportPiochee.getCouleur().equals(CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE)) {
                 outilDialog.montrerDialogDefausseVide(nomPiocheVide);
-            }else{
+            } else {
                 //On l'ajoute a la main du joueur (en horizontal)
                 gererAjoutCarteMain(carteTransportPiochee);
             }
@@ -138,15 +139,15 @@ public class PiochesController implements Initializable {
     private void handleDialogNouvelleDestination() {
         PiocheDestination piocheDestination = this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesDestination();
 
-        if(piocheDestination.estVide()){
+        if (piocheDestination.estVide()) {
             outilDialog.montrerDialogErreurPiocheDestination();
-        }else{
+        } else {
             this.carteDestinations = piocheDestination.piocherCartesDestination();
 
-            if(this.carteDestinations.isEmpty()){
+            if (this.carteDestinations.isEmpty()) {
                 outilDialog.montrerDialogErreurPiocheDestination();
-            }else {
-                outilDialog.montrerDialogChoixCartesDestination(carteDestinations);
+            } else {
+                outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
                 //Nouvel element dans listeDestinations
                 ajouterDestinationUser();
             }
@@ -242,18 +243,18 @@ public class PiochesController implements Initializable {
         CarteTransport carteTransportATransferer;
         CarteTransport carteTransportPiochee;
 
-            carteTransportATransferer = cartesVisibles.get(idInt);
+        carteTransportATransferer = cartesVisibles.get(idInt);
 
-            //On pioche une nouvelle carte
-            carteTransportPiochee = OutilPratique.piocherCarteTransportRandom(this.mainApp);
+        //On pioche une nouvelle carte
+        carteTransportPiochee = OutilPratique.piocherCarteTransportRandom(this.mainApp);
 
-            //On remplace la carte dans la liste des cartes visibles
-            this.mainApp.getJeu().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
+        //On remplace la carte dans la liste des cartes visibles
+        this.mainApp.getJeu().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
-            //On remplace le boutton
-            Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
-            b.setId("" + idInt);
-            this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
+        //On remplace le boutton
+        Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
+        b.setId("" + idInt);
+        this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
 
         gererAjoutCarteMain(carteTransportATransferer);
 
@@ -281,7 +282,8 @@ public class PiochesController implements Initializable {
     private void ajouterDestinationUser() {
         //On recupere le resultat de l'alert
         if (choixUtilisateursCartesDestinations.isEmpty())
-            System.out.println("MINCE ??? CA NE FIRE PAS L'ALERT!");
+            //A VERIFIER
+            outilDialog.montrerDialogAuMoinsUnerCarte();
         for (String choix :
                 choixUtilisateursCartesDestinations) {
             System.out.println(choix);
@@ -291,9 +293,14 @@ public class PiochesController implements Initializable {
 
         //On impacte de maniere graphique le VBOW concerne
         Button bouttonDestinationCree = null;
-        for (CarteDestination cdc :
+        for (CarteDestination carteDestinationChoisie :
                 cartesDestinationsChoisies) {
-            bouttonDestinationCree = OutilGraphique.creerBoutton(cdc);
+            bouttonDestinationCree = OutilGraphique.creerBoutton(carteDestinationChoisie);
+            bouttonDestinationCree.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
+                }
+            });
             this.listeDestinations.getChildren().add(bouttonDestinationCree);
         }
         choixUtilisateursCartesDestinations.clear();

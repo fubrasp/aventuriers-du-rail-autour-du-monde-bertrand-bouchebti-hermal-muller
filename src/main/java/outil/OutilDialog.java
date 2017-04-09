@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import modeles.Ville;
 
 import java.util.*;
 
@@ -52,7 +53,6 @@ public class OutilDialog {
         alertErreurPiocheDestination.setTitle(titreDialog);
         alertErreurPiocheDestination.setContentText(messageDialog);
         alertErreurPiocheDestination.showAndWait();
-
     }
 
     public void montrerDialogPiocheEpuisee() {
@@ -121,18 +121,58 @@ public class OutilDialog {
         root.getChildren().addAll(vbchecks, vblabels);
 
         this.alert.getDialogPane().contentProperty().set(root);
+
         Optional<ButtonType> result = this.alert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK && checkBoxes.isEmpty()) {
-                montrerDialogAuMoinsUnerCarte();
-                montrerDialogChoixCartesDestination(cartesAChoisir);
+        vblabels.getChildren().clear();
+        vbchecks.getChildren().clear();
+        checkBoxes.clear();
+
+        //System.out.println(result.isPresent() && result.get() == ButtonType.OK && !determinerAuMoinUnCheckboxSelectionne());
+
+        /*if(determinerAuMoinUnCheckboxSelectionne()){
+            System.out.println("TEST PUTAIN FAIT CHIER1");
+            montrerDialogAuMoinsUnerCarte();
+            checkBoxes.clear();
+            montrerDialogChoixCartesDestination(cartesAChoisir);
+        }*/
+    }
+
+    private boolean determinerAuMoinUnCheckboxSelectionne(){
+        for (CheckBox checkBox:
+             checkBoxes) {
+            if(checkBox.isSelected())
+                System.out.println("TEST PUTAIN FAIT CHIER2");
+                return true;
         }
+        return false;
+    }
+
+    public void montrerDialogCarteDestinationClickee(CarteDestination carteDestinationLieeAuBouton){
+        String titreDialog = "INFORMATION : CARTE DESTINATION "+carteDestinationLieeAuBouton.getReference();
+        String messageDialog = "Villes de passages :\n";
+        for (Ville villePassage:
+             carteDestinationLieeAuBouton.getVilles()) {
+            messageDialog+=villePassage.getNom()+"\n";
+        }
+        Alert alertDialogCarteDestination = new Alert(Alert.AlertType.INFORMATION);
+        alertDialogCarteDestination.setHeaderText(null);
+        alertDialogCarteDestination.setTitle(titreDialog);
+        ImageView imageAssocieeALaCarteDestination = OutilGraphique.creerImageView(OutilES.determinerUrl(carteDestinationLieeAuBouton));
+        alertDialogCarteDestination.setGraphic(imageAssocieeALaCarteDestination);
+        alertDialogCarteDestination.setContentText(messageDialog);
+        alertDialogCarteDestination.showAndWait();
     }
 
     public void montrerDialogAuMoinsUnerCarte(){
         String titreDialog = "ERREUR : SELECTIONNEZ AU MOINS UNE CARTE";
         String messageDialog = "Le Jeu impose le choix d'au moins 1 carte destination.";
         setDialogTitreTexte(titreDialog, messageDialog);
+        Alert alertUneCarteDoitEtreChoisieAuMinimum = new Alert(Alert.AlertType.INFORMATION);
+        alertUneCarteDoitEtreChoisieAuMinimum.setHeaderText(null);
+        alertUneCarteDoitEtreChoisieAuMinimum.setTitle(titreDialog);
+        alertUneCarteDoitEtreChoisieAuMinimum.setContentText(messageDialog);
+        alertUneCarteDoitEtreChoisieAuMinimum.showAndWait();
     }
 
     public void montrerDialogFinDuJeuProche(){

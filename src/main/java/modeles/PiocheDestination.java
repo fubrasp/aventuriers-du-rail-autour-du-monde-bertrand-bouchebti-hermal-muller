@@ -26,7 +26,6 @@ public class PiocheDestination extends Pioche {
 		if(!this.cartes.isEmpty()){
 			for(int i = nombreCartesDestinations; i>nombreCartesDestinations-4;i--){
 				cartesPiocheesPourChoixUtilisateurs.add(((CarteDestination)this.cartes.get(i)));
-				System.out.println("INDEX CD : "+i);
 				if((i-1)<0){
 					//On retourne seulement les cartes restantes :)
 					supprimerCarteDeLaPioche(cartesPiocheesPourChoixUtilisateurs);
