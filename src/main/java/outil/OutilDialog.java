@@ -23,7 +23,7 @@ public class OutilDialog {
     public static Label lbltotal, lbllist;
 
     //2 VBoxes for the labels and checkboxes
-    private HBox vbchecks, vblabels;
+    private HBox vbchecks, vbImages,vblabels;
 
     private Alert alert;
 
@@ -75,12 +75,17 @@ public class OutilDialog {
 
     public void montrerDialogChoixCartesDestination(ArrayList<CarteDestination> cartesAChoisir) {
 
-        //vbox for checkboxes
+        //hbox for checkboxes
         vbchecks = new HBox();
         vbchecks.setSpacing(10);
         vbchecks.setPadding(new Insets(20));
 
-        //vbox for labels
+        //hbox for images
+        vbImages = new HBox();
+        vbImages.setSpacing(10);
+        vbImages.setPadding(new Insets(20));
+
+        //hbox for labels
         vblabels = new HBox();
         vblabels.setSpacing(10);
         vblabels.setPadding(new Insets(20));
@@ -109,7 +114,7 @@ public class OutilDialog {
             elementCourant = this.checkBoxes.get(i);
             elementCourant.setOnAction(e -> PiochesController.handleButtonAction(e));
             this.vbchecks.getChildren().add(elementCourant);
-            this.vbchecks.getChildren().add(this.imagesViewsCartesDestinations.get(i));
+            this.vbImages.getChildren().add(this.imagesViewsCartesDestinations.get(i));
         }
         vblabels.getChildren().addAll(lbltotal, lbllist);
 
@@ -118,7 +123,7 @@ public class OutilDialog {
         root.setMinWidth(800);
         root.setMinHeight(200);
         root.setHgap(20);
-        root.getChildren().addAll(vbchecks, vblabels);
+        root.getChildren().addAll(vbImages, vbchecks, vblabels);
 
         this.alert.getDialogPane().contentProperty().set(root);
 

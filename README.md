@@ -15,6 +15,7 @@
     * fix bug quand reset cartes visibles et une ou plus pioches est vide
     * fix bug quand reset et pas assez de cartes restantes (<3 cards)
     * fix bug carte destinations (texte affichee)
+    * fix texte des cartes destinations en dessous
 
 
 * refractor
@@ -56,4 +57,4 @@
     * modifier fenetre destinations
     * refractor non repris d'exemple
     * carte transport avec indicateur sexy
-    * texte des cartes destinations en dessous
+    * carte destination selectionne encadree en rouge
