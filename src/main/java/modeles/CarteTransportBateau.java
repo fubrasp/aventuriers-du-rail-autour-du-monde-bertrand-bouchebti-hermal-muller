@@ -3,7 +3,7 @@ package modeles;
 public class CarteTransportBateau extends CarteTransport {
 	private Boolean bateauDouble;
 
-	public CarteTransportBateau(String couleur, boolean port, Boolean bateauDouble) {
+	public CarteTransportBateau(int couleur, boolean port, Boolean bateauDouble) {
 		super(couleur, port);
 		this.bateauDouble = bateauDouble;
 	}

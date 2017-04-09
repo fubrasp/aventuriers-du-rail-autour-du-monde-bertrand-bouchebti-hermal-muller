@@ -10,10 +10,6 @@ public class Couleur {
     public final static int GRIS = 0x7;
     public final static int SPE = 0x8;
 
-    public final static String JOKER="joker";
-    public final static String PIOCHE_REFAITE="PIOCHE_REFAITE";
-    public final static String PAS_DE_CARTE_DANS_LA_DEFAUSSE="PIOCHE_PAS_REFAITE";
-
 
     public static int getColor(String pattern){
         int color;

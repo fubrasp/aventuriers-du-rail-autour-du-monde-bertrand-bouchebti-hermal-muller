@@ -2,7 +2,7 @@ package modeles;
 
 public class CarteTransportWagon extends CarteTransport {
 
-	public CarteTransportWagon(String couleur, boolean port) {
+	public CarteTransportWagon(int couleur, boolean port) {
 		super(couleur, port);
 	}
 

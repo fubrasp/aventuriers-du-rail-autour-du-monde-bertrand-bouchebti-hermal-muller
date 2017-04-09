@@ -20,7 +20,7 @@ public class OutilES {
     public static String determinerUrl(Carte ct) {
         String chemin = "";
         if(ct instanceof CarteTransport){
-            if (!((CarteTransport)ct).getCouleur().equals(CarteTransport.JOKER)) {
+            if (((CarteTransport)ct).getCouleur()!=CarteTransport.JOKER) {
                 if (ct instanceof CarteTransportBateau) {
                     if (((CarteTransportBateau) ct).isBateauDouble()) {
                         chemin = CHEMIN_BASE_CARTE_BATEAU_DOUBLE + ((CarteTransport)ct).getUrlAssociatedWithColor();

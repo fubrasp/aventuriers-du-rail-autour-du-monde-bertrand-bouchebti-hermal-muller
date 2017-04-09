@@ -102,12 +102,12 @@ public class PiochesController implements Initializable {
             nomPiocheVide = "WAGONS";
         }
 
-        if (carteTransportPiochee.getCouleur().equals(CarteTransport.PIOCHE_REFAITE)) {
+        if (carteTransportPiochee.getCouleur()==CarteTransport.PIOCHE_REFAITE) {
             outilDialog.montrerDialogPiocheEpuisee();
             //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
             handlePiocheBateau();
         } else {
-            if (carteTransportPiochee.getCouleur().equals(CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE)) {
+            if (carteTransportPiochee.getCouleur()==CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
                 outilDialog.montrerDialogDefausseVide(nomPiocheVide);
             } else {
                 //On l'ajoute a la main du joueur (en horizontal)

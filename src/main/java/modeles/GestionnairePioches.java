@@ -78,7 +78,7 @@ public class GestionnairePioches {
     public int detecterTropJokersVisibles() {
         int compteur = 0;
         for (CarteTransport carteTransport : this.cartesVisibles) {
-            if (carteTransport.getCouleur().equals(CarteTransport.JOKER)) {
+            if (carteTransport.getCouleur()==CarteTransport.JOKER) {
                 compteur++;
             }
             // eviter des parcours inutiles

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class PiocheTransport extends Pioche {
 
-	private ArrayList<String> couleursDesCartesTransport = new ArrayList<String>();
+	private ArrayList<Integer> couleursDesCartesTransport = new ArrayList<Integer>();
 
 	public PiocheTransport(ArrayList<Carte> cartes) {
 		super(cartes);
@@ -12,12 +12,12 @@ public class PiocheTransport extends Pioche {
 	}
 
 	private void initCouleurs(){
-		this.couleursDesCartesTransport.add(CarteTransport.BLANC);
-		this.couleursDesCartesTransport.add(CarteTransport.NOIR);
-		this.couleursDesCartesTransport.add(CarteTransport.VERT);
-		this.couleursDesCartesTransport.add(CarteTransport.JAUNE);
-		this.couleursDesCartesTransport.add(CarteTransport.ROUGE);
-		this.couleursDesCartesTransport.add(CarteTransport.VIOLET);
+		this.couleursDesCartesTransport.add(Couleur.BLANC);
+		this.couleursDesCartesTransport.add(Couleur.NOIR);
+		this.couleursDesCartesTransport.add(Couleur.VERT);
+		this.couleursDesCartesTransport.add(Couleur.JAUNE);
+		this.couleursDesCartesTransport.add(Couleur.ROUGE);
+		this.couleursDesCartesTransport.add(Couleur.VIOLET);
 	}
 
 	public PiocheTransport(){
@@ -39,7 +39,7 @@ public class PiocheTransport extends Pioche {
 	
 	public void initialiserPiocheWagons() {
 		for (int i = 0; i < Jeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR; i++) {
-			for (String couleur : this.couleursDesCartesTransport) {
+			for (Integer couleur : this.couleursDesCartesTransport) {
 				if (i < Jeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR) {
 					this.cartes.add(new CarteTransportWagon(couleur, true));
 				} else {
@@ -52,13 +52,13 @@ public class PiocheTransport extends Pioche {
 
 	public void initialiserPiocheBateaux() {
 		for(int i=0; i<Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR; i++){
-			for (String couleur : this.couleursDesCartesTransport) {
+			for (Integer couleur : this.couleursDesCartesTransport) {
 					this.cartes.add(new CarteTransportBateau(couleur, true, false));
 			}
 		}
 
 		for(int i=0; i<Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR; i++){
-			for (String couleur : couleursDesCartesTransport) {
+			for (Integer couleur : couleursDesCartesTransport) {
 					this.cartes.add(new CarteTransportBateau(couleur, false, true));
 			}
 		}
@@ -88,7 +88,7 @@ public class PiocheTransport extends Pioche {
 		return str;
 	}
 
-	public ArrayList<String> getCouleursDesCartesTransport() {
+	public ArrayList<Integer> getCouleursDesCartesTransport() {
 		return couleursDesCartesTransport;
 	}
 

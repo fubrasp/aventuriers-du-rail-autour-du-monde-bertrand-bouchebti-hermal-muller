@@ -72,7 +72,7 @@ public class PiocheTest {
         //We use pioche method on empty pioche
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", Couleur.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
@@ -86,18 +86,18 @@ public class PiocheTest {
 
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", Couleur.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
     private ArrayList<CarteTransport> mettreDesCartesDansLaListeDeCartesVisibles(){
         ArrayList<CarteTransport> cartesVisibles = new ArrayList<CarteTransport>();
         for (int i=0; i<3; i++){
-            cartesVisibles.add(new CarteTransportWagon(Couleur.JOKER, true));
+            cartesVisibles.add(new CarteTransportWagon(CarteTransport.JOKER, true));
         }
-        cartesVisibles.add(new CarteTransportBateau(Integer.toString(Couleur.BLANC), true, false));
-        cartesVisibles.add(new CarteTransportBateau(Integer.toString(Couleur.ROUGE), false, true));
-        cartesVisibles.add(new CarteTransportWagon(Integer.toString(Couleur.VERT), false));
+        cartesVisibles.add(new CarteTransportBateau(Couleur.BLANC, true, false));
+        cartesVisibles.add(new CarteTransportBateau(Couleur.ROUGE, false, true));
+        cartesVisibles.add(new CarteTransportWagon(Couleur.VERT, false));
         this.jeu.getGestionnairePioches().setCartesVisibles(cartesVisibles);
         //Quite the same to return this.jeu.getGestionnairePioches().getCartesVisibles()
         return cartesVisibles;
@@ -176,7 +176,7 @@ public class PiocheTest {
     public void testInitialisationPiocheWagons() {
 
         PiocheTransport piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
-        HashMap<String, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(piocheWagon);
+        HashMap<Integer, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(piocheWagon);
 
         //nombre de cartes de la pioche au depart
         assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON, piocheWagon.taille());
@@ -188,7 +188,7 @@ public class PiocheTest {
 
             ArrayList<Integer> values = ((ArrayList<Integer>) pair.getValue());
 
-            if (!pair.getKey().equals(Couleur.JOKER)) {
+            if (!pair.getKey().equals(CarteTransport.JOKER)) {
                 assertEquals("Nombre de carte de couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR, ((int) values.get(0)));
                 assertEquals("Nombre de carte de ports inadequat pour la couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR, ((int) values.get(1)));
             } else {
@@ -244,8 +244,8 @@ public class PiocheTest {
 
 
 
-        HashMap<String, ArrayList<Integer>> compteCouleursBateauxSimples = compterCarteCouleur(ptbs);
-        HashMap<String, ArrayList<Integer>> compteCouleursBateauxDoubles = compterCarteCouleur(ptbd);
+        HashMap<Integer, ArrayList<Integer>> compteCouleursBateauxSimples = compterCarteCouleur(ptbs);
+        HashMap<Integer, ArrayList<Integer>> compteCouleursBateauxDoubles = compterCarteCouleur(ptbd);
 
 
 
@@ -271,11 +271,11 @@ public class PiocheTest {
     }
 
     // A REFRACTOR FONCTIONNEMENT INCOMPREHENSIBLE
-    private HashMap<String, ArrayList<Integer>> compterCarteCouleur(PiocheTransport pt) {
-        HashMap<String, ArrayList<Integer>> compteCouleurs = new HashMap<String, ArrayList<Integer>>();
+    private HashMap<Integer, ArrayList<Integer>> compterCarteCouleur(PiocheTransport pt) {
+        HashMap<Integer, ArrayList<Integer>> compteCouleurs = new HashMap<Integer, ArrayList<Integer>>();
         for (Carte ct : pt.getCartes()) {
             CarteTransport ctt = ((CarteTransport) ct);
-            String couleur = ctt.getCouleur();
+            Integer couleur = ctt.getCouleur();
 
             Integer compteCouleur = 0;
             Integer comptePort = 0;

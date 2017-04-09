@@ -3,32 +3,25 @@ package modeles;
 import outil.OutilES;
 
 public class CarteTransport extends Carte {
-	protected String couleur;
+	protected int couleur;
 	private boolean port;
 
-
-	public final static String JOKER="joker";
-	public final static String JAUNE="Jaune";
-	public final static String VERT="Vert";
-	public final static String ROUGE="Rouge";
-	public final static String NOIR="Noir";
-	public final static String BLANC="Blanc";
-	public final static String VIOLET="Violet";
-	public final static String PIOCHE_REFAITE="PIOCHE_REFAITE";
-	public final static String PAS_DE_CARTE_DANS_LA_DEFAUSSE="PIOCHE_PAS_REFAITE";
+	public final static int JOKER=666;
+	public final static int PIOCHE_REFAITE=999;
+	public final static int PAS_DE_CARTE_DANS_LA_DEFAUSSE=9999;
 
 
-	public CarteTransport(String couleur, boolean port) {
+	public CarteTransport(int couleur, boolean port) {
 		super();
 		this.couleur = couleur;
 		this.port = port;
 	}
 
-	public String getCouleur() {
+	public int getCouleur() {
 		return couleur;
 	}
 
-	public void setCouleur(String couleur) {
+	public void setCouleur(int couleur) {
 		this.couleur = couleur;
 	}
 
@@ -37,10 +30,10 @@ public class CarteTransport extends Carte {
 	}
 
 	public String getUrlAssociatedWithColor(){
-		if(!this.couleur.equals(CarteTransport.JOKER)){
+		if(this.couleur!=CarteTransport.JOKER){
 			return this.couleur+ OutilES.EXTENSION_IMAGES;
 		}else{
-			return CarteTransport.JOKER;
+			return Integer.toString(CarteTransport.JOKER);
 		}
 	}
 
