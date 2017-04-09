@@ -72,7 +72,7 @@ public class PiocheTest {
         //We use pioche method on empty pioche
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", Couleur.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
@@ -86,18 +86,18 @@ public class PiocheTest {
 
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", Couleur.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
     private ArrayList<CarteTransport> mettreDesCartesDansLaListeDeCartesVisibles(){
         ArrayList<CarteTransport> cartesVisibles = new ArrayList<CarteTransport>();
         for (int i=0; i<3; i++){
-            cartesVisibles.add(new CarteTransportWagon(CarteTransport.JOKER, true));
+            cartesVisibles.add(new CarteTransportWagon(Couleur.JOKER, true));
         }
-        cartesVisibles.add(new CarteTransportBateau(CarteTransport.BLANC, true, false));
-        cartesVisibles.add(new CarteTransportBateau(CarteTransport.ROUGE, false, true));
-        cartesVisibles.add(new CarteTransportWagon(CarteTransport.VERT, false));
+        cartesVisibles.add(new CarteTransportBateau(Integer.toString(Couleur.BLANC), true, false));
+        cartesVisibles.add(new CarteTransportBateau(Integer.toString(Couleur.ROUGE), false, true));
+        cartesVisibles.add(new CarteTransportWagon(Integer.toString(Couleur.VERT), false));
         this.jeu.getGestionnairePioches().setCartesVisibles(cartesVisibles);
         //Quite the same to return this.jeu.getGestionnairePioches().getCartesVisibles()
         return cartesVisibles;
@@ -147,14 +147,28 @@ public class PiocheTest {
         assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().size());
     }
 
+    @Test
+    public void testPiocheDestinationsCasNominal(){
+        PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
+        int tailleDepartPiocheDestination = piocheDestination.getCartes().size();
+        piocheDestination.piocherCartesDestination();
+        assertEquals("Dans le cas ou il y a assez de cartes dans la pioche on doit proposer au joueur 4 cartes",tailleDepartPiocheDestination-4, piocheDestination.getCartes().size());
+    }
+
+    @Test
+    public void testPiocheDestinationsPasAssezDeCartes(){
+        PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
+        //We know there 65 elementq in one
+        piocheDestination.getCartes().subList(0, 64).clear();
+        ArrayList<CarteDestination> cartesDestinationsPiochees = piocheDestination.piocherCartesDestination();
+        // ???
+        assertEquals("Dans le cas ou il n y a pas assez de cartes, on doit proposer au joueur 2 cartes",1, cartesDestinationsPiochees.size());
+    }
 
 
     @Test
     public void testInitialisationPiocheDestinations(){
-        Jeu j = new Jeu();
-        j.initialiserJeu();
-
-        PiocheDestination piocheDestination = j.getGestionnairePioches().getPiocheCartesDestination();
+        PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
         assertEquals("", PiocheDestination.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille());
     }
 
@@ -174,7 +188,7 @@ public class PiocheTest {
 
             ArrayList<Integer> values = ((ArrayList<Integer>) pair.getValue());
 
-            if (!pair.getKey().equals(CarteTransport.JOKER)) {
+            if (!pair.getKey().equals(Couleur.JOKER)) {
                 assertEquals("Nombre de carte de couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR, ((int) values.get(0)));
                 assertEquals("Nombre de carte de ports inadequat pour la couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR, ((int) values.get(1)));
             } else {

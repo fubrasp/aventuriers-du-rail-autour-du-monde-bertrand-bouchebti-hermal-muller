@@ -6,6 +6,7 @@ public class CarteTransport extends Carte {
 	protected String couleur;
 	private boolean port;
 
+
 	public final static String JOKER="joker";
 	public final static String JAUNE="Jaune";
 	public final static String VERT="Vert";
@@ -15,6 +16,7 @@ public class CarteTransport extends Carte {
 	public final static String VIOLET="Violet";
 	public final static String PIOCHE_REFAITE="PIOCHE_REFAITE";
 	public final static String PAS_DE_CARTE_DANS_LA_DEFAUSSE="PIOCHE_PAS_REFAITE";
+
 
 	public CarteTransport(String couleur, boolean port) {
 		super();

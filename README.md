@@ -25,8 +25,10 @@
         
 
 * test
-    * tester pioche
+    * tester pioches
     * tester cartes visibles
+    * test cartes destinations
+
 
 * fonctionnalites
     * gerer indicateur nombre (ne pas afficher 2 fois la meme carte dans la main du joueur)
@@ -50,7 +52,6 @@
 * vrai cartes en HD avec le modele derriere
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
     * Init
-    * test cartes destinations
     * alert moins de 1 destinations choisie
     * modifier fenetre destinations
     * refractor non repris d'exemple
