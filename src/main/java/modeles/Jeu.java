@@ -1,5 +1,7 @@
 package modeles;
 
+import java.util.Map;
+
 public class Jeu {
 
 	public static final int NOMBRE_CARTES_TRANSPORT_WAGON = 80;
@@ -12,6 +14,14 @@ public class Jeu {
 	public static final int NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR = 4;
 	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
+	private static class JeuWrapper{
+		private static Jeu instanceJeu = new Jeu();
+	}
+
+	public static Jeu getInstance(){
+		return JeuWrapper.instanceJeu;
+	}
+
 	// Joeur qui est entrain d'effectuer un coup
 	private Joueur joueurCourant = new Joueur();
 	// private int nombreDeCartePioche;
@@ -23,8 +33,11 @@ public class Jeu {
 	// joueurs participants a une partie
 	// private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 
-	// routes d'une partie
-	// private ArrayList<Route> routes = new ArrayList<Route>();
+	// Routes d'une partie
+	private Map<String,Route> routes;
+
+	// Villes d'une partie
+	private Map<String,Ville> villes;
 
 	/*
 	 * pions de la partie dans la "Banque" ==> les pions qui n'ont pas ete
@@ -58,6 +71,8 @@ public class Jeu {
 
 	public Jeu(){
 		this.gestionnairePioches = new GestionnairePioches();
+		this.villes = GestionnairePlateau.initCities();
+		this.routes = GestionnairePlateau.initRoads(GestionnairePlateau.parsePlateau());
 	}
 
 	public boolean detecterTropJokersVisibles() {
@@ -75,5 +90,13 @@ public class Jeu {
 
 	public GestionnairePioches getGestionnairePioches() {
 		return gestionnairePioches;
+	}
+
+	public Map<String, Route> getRoutes() {
+		return routes;
+	}
+
+	public Map<String, Ville> getVilles() {
+		return villes;
 	}
 }

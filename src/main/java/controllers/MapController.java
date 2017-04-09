@@ -15,6 +15,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import modeles.Jeu;
+import modeles.Joueur;
+import modeles.Route;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -22,9 +25,13 @@ import java.util.*;
 
 public class MapController implements Initializable {
     @FXML private AnchorPane mapContainer;
+    private Jeu jeu;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.jeu = Jeu.getInstance();
+
         for (Node node : mapContainer.getChildren()) {
             if(node instanceof Circle){
                 node.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -41,6 +48,7 @@ public class MapController implements Initializable {
             }
 
             if (node instanceof Rectangle) {
+                Route road = jeu.getRoutes().get(node.getStyleClass().get(0));
                 Paint originalColor = ((Rectangle) node).getFill();
                 node.addEventHandler(MouseEvent.MOUSE_ENTERED,
                         new EventHandler<MouseEvent>() {
@@ -56,29 +64,26 @@ public class MapController implements Initializable {
                         new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent e) {
-                                ((Rectangle) node).setFill(originalColor);
+                                if(!road.isTaken()){
+                                    highlightRoad(node,originalColor);
+                                }else{
+                                    highlightRoad(node,Paint.valueOf(jeu.getJoueurCourant().getCouleur()));
+                                }
                                 node.setCursor(Cursor.DEFAULT);
-                                highlightRoad(node,originalColor);
                             }
                         });
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED,
                         new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
-                                if(node.getStyleClass().size()>0){
-                                    String[] nodeClass = node.getStyleClass().get(0).split("_");
-                                    String roadType = nodeClass[0];
-                                    String roadColor = nodeClass[1];
-                                    int roadSize = new Integer(nodeClass[2]);
-                                    String city1 = nodeClass[3];
-                                    String city2 = nodeClass[4];
+                                setRoadToPlayer(node,road);
 
-                                    System.out.println("Road clicked # " +
-                                            "Type : "+roadType+" " +
-                                            "Color : "+roadColor+" " +
-                                            "Size : "+roadSize);
-
-                                }
+                                System.out.println("Road clicked # " +
+                                        "Maritime : "+road.isMaritime()+" " +
+                                        "Color : "+road.getCouleur()+" " +
+                                        "VilleDep : "+road.getVilleDepart().getNom()+" " +
+                                        "VilleArr : "+road.getVilleArrivee().getNom()+" " +
+                                        "Size : "+road.getNombreEtapes());
                             }
                         });
             }
@@ -102,7 +107,35 @@ public class MapController implements Initializable {
 
     }
 
-    public static Tooltip createTooltip(String text){
+    /*
+        Colorize the chosen road and set the player to the road
+        @param initialNode
+        @param road the chosen road
+     */
+    private void setRoadToPlayer(Node initialNode, Route road){
+        if(initialNode.getStyleClass().size() >0 ){
+            Joueur joueur = jeu.getJoueurCourant();
+
+            road.takeRoad(joueur);
+
+            colorizeRoad(initialNode,Paint.valueOf(joueur.getCouleur()));
+        }
+    }
+
+    /*
+        Colorize the chosen road
+        @param initialNode
+        @param paint color of the road
+     */
+    private void colorizeRoad(Node initialNode, Paint paint){
+        mapContainer.getChildren().stream()
+                .filter(node -> node.getStyleClass().size()>0)
+                .filter(node -> node.getStyleClass().get(0).equals(initialNode.getStyleClass().get(0)))
+                .filter(node -> node instanceof Rectangle)
+                .forEach(node -> ((Rectangle)node).setFill(paint));
+    }
+
+    private static Tooltip createTooltip(String text){
         Tooltip tooltip = new Tooltip(text);
         tooltip.setFont(new Font("Arial",16));
         hackTooltipStartTiming(tooltip);
@@ -113,7 +146,7 @@ public class MapController implements Initializable {
         Because tooltip delay is too slower by default, this is a hack to change his delay
         Source : http://stackoverflow.com/questions/26854301/control-javafx-tooltip-delay
      */
-    public static void hackTooltipStartTiming(Tooltip tooltip) {
+    private static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
             fieldBehavior.setAccessible(true);
@@ -130,7 +163,7 @@ public class MapController implements Initializable {
         }
     }
 
-    public static final Map<String,String> nameOfCity = createMap();
+    private static final Map<String,String> nameOfCity = createMap();
     private static Map<String, String> createMap(){
         Map<String, String> aMap = new HashMap<>();
         aMap.put("vanc", "Vancouver");
