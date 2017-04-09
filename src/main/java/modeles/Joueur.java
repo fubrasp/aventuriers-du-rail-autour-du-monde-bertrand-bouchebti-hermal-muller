@@ -10,6 +10,8 @@ public class Joueur {
 	//cartes transports que possede le joueur concerne
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
 
+	private String couleur = "pink";
+
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
@@ -59,5 +61,13 @@ public class Joueur {
 			}
 		}
 		return compteur;
+	}
+
+	public String getCouleur() {
+		return couleur;
+	}
+
+	public void setCouleur(String couleur) {
+		this.couleur = couleur;
 	}
 }

@@ -22,7 +22,7 @@ public class MainApp extends Application {
 	private Jeu jeu;
 
 	public MainApp(){
-	    this.jeu = new Jeu();
+	    this.jeu = Jeu.getInstance();
 	    this.jeu.initialiserJeu();
 	    this.jeu.getGestionnairePioches().preparerPioches();
     }
