@@ -2,6 +2,7 @@ package outil;
 
 import application.MainApp;
 import modeles.CarteTransport;
+import modeles.Jeu;
 
 /**
  * Created by bertran95u on 03/04/2017.
@@ -11,13 +12,13 @@ public class OutilPratique {
         return min + (int)(Math.random() * ((max - min) + 1));
     }
 
-    public static CarteTransport piocherCarteTransportRandom(MainApp mainApp) {
+    public static CarteTransport piocherCarteTransportRandom() {
         int choixPioche = OutilPratique.nbAleat(1, 2);
 
         if (choixPioche == 1) {
-            return (CarteTransport) mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+            return (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
         } else {
-            return (CarteTransport) mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+            return (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
         }
     }
 }

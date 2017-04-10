@@ -48,15 +48,13 @@ public class PiochesController implements Initializable {
     private final static int PIOCHE_BATEAU = 1;
     private final static int PIOCHE_WAGON = 2;
 
-    private MainApp mainApp;
-
     private static ArrayList<String> choixUtilisateursCartesDestinations = new ArrayList<String>();
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
 
 
     public PiochesController() {
-        mainApp = new MainApp();
+        
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,7 +64,7 @@ public class PiochesController implements Initializable {
     public void initializationCartesVisibles() {
         compteurPositionNouveauBoutonsCartesVisibles = 0;
 
-        ArrayList<CarteTransport> cartesVisibles = this.mainApp.getJeu().getGestionnairePioches().getCartesVisibles();
+        ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
 
         this.addToVBoxBoutton(cartesVisibles);
 
@@ -81,11 +79,11 @@ public class PiochesController implements Initializable {
         System.out.println("TEST");
         CarteTransport carteAAjouter;
         for (int i = 0; i < 7; i++) {
-            carteAAjouter = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+            carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }
         for (int i = 0; i < 3; i++) {
-            carteAAjouter = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+            carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }
     }
@@ -95,10 +93,10 @@ public class PiochesController implements Initializable {
         String nomPiocheVide = "";
         if (typePioche == PIOCHE_BATEAU) {
             //We directly pioche carte transport bateau
-            carteTransportPiochee = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+            carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
             nomPiocheVide = "BATEAUX";
         } else {
-            carteTransportPiochee = (CarteTransport) this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+            carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             nomPiocheVide = "WAGONS";
         }
 
@@ -137,7 +135,7 @@ public class PiochesController implements Initializable {
      */
     @FXML
     private void handleDialogNouvelleDestination() {
-        PiocheDestination piocheDestination = this.mainApp.getJeu().getGestionnairePioches().getPiocheCartesDestination();
+        PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
         if (piocheDestination.estVide()) {
             outilDialog.montrerDialogErreurPiocheDestination();
@@ -162,7 +160,7 @@ public class PiochesController implements Initializable {
      */
     private void gererAjoutCarteMain(CarteTransport carte) {
         //On compte le nombre de carte du type donne dans la main du joueur
-        int nombreApparitionCarte = this.mainApp.getJeu().getJoueurCourant().dejaDansLaMainDuJoueur(carte);
+        int nombreApparitionCarte = Jeu.getInstance().getJoueurCourant().dejaDansLaMainDuJoueur(carte);
 
         //on associe dans tous les cas la carte au joueur
         this.ajouterCarteJoueurCourant(carte);
@@ -188,7 +186,7 @@ public class PiochesController implements Initializable {
     }
 
     private void ajouterCarteJoueurCourant(CarteTransport ct) {
-        this.mainApp.getJeu().getJoueurCourant().ajouterCarteTransport(ct);
+        Jeu.getInstance().getJoueurCourant().ajouterCarteTransport(ct);
     }
 
     private void addToVBoxBoutton(ArrayList<CarteTransport> listeCartesVisibles) {
@@ -222,14 +220,14 @@ public class PiochesController implements Initializable {
     }
 
     private void verifierTraiterJokers() {
-        if (mainApp.getJeu().detecterTropJokersVisibles()) {
+        if (Jeu.getInstance().detecterTropJokersVisibles()) {
             reseterCartesVisibles();
             outilDialog.montrerDialogErreurJokers();
         }
     }
 
     private void reseterCartesVisibles() {
-        mainApp.getJeu().getGestionnairePioches().reseterCartesVisibles();
+        Jeu.getInstance().getGestionnairePioches().reseterCartesVisibles();
         listeBouttonsCartesVisibles.getChildren().clear();
         initializationCartesVisibles();
     }
@@ -238,7 +236,7 @@ public class PiochesController implements Initializable {
     private void transfererCarteVisibleALaMainDuJoueur(String id) {
         int idInt = Integer.parseInt(id);
 
-        ArrayList<CarteTransport> cartesVisibles = this.mainApp.getJeu().getGestionnairePioches().getCartesVisibles();
+        ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
 
         CarteTransport carteTransportATransferer;
         CarteTransport carteTransportPiochee;
@@ -246,10 +244,10 @@ public class PiochesController implements Initializable {
         carteTransportATransferer = cartesVisibles.get(idInt);
 
         //On pioche une nouvelle carte
-        carteTransportPiochee = OutilPratique.piocherCarteTransportRandom(this.mainApp);
+        carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
 
         //On remplace la carte dans la liste des cartes visibles
-        this.mainApp.getJeu().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
+        Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
         //On remplace le boutton
         Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
@@ -289,7 +287,7 @@ public class PiochesController implements Initializable {
             System.out.println(choix);
         }
         ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
-        this.mainApp.getJeu().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
+        Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
         //On impacte de maniere graphique le VBOW concerne
         Button bouttonDestinationCree = null;
