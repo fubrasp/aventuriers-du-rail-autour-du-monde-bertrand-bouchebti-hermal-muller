@@ -25,52 +25,47 @@ public class OutilDialog {
     //2 VBoxes for the labels and checkboxes
     private HBox vbchecks, vbImages,vblabels;
 
-    private Alert alert;
-
     public OutilDialog() {
-        this.alert = new Alert(Alert.AlertType.INFORMATION);
-        this.alert.setHeaderText(null);
     }
 
-    private void setDialogTitreTexte(String titre, String message) {
-        this.alert.setTitle(titre);
-        this.alert.setContentText(message);
-        this.alert.showAndWait();
+    private Alert makeDialog(String titre, String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle(titre);
+        alert.setContentText(message);
+        alert.showAndWait();
+        return alert;
     }
 
     public void montrerDialogErreurJokers() {
         String titreDialog = "INFORMATION : JOKERS";
         String messageDialog = "Les cartes visibles ont ete reinitialisees car il y a trop de jokers visibles.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        makeDialog(titreDialog, messageDialog);
     }
 
     //We have to create a new object in order to make it working
     public void montrerDialogErreurPiocheDestination() {
         String titreDialog = "INFORMATION : PIOCHE DESTINATION";
         String messageDialog = "Il n'y a plus de cartes destinations dans la pioche.";
-        Alert alertErreurPiocheDestination = new Alert(Alert.AlertType.INFORMATION);
-        alertErreurPiocheDestination.setHeaderText(null);
-        alertErreurPiocheDestination.setTitle(titreDialog);
-        alertErreurPiocheDestination.setContentText(messageDialog);
-        alertErreurPiocheDestination.showAndWait();
+        makeDialog(titreDialog, messageDialog);
     }
 
     public void montrerDialogPiocheEpuisee() {
         String titreDialog = "INFORMATION : PIOCHE EPUISEE";
         String messageDialog = "La pioche a ete reinitialise a partir de sa defausse.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        makeDialog(titreDialog, messageDialog);
     }
 
     public void montrerDialogDefausseVide(String nomPioche) {
         String titreDialog = "INFORMATION : IMPOSSIBLE DE PIOCHER DANS PIOCHE" + nomPioche;
         String messageDialog = "La pioche " + nomPioche + " est vide et sa defausse aussi.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        makeDialog(titreDialog, messageDialog);
     }
 
     public void montrerDialogDefaussesVides() {
         String titreDialog = "INFORMATION : IMPOSSIBLE DE PIOCHER";
         String messageDialog = "les pioches sont vides et leurs defausses aussi.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        makeDialog(titreDialog, messageDialog);
     }
 
     public void montrerDialogChoixCartesDestination(ArrayList<CarteDestination> cartesAChoisir) {
@@ -125,9 +120,10 @@ public class OutilDialog {
         root.setHgap(20);
         root.getChildren().addAll(vbImages, vbchecks, vblabels);
 
-        this.alert.getDialogPane().contentProperty().set(root);
+        Alert alertCustomDestinations = new Alert(Alert.AlertType.INFORMATION);
+        alertCustomDestinations.getDialogPane().contentProperty().set(root);
 
-        Optional<ButtonType> result = this.alert.showAndWait();
+        Optional<ButtonType> result = alertCustomDestinations.showAndWait();
 
         vblabels.getChildren().clear();
         vbchecks.getChildren().clear();
@@ -172,18 +168,13 @@ public class OutilDialog {
     public void montrerDialogAuMoinsUnerCarte(){
         String titreDialog = "ERREUR : SELECTIONNEZ AU MOINS UNE CARTE";
         String messageDialog = "Le Jeu impose le choix d'au moins 1 carte destination.";
-        setDialogTitreTexte(titreDialog, messageDialog);
-        Alert alertUneCarteDoitEtreChoisieAuMinimum = new Alert(Alert.AlertType.INFORMATION);
-        alertUneCarteDoitEtreChoisieAuMinimum.setHeaderText(null);
-        alertUneCarteDoitEtreChoisieAuMinimum.setTitle(titreDialog);
-        alertUneCarteDoitEtreChoisieAuMinimum.setContentText(messageDialog);
-        alertUneCarteDoitEtreChoisieAuMinimum.showAndWait();
+        makeDialog(titreDialog, messageDialog);
     }
 
     public void montrerDialogFinDuJeuProche(){
         String titreDialog = "INFORMATION : FIN DU JEU DANS 2 TOURS";
         String messageDialog = "Un joueur a moins de 6 pions.";
-        setDialogTitreTexte(titreDialog, messageDialog);
+        makeDialog(titreDialog, messageDialog);
     }
 
 }

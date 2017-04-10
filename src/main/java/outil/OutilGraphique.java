@@ -48,6 +48,24 @@ public class OutilGraphique {
         return nouveauBoutton;
     }
 
+    public static AnchorPane creerAnchorPane(Carte carte) {
+        //On utilise un AnchorPane
+        AnchorPane anchorPaneAssocieeNouveauBoutton = new AnchorPane();
+        anchorPaneAssocieeNouveauBoutton.setPrefHeight(60);
+        anchorPaneAssocieeNouveauBoutton.setPrefWidth(80);
+
+        //On prepare l'image et le texte qui doivent apparaître sur le boutton
+        ImageView imageAssocieeNouveauBoutton = OutilGraphique.creerImageView(OutilES.determinerUrl(carte));
+        imageAssocieeNouveauBoutton.setFitWidth(80);
+        imageAssocieeNouveauBoutton.setFitHeight(60);
+
+
+        //On a les ajoute a l'AnchorPane
+        anchorPaneAssocieeNouveauBoutton.getChildren().add(imageAssocieeNouveauBoutton);
+
+        return anchorPaneAssocieeNouveauBoutton;
+    }
+
     /**
      *
      * @param cheminFichier

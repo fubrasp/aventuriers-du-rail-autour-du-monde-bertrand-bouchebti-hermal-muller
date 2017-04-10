@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import outil.OutilDialog;
 import outil.OutilGraphique;
 import outil.OutilPratique;
@@ -246,16 +248,17 @@ public class PiochesController implements Initializable {
         //On pioche une nouvelle carte
         carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
 
-        //On remplace la carte dans la liste des cartes visibles
-        Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
+        if(carteTransportPiochee.getCouleur()!=CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE){
+            //On remplace la carte dans la liste des cartes visibles
+            Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
-        //On remplace le boutton
-        Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
-        b.setId("" + idInt);
-        this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
+            //On remplace le boutton
+            Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
+            b.setId("" + idInt);
+            this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
 
-        gererAjoutCarteMain(carteTransportATransferer);
-
+            gererAjoutCarteMain(carteTransportATransferer);
+        }
     }
 
 
@@ -290,12 +293,13 @@ public class PiochesController implements Initializable {
         Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
         //On impacte de maniere graphique le VBOW concerne
-        Button bouttonDestinationCree = null;
+        AnchorPane bouttonDestinationCree = null;
         for (CarteDestination carteDestinationChoisie :
                 cartesDestinationsChoisies) {
-            bouttonDestinationCree = OutilGraphique.creerBoutton(carteDestinationChoisie);
-            bouttonDestinationCree.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent event) {
+            bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
+            bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
                     outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
                 }
             });
