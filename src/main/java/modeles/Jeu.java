@@ -14,14 +14,6 @@ public class Jeu {
 	public static final int NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR = 4;
 	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
-	private static class JeuWrapper{
-		private static Jeu instanceJeu = new Jeu();
-	}
-
-	public static Jeu getInstance(){
-		return JeuWrapper.instanceJeu;
-	}
-
 	// Joeur qui est entrain d'effectuer un coup
 	private Joueur joueurCourant = new Joueur();
 	// private int nombreDeCartePioche;
@@ -52,6 +44,15 @@ public class Jeu {
 	// ArrayList<Carte>();
 
 	private GestionnairePioches gestionnairePioches;
+
+	private static class JeuWrapper{
+		private static Jeu instanceJeu = new Jeu();
+	}
+
+	public static Jeu getInstance(){
+		return JeuWrapper.instanceJeu;
+	}
+
 
 	public void piocherCarteTransport(Object o) {
 		Carte cartePioche;

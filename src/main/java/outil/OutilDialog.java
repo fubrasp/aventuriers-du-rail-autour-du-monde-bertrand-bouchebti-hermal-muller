@@ -25,9 +25,6 @@ public class OutilDialog {
     //2 VBoxes for the labels and checkboxes
     private HBox vbchecks, vbImages,vblabels;
 
-    public OutilDialog() {
-    }
-
     private Alert makeDialog(String titre, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -123,30 +120,11 @@ public class OutilDialog {
         Alert alertCustomDestinations = new Alert(Alert.AlertType.INFORMATION);
         alertCustomDestinations.getDialogPane().contentProperty().set(root);
 
-        Optional<ButtonType> result = alertCustomDestinations.showAndWait();
+        alertCustomDestinations.showAndWait();
 
         vblabels.getChildren().clear();
         vbchecks.getChildren().clear();
         checkBoxes.clear();
-
-        //System.out.println(result.isPresent() && result.get() == ButtonType.OK && !determinerAuMoinUnCheckboxSelectionne());
-
-        /*if(determinerAuMoinUnCheckboxSelectionne()){
-            System.out.println("TEST PUTAIN FAIT CHIER1");
-            montrerDialogAuMoinsUnerCarte();
-            checkBoxes.clear();
-            montrerDialogChoixCartesDestination(cartesAChoisir);
-        }*/
-    }
-
-    private boolean determinerAuMoinUnCheckboxSelectionne(){
-        for (CheckBox checkBox:
-             checkBoxes) {
-            if(checkBox.isSelected())
-                System.out.println("TEST PUTAIN FAIT CHIER2");
-                return true;
-        }
-        return false;
     }
 
     public void montrerDialogCarteDestinationClickee(CarteDestination carteDestinationLieeAuBouton){

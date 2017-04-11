@@ -3,7 +3,6 @@ package outil;
 import modeles.Carte;
 import modeles.CarteTransport;
 import modeles.CarteTransportBateau;
-import modeles.Couleur;
 
 /**
  * Created by bertran95u on 03/04/2017.

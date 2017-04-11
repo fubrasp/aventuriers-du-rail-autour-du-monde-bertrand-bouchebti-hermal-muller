@@ -13,8 +13,8 @@ public class PiocheTest {
     private Jeu jeu;
     private PiocheTransport piocheBateau;
     private PiocheTransport piocheWagon;
-    private PiocheDestination piocheDestination;
-    private ArrayList<CarteTransport> cartesVisibles;
+    //private PiocheDestination piocheDestination;
+    //private ArrayList<CarteTransport> cartesVisibles;
 
     @Before
     public void executedBeforeEach() {
@@ -22,8 +22,8 @@ public class PiocheTest {
         this.jeu.initialiserJeu();
         this.piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
         this.piocheBateau = this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau();
-        this.piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        this.cartesVisibles = this.jeu.getGestionnairePioches().getCartesVisibles();
+        //this.piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
+        //this.cartesVisibles = this.jeu.getGestionnairePioches().getCartesVisibles();
     }
 
     // We don't test melanger method ==> It use a methode of JAVA SE JDK

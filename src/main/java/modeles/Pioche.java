@@ -1,7 +1,5 @@
 package modeles;
 
-import outil.OutilDialog;
-
 import java.util.*;
 
 public abstract class Pioche {

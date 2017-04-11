@@ -1,7 +1,6 @@
 package controllers;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import outil.OutilDialog;
 import outil.OutilGraphique;
 import outil.OutilPratique;
@@ -9,7 +8,6 @@ import outil.OutilPratique;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import application.*;
 import modeles.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
@@ -34,30 +32,12 @@ public class PiochesController implements Initializable {
     @FXML
     private VBox listeDestinations = new VBox();
 
-    @FXML
-    private CheckBox chksport1;
-    @FXML
-    private CheckBox chksport2;
-    @FXML
-    private CheckBox chksport3;
-    @FXML
-    private CheckBox chksport4;
-    @FXML
-    private Label lbltotal;
-    @FXML
-    private Label lbllist;
-
     private final static int PIOCHE_BATEAU = 1;
     private final static int PIOCHE_WAGON = 2;
 
     private static ArrayList<String> choixUtilisateursCartesDestinations = new ArrayList<String>();
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
-
-
-    public PiochesController() {
-        
-    }
 
     public void initialize(URL location, ResourceBundle resources) {
         this.initializationCartesVisibles();
