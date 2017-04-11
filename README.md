@@ -54,7 +54,6 @@
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
     * Init
     * alert moins de 1 destinations choisie
-    * modifier fenetre destinations
     * refractor non repris d'exemple
     * carte transport avec indicateur sexy
     * carte destination selectionne encadree en rouge

@@ -137,6 +137,10 @@ public class PiochesController implements Initializable {
      */
     @FXML
     private void handleDialogNouvelleDestination() {
+        this.gererPiocheDestination();
+    }
+
+    private void gererPiocheDestination(){
         PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
         if (piocheDestination.estVide()) {
@@ -282,29 +286,33 @@ public class PiochesController implements Initializable {
 
     private void ajouterDestinationUser() {
         //On recupere le resultat de l'alert
-        if (choixUtilisateursCartesDestinations.isEmpty())
+        if (choixUtilisateursCartesDestinations.isEmpty()){
             //A VERIFIER
             outilDialog.montrerDialogAuMoinsUnerCarte();
-        for (String choix :
-                choixUtilisateursCartesDestinations) {
-            System.out.println(choix);
-        }
-        ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
-        Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
+            outilDialog.montrerDialogChoixCartesDestination(Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().getCartesPrecedentes());
+            ajouterDestinationUser();
+        }else{
+            for (String choix :
+                    choixUtilisateursCartesDestinations) {
+                System.out.println(choix);
+            }
+            ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
+            Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
-        //On impacte de maniere graphique le VBOW concerne
-        AnchorPane bouttonDestinationCree = null;
-        for (CarteDestination carteDestinationChoisie :
-                cartesDestinationsChoisies) {
-            bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
-            bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
-                }
-            });
-            this.listeDestinations.getChildren().add(bouttonDestinationCree);
+            //On impacte de maniere graphique le VBOW concerne
+            AnchorPane bouttonDestinationCree = null;
+            for (CarteDestination carteDestinationChoisie :
+                    cartesDestinationsChoisies) {
+                bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
+                bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
+                    }
+                });
+                this.listeDestinations.getChildren().add(bouttonDestinationCree);
+            }
+            choixUtilisateursCartesDestinations.clear();
         }
-        choixUtilisateursCartesDestinations.clear();
     }
 }

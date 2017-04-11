@@ -6,7 +6,7 @@ public class PiocheDestination extends Pioche {
 
 	public final static int NOMBRES_DE_CARTES_PIOCHE_DESTINATION = 65;
 
-	//private ArrayList<CarteDestination> cartesDestinations;
+	private ArrayList<CarteDestination> cartesPrecedentes = new ArrayList<CarteDestination>();
 
 	public PiocheDestination(ArrayList<CarteDestination> cartesDestinations) {
 		super();
@@ -20,12 +20,16 @@ public class PiocheDestination extends Pioche {
 	}
 
 	public ArrayList<CarteDestination> piocherCartesDestination(){
+		this.cartesPrecedentes.clear();
 		ArrayList<CarteDestination> cartesPiocheesPourChoixUtilisateurs = new ArrayList<CarteDestination>();
 		int nombreCartesDestinations = this.cartes.size()-1;
 
 		if(!this.cartes.isEmpty()){
+			CarteDestination carteCourante = null;
 			for(int i = nombreCartesDestinations; i>nombreCartesDestinations-4;i--){
-				cartesPiocheesPourChoixUtilisateurs.add(((CarteDestination)this.cartes.get(i)));
+				carteCourante = ((CarteDestination)this.cartes.get(i));
+				cartesPiocheesPourChoixUtilisateurs.add(carteCourante);
+				this.cartesPrecedentes.add(carteCourante);
 				if((i-1)<0){
 					//On retourne seulement les cartes restantes :)
 					supprimerCarteDeLaPioche(cartesPiocheesPourChoixUtilisateurs);
@@ -39,10 +43,7 @@ public class PiocheDestination extends Pioche {
 	}
 
 	private void supprimerCarteDeLaPioche(ArrayList<CarteDestination> cartesPiocheesPourChoixUtilisateurs){
-		for (CarteDestination cd:
-				cartesPiocheesPourChoixUtilisateurs) {
-			this.cartes.remove(cd);
-		}
+		this.cartes.removeAll(cartesPiocheesPourChoixUtilisateurs);
 	}
 
 	public void initialiserPiocheDestinations(){
@@ -71,4 +72,7 @@ public class PiocheDestination extends Pioche {
 		return this.cartes.size();
 	}
 
+	public ArrayList<CarteDestination> getCartesPrecedentes() {
+		return cartesPrecedentes;
+	}
 }
