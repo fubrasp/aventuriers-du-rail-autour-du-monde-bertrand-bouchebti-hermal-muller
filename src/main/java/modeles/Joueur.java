@@ -71,4 +71,12 @@ public class Joueur {
 	public void setCouleur(String couleur) {
 		this.couleur = couleur;
 	}
+
+	/*public boolean construirePort(Route routeSelectionne){
+		//On regarde dans la main du joueur si on a 4 cartes (2 wagons ports 2 bateaux bateaux simples.. ou 2 jokers) de la couleur de la route selectionnee ou de joker
+		//==> utilisation d'une methode privee de comptage
+		//On regarde si on a des pions ports ou non
+		//On construit
+		//On impacte au niveau graphique
+	}*/
 }

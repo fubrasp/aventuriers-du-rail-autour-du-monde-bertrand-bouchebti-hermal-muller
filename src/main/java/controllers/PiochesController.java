@@ -52,13 +52,11 @@ public class PiochesController implements Initializable {
 
         verifierTraiterJokers();
 
-        //this.initialiserMainJoueur();
+        this.initialiserMainJoueur();
         //CARTE DESTINATIONS CHOISIES AU DEBUT A AJOUTER
     }
 
-    @FXML
-    private void handleInitialiserMainJoueur() {
-        System.out.println("TEST");
+    private void initialiserMainJoueur(){
         CarteTransport carteAAjouter;
         for (int i = 0; i < 7; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
@@ -163,7 +161,6 @@ public class PiochesController implements Initializable {
                     Text textCourant = ((Text) anchorPaneClickable.getChildren().get(1));
                     if(nombreApparitionCarte>=9){
                         textCourant.setLayoutX(35);
-                        System.out.print("APPARITION CARTE >=10");
                     }
                     textCourant.setText("X" + (nombreApparitionCarte + 1));
 
@@ -245,11 +242,19 @@ public class PiochesController implements Initializable {
             Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
             //On remplace le boutton
-            AnchorPane b = creerBouttonImageCarteVisibles(carteTransportPiochee);
-            b.setId("" + idInt);
-            this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
+            AnchorPane anchorePaneAChanger = creerBouttonImageCarteVisibles(carteTransportPiochee);
+            anchorePaneAChanger.setId("" + idInt);
+            this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneAChanger);
 
             gererAjoutCarteMain(carteTransportATransferer);
+        }else{
+            AnchorPane anchorePaneSansCarte = (AnchorPane) this.listeBouttonsCartesVisibles.getChildren().get(idInt);
+            anchorePaneSansCarte.getChildren().set(0, OutilGraphique.creerImageView("src/main/resources/images/cartes/transport/vide.jpeg"));
+            anchorePaneSansCarte.setMaxWidth(50);
+            anchorePaneSansCarte.setMaxHeight(50);
+            //BIZARRE
+            this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneSansCarte);
+
         }
     }
 

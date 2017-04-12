@@ -17,6 +17,8 @@
     * fix bug carte destinations (texte affichee)
     * fix texte des cartes destinations en dessous
     * carte transport avec indicateur sexy (juste l'image + chiffre)
+    * gestion cas tres particulier cartes visibles (afficher image vides)
+
 
 
 * refractor
@@ -58,8 +60,11 @@
     * Init
     * refractor non repris d'exemple
     * carte destination selectionne encadree en rouge
-    * Priorité
-        * gestion cas tres particulier cartes visibles
+    * Priorite
         * split des controllers
-        * gestion de plusieurs joueurs
+        * gestion de plusieurs joueurs    
+    * En plus
+        * empilement des cartes
+        * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
+    
 

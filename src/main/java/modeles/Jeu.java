@@ -1,6 +1,6 @@
 package modeles;
 
-import java.util.Map;
+import java.util.*;
 
 public class Jeu {
 
@@ -23,7 +23,7 @@ public class Jeu {
 	// private HashMap<String, Integer> scoresJoueurs;
 
 	// joueurs participants a une partie
-	// private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 
 	// Routes d'une partie
 	private Map<String,Route> routes;
@@ -99,5 +99,13 @@ public class Jeu {
 
 	public Map<String, Ville> getVilles() {
 		return villes;
+	}
+
+	public ArrayList<Joueur> getJoueurs() {
+		return joueurs;
+	}
+
+	public void setJoueurs(ArrayList<Joueur> joueurs) {
+		this.joueurs = joueurs;
 	}
 }
