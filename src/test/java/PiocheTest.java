@@ -1,6 +1,7 @@
 
 import static org.junit.Assert.*;
 
+import constantes.ConstantesJeu;
 import modeles.*;
 import org.junit.*;
 import outil.OutilPratique;
@@ -179,7 +180,7 @@ public class PiocheTest {
         HashMap<Integer, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(piocheWagon);
 
         //nombre de cartes de la pioche au depart
-        assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON, piocheWagon.taille());
+        assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_WAGON, piocheWagon.taille());
 
         //nombre de carte de chaque couleur et de jokers
         Iterator it = compteCouleurs.entrySet().iterator();
@@ -189,11 +190,11 @@ public class PiocheTest {
             ArrayList<Integer> values = ((ArrayList<Integer>) pair.getValue());
 
             if (!pair.getKey().equals(CarteTransport.JOKER)) {
-                assertEquals("Nombre de carte de couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR, ((int) values.get(0)));
-                assertEquals("Nombre de carte de ports inadequat pour la couleur " + pair.getKey() + " ne correspondant pas a la regle ", Jeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR, ((int) values.get(1)));
+                assertEquals("Nombre de carte de couleur " + pair.getKey() + " ne correspondant pas a la regle ", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR, ((int) values.get(0)));
+                assertEquals("Nombre de carte de ports inadequat pour la couleur " + pair.getKey() + " ne correspondant pas a la regle ", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR, ((int) values.get(1)));
             } else {
-                assertEquals("Nombre de jokers ne correpondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(0)));
-                assertEquals("un joker est forcement une carte port: probleme de regles", Jeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(1)));
+                assertEquals("Nombre de jokers ne correpondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(0)));
+                assertEquals("un joker est forcement une carte port: probleme de regles", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(1)));
             }
             it.remove(); // avoids a ConcurrentModificationException
         }
@@ -234,13 +235,13 @@ public class PiocheTest {
         ptbs.setCartes(ptbsL);
 
         //nombre de cartes de la pioche au depart
-        assertEquals("Nombre de carte bateaux au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU, piocheBateau.taille());
+        assertEquals("Nombre de carte bateaux au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU, piocheBateau.taille());
 
         //nombre de cartes bateau simple de la pioche au depart
-        assertEquals("Nombre de carte bateaux simples au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE, nombreBateauxSimples);
+        assertEquals("Nombre de carte bateaux simples au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE, nombreBateauxSimples);
 
         //nombre de cartes bateau double de la pioche au depart
-        assertEquals("Nombre de carte bateaux doubles au debut du jeu ne correspondant pas a la regle", Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE, nombreBateauxDoubles);
+        assertEquals("Nombre de carte bateaux doubles au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE, nombreBateauxDoubles);
 
 
 
@@ -253,8 +254,8 @@ public class PiocheTest {
         Iterator it = compteCouleursBateauxSimples.entrySet().iterator();
         Iterator it2 = compteCouleursBateauxDoubles.entrySet().iterator();
 
-        this.verifierCouleur(it, Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR, Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR);
-        this.verifierCouleur(it2, Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR, 0);
+        this.verifierCouleur(it, ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR, ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR);
+        this.verifierCouleur(it2, ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR, 0);
 
     }
 

@@ -1,5 +1,7 @@
 package modeles;
 
+import constantes.ConstantesJeu;
+
 import java.util.*;
 
 public class PiocheTransport extends Pioche {
@@ -31,16 +33,16 @@ public class PiocheTransport extends Pioche {
 	}
 
 	private void initialiserJokers(Object o){
-		for(int i=0; i < Jeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE; i++){
+		for(int i = 0; i < ConstantesJeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE; i++){
 			//un peu space
 			this.cartes.add((CarteTransport) o);
 		}
 	}
 	
 	public void initialiserPiocheWagons() {
-		for (int i = 0; i < Jeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR; i++) {
+		for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR; i++) {
 			for (Integer couleur : this.couleursDesCartesTransport) {
-				if (i < Jeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR) {
+				if (i < ConstantesJeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR) {
 					this.cartes.add(new CarteTransportWagon(couleur, true));
 				} else {
 					this.cartes.add(new CarteTransportWagon(couleur, false));
@@ -51,13 +53,13 @@ public class PiocheTransport extends Pioche {
 	}
 
 	public void initialiserPiocheBateaux() {
-		for(int i=0; i<Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR; i++){
+		for(int i=0; i<ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR; i++){
 			for (Integer couleur : this.couleursDesCartesTransport) {
 					this.cartes.add(new CarteTransportBateau(couleur, true, false));
 			}
 		}
 
-		for(int i=0; i<Jeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR; i++){
+		for(int i=0; i<ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR; i++){
 			for (Integer couleur : couleursDesCartesTransport) {
 					this.cartes.add(new CarteTransportBateau(couleur, false, true));
 			}

@@ -1,5 +1,6 @@
 package controllers;
 
+import constantes.ConstantesJeu;
 import javafx.scene.input.*;
 import outil.OutilDialog;
 import outil.OutilGraphique;
@@ -58,11 +59,11 @@ public class PiochesController implements Initializable {
 
     private void initialiserMainJoueur(){
         CarteTransport carteAAjouter;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_BATEAU_INITIALISATION; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_WAGON_INITIALISATION; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }

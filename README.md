@@ -18,6 +18,7 @@
     * fix texte des cartes destinations en dessous
     * carte transport avec indicateur sexy (juste l'image + chiffre)
     * gestion cas tres particulier cartes visibles (afficher image vides)
+    * Init
 
 
 
@@ -57,7 +58,6 @@
 * supprimer attribut bateau double ?
 * vrai cartes en HD avec le modele derriere
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
-    * Init
     * refractor non repris d'exemple
     * carte destination selectionne encadree en rouge
     * Priorite
