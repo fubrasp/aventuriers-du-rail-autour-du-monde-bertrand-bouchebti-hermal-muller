@@ -51,6 +51,7 @@ public class Joueur {
 	}
 
 	public int dejaDansLaMainDuJoueur(CarteTransport ct){
+		//System.out.println("");
 		int compteur=0;
 		//System.out.println("PIOCHEE :"+ct.getReference());
 		for (CarteTransport ctt:

@@ -155,11 +155,18 @@ public class PiochesController implements Initializable {
         if (nombreApparitionCarte > 0) {
             //On ajoute/modifie le texte sur l'image
             for (Node n : this.listeBouttonsUserCourant.getChildren()) {
-                Button bouttonConcerne = (Button) n;
-                if (bouttonConcerne.getText().equals(carte.getReference())) {
+                AnchorPane anchorPaneClickable = (AnchorPane) n;
+                if (anchorPaneClickable.getAccessibleText().equals(carte.getReference())) {
                     //BAD HACK TO IMPROVE THAT
-                    //if(bouttonConcerne.getChildrenUnmodifiable().size()>2){
-                    ((Text) bouttonConcerne.getChildrenUnmodifiable().get(1)).setText("X" + (nombreApparitionCarte + 1));
+                    //if(anchorPaneClickable.getChildrenUnmodifiable().size()>2){
+                    //((Text) anchorPaneClickable.getChildrenUnmodifiable().get(1)).setText("X" + (nombreApparitionCarte + 1));
+                    Text textCourant = ((Text) anchorPaneClickable.getChildren().get(1));
+                    if(nombreApparitionCarte>=9){
+                        textCourant.setLayoutX(35);
+                        System.out.print("APPARITION CARTE >=10");
+                    }
+                    textCourant.setText("X" + (nombreApparitionCarte + 1));
+
                     //}
                 }
             }
@@ -167,7 +174,7 @@ public class PiochesController implements Initializable {
 
         } else {
             //On creer un nouveau boutton
-            this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerBoutton(carte));
+            this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerAnchorPane(carte));
         }
     }
 
@@ -182,19 +189,20 @@ public class PiochesController implements Initializable {
         }
     }
 
-    private Button creerBouttonImageCarteVisibles(CarteTransport ct) {
-        final Button nouveauBoutton = OutilGraphique.creerBoutton(ct);
-        nouveauBoutton.setId("" + compteurPositionNouveauBoutonsCartesVisibles++);
+    private AnchorPane creerBouttonImageCarteVisibles(CarteTransport ct) {
+        final AnchorPane nouveauAnchorPaneClickable = OutilGraphique.creerAnchorPane(ct);
+        nouveauAnchorPaneClickable.setId("" + compteurPositionNouveauBoutonsCartesVisibles++);
 
-        nouveauBoutton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
+        nouveauAnchorPaneClickable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
                 //avoir la postion du boutton dans le vbox
 
-                //System.out.println("" + nouveauBoutton.getId());
+                //System.out.println("" + nouveauAnchorPaneClickable.getId());
 
                 //en deduire la position de la carte a transferer dans les une des listes respectives
                 //transferer la carte a la main du joueur
-                transfererCarteVisibleALaMainDuJoueur("" + nouveauBoutton.getId());
+                transfererCarteVisibleALaMainDuJoueur("" + nouveauAnchorPaneClickable.getId());
                 //remplacer la carte visible concernee par une nouvelle carte piochee au hasard dans une des deux pioches ???
 
                 //checker la regle des 3 jokers
@@ -202,7 +210,7 @@ public class PiochesController implements Initializable {
             }
         });
 
-        return nouveauBoutton;
+        return nouveauAnchorPaneClickable;
     }
 
     private void verifierTraiterJokers() {
@@ -237,7 +245,7 @@ public class PiochesController implements Initializable {
             Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
             //On remplace le boutton
-            Button b = creerBouttonImageCarteVisibles(carteTransportPiochee);
+            AnchorPane b = creerBouttonImageCarteVisibles(carteTransportPiochee);
             b.setId("" + idInt);
             this.listeBouttonsCartesVisibles.getChildren().set(idInt, b);
 

@@ -51,6 +51,7 @@ public class OutilGraphique {
     public static AnchorPane creerAnchorPane(Carte carte) {
         //On utilise un AnchorPane
         AnchorPane anchorPaneAssocieeNouveauBoutton = new AnchorPane();
+        anchorPaneAssocieeNouveauBoutton.setAccessibleText(carte.getReference());
         anchorPaneAssocieeNouveauBoutton.setPrefHeight(60);
         anchorPaneAssocieeNouveauBoutton.setPrefWidth(80);
 
@@ -59,9 +60,16 @@ public class OutilGraphique {
         imageAssocieeNouveauBoutton.setFitWidth(80);
         imageAssocieeNouveauBoutton.setFitHeight(60);
 
+        Text textAssocieeNouveauBoutton = new Text("");
+        Font police = Font.font("Verdana", FontWeight.BOLD, 20);
+        textAssocieeNouveauBoutton.setFont(police);
+        textAssocieeNouveauBoutton.setLayoutX(50);
+        textAssocieeNouveauBoutton.setLayoutY(20);
+
 
         //On a les ajoute a l'AnchorPane
         anchorPaneAssocieeNouveauBoutton.getChildren().add(imageAssocieeNouveauBoutton);
+        anchorPaneAssocieeNouveauBoutton.getChildren().add(textAssocieeNouveauBoutton);
 
         return anchorPaneAssocieeNouveauBoutton;
     }

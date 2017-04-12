@@ -16,6 +16,7 @@
     * fix bug quand reset et pas assez de cartes restantes (<3 cards)
     * fix bug carte destinations (texte affichee)
     * fix texte des cartes destinations en dessous
+    * carte transport avec indicateur sexy (juste l'image + chiffre)
 
 
 * refractor
@@ -40,6 +41,8 @@
     * carte destinations clickables
     * mettre scroll bar carte destinations
     * mettre scroll bar pour la main du joueur
+    * alert moins de 1 destinations choisie
+
 
 
 # TO DO
@@ -53,7 +56,10 @@
 * vrai cartes en HD avec le modele derriere
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
     * Init
-    * alert moins de 1 destinations choisie
     * refractor non repris d'exemple
-    * carte transport avec indicateur sexy
     * carte destination selectionne encadree en rouge
+    * Priorité
+        * gestion cas tres particulier cartes visibles
+        * split des controllers
+        * gestion de plusieurs joueurs
+
