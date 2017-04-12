@@ -1,10 +1,11 @@
 package modeles;
 
+import constantes.ConstantesJeu;
+
 import java.util.*;
 
 public class PiocheDestination extends Pioche {
 
-	public final static int NOMBRES_DE_CARTES_PIOCHE_DESTINATION = 65;
 
 	private ArrayList<CarteDestination> cartesPrecedentes = new ArrayList<CarteDestination>();
 
@@ -48,7 +49,7 @@ public class PiocheDestination extends Pioche {
 
 	public void initialiserPiocheDestinations(){
 
-		for(int i=0; i<NOMBRES_DE_CARTES_PIOCHE_DESTINATION; i++){
+		for(int i=0; i< ConstantesJeu.NOMBRES_DE_CARTES_PIOCHE_DESTINATION; i++){
 			//CODE PROVISOIRE SERVANT AU TESTING NOUS AVONS BESOIN DU JEU EN VRAI POUR CODER LES DESTINATIONS ET LES ITINERAIRES
 			ArrayList<Ville> listeVilleTypes = new ArrayList<Ville>();
 

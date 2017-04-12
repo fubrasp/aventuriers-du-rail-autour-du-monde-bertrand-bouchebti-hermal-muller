@@ -53,6 +53,12 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
+    public void montrerDialogActionNonPossible(String typeAction) {
+        String titreDialog = "INFORMATION : ACTION IMPOSSIBLE";
+        String messageDialog = "Vous ne pouvez plus "+typeAction+" (cf. regles tour de jeu)";
+        makeDialog(titreDialog, messageDialog);
+    }
+
     public void montrerDialogDefausseVide(String nomPioche) {
         String titreDialog = "INFORMATION : IMPOSSIBLE DE PIOCHER DANS PIOCHE" + nomPioche;
         String messageDialog = "La pioche " + nomPioche + " est vide et sa defausse aussi.";

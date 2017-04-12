@@ -18,6 +18,7 @@
     * fix texte des cartes destinations en dessous
     * carte transport avec indicateur sexy (juste l'image + chiffre)
     * gestion cas tres particulier cartes visibles (afficher image vides)
+    * Init
 
 
 
@@ -44,6 +45,9 @@
     * mettre scroll bar carte destinations
     * mettre scroll bar pour la main du joueur
     * alert moins de 1 destinations choisie
+    * gestion des actions limitees
+    * gestion tour par tour
+
 
 
 
@@ -57,7 +61,6 @@
 * supprimer attribut bateau double ?
 * vrai cartes en HD avec le modele derriere
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
-    * Init
     * refractor non repris d'exemple
     * carte destination selectionne encadree en rouge
     * Priorite
@@ -66,5 +69,7 @@
     * En plus
         * empilement des cartes
         * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
-    
+        * fix changement de main a chaque tour :)
+        * fix bug cartes visibles joker 3 regles initialisation (mauvais recet des points)
+        * fix cartes transport a refresh (verifier nombre OK)
 

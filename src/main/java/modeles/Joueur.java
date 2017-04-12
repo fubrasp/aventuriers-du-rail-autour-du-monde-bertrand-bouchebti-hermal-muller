@@ -1,6 +1,10 @@
 package modeles;
 
+import constantes.ConstantesJeu;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Joueur {
 
@@ -12,6 +16,12 @@ public class Joueur {
 
 	private String couleur = "pink";
 
+	private int capaciteJeu = 2;
+
+	private String pseudo;
+
+	private int scoreCourant = 0;
+
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
@@ -21,6 +31,12 @@ public class Joueur {
 	public Joueur(){
 
 	}
+
+	public Joueur(String pseudo){
+		this.pseudo = pseudo;
+	}
+
+
 
 	public ArrayList<CarteDestination> getCartesDestination() {
 		return cartesDestination;
@@ -79,4 +95,94 @@ public class Joueur {
 		//On construit
 		//On impacte au niveau graphique
 	}*/
+
+	public int getCapaciteJeu() {
+		return capaciteJeu;
+	}
+
+	public void setCapaciteJeu(int capaciteJeu) {
+		this.capaciteJeu = capaciteJeu;
+	}
+
+	public boolean aLaCapaciteDeJouer(){
+		return this.capaciteJeu>0;
+	}
+
+	public boolean aLaCapaciteDePiocherDesCartesDestinations(){
+		return this.capaciteJeu>=2;
+	}
+
+
+
+	public void diminuerCapaciteJoueur(int value){
+		this.capaciteJeu-=value;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
+	public void augmenterCapaciteJoueur(int value){
+		this.capaciteJeu+=value;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
+	public void reseterCapaciteJoueur(){
+		this.capaciteJeu= ConstantesJeu.VALEUR_ACTIONS;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
+	public boolean peutPiocherJokerCartesVisibles(){
+		return this.capaciteJeu>=2;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public int getScoreCourant() {
+		return scoreCourant;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public void setScoreCourant(int scoreCourant) {
+		this.scoreCourant = scoreCourant;
+	}
+
+	public ArrayList<CarteTransport> initialiserMainJoueur() {
+		//We don't verify uneuseful cases :
+		// (we have enough card this method is called at the start of the game :))
+		ArrayList<CarteTransport> cartesTransportsInitialisation = new ArrayList<CarteTransport>();
+		CarteTransport carteAAjouter;
+		for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_BATEAU_INITIALISATION; i++) {
+			carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+			cartesTransportsInitialisation.add(carteAAjouter);
+		}
+
+		for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_WAGON_INITIALISATION; i++) {
+			carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+			cartesTransportsInitialisation.add(carteAAjouter);
+		}
+		return cartesTransportsInitialisation;
+	}
+
+	//<reference card, number of occurence>
+	public HashMap<String, Integer> compterOccurencesCartes(){
+		//TRES LOURD, A TRAITER AUTREMENT
+		HashMap<String, Integer> comptes = new HashMap<String, Integer>();
+		int compteurCourant = 0;
+		for (CarteTransport carteCourante:
+			 this.cartesTransport) {
+			compteurCourant = 0;
+			for (CarteTransport carteCourantedeux:
+				 this.cartesTransport) {
+				if(carteCourante.getReference().equals(carteCourantedeux.getReference()))
+					compteurCourant++;
+			}
+			comptes.put(carteCourante.getReference(), compteurCourant);
+		}
+		return comptes;
+	}
+
+
 }
