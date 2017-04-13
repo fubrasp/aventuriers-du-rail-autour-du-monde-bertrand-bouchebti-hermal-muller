@@ -1,6 +1,7 @@
 package controllers;
 
 import constantes.ConstantesJeu;
+import events.Thrower;
 import javafx.scene.input.*;
 import outil.OutilDialog;
 import outil.OutilGraphique;
@@ -41,6 +42,10 @@ public class PiochesController implements Initializable {
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
 
+    //TEST EVENTS
+    Thrower thrower = new Thrower();
+
+
     public void initialize(URL location, ResourceBundle resources) {
         this.initializationCartesVisibles();
     }
@@ -56,6 +61,10 @@ public class PiochesController implements Initializable {
 
         this.initialiserMainJoueur();
         //CARTE DESTINATIONS CHOISIES AU DEBUT A AJOUTER
+
+
+        //TEST EVENTS
+        thrower.addThrowListener(Jeu.getInstance());
     }
 
     private void initialiserMainJoueur(){
@@ -98,6 +107,9 @@ public class PiochesController implements Initializable {
             }
         }else{
             outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
+
+            //EVENTS
+            this.lancerEvenement();
         }
     }
 
@@ -145,6 +157,9 @@ public class PiochesController implements Initializable {
             }
         }else{
             outilDialog.montrerDialogActionNonPossible("piocher de cartes destination");
+
+            //EVENTS
+            this.lancerEvenement();
         }
     }
 
@@ -273,6 +288,9 @@ public class PiochesController implements Initializable {
             }
         }else{
             outilDialog.montrerDialogActionNonPossible("piocher de cartes visibles");
+
+            //EVENTS
+            this.lancerEvenement();
         }
     }
 
@@ -363,5 +381,9 @@ public class PiochesController implements Initializable {
     private void handleRESET(){
         Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
         System.out.println("CAPACITE DU JOUEUR : "+Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
+    }
+
+    private void lancerEvenement(){
+        thrower.Throw();
     }
 }

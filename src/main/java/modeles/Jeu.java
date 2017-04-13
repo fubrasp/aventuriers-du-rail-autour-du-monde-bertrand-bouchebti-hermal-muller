@@ -1,8 +1,10 @@
 package modeles;
 
+import events.ThrowListener;
+
 import java.util.*;
 
-public class Jeu {
+public class Jeu implements ThrowListener {
 
 
 	// Joeur qui est entrain d'effectuer un coup
@@ -75,6 +77,12 @@ public class Jeu {
 
 	public void initialiserJeu() {
 		this.gestionnairePioches.initialiserPioches();
+
+		//FOR TESTING
+		System.out.println("REFRACTOR THIS L82, Jeu.java");
+		Joueur deuxiemeJoueur = new Joueur();
+		this.joueurs.add(this.joueurCourant);
+		this.joueurs.add(deuxiemeJoueur);
 	}
 
 	public Joueur getJoueurCourant() {
@@ -113,5 +121,12 @@ public class Jeu {
 		//We change the joueurCourant
 		determinerIndexJoueurSuivant();
 		this.joueurCourant = this.joueurs.get(this.indexJeu);
+	}
+
+	//EVENTS
+	@Override
+	public void Catch() {
+		System.out.println("Ok je passe au joueur suivant :) !!");
+		this.realiserTourDeJeu();
 	}
 }

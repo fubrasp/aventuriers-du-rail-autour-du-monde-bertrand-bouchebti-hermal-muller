@@ -45,6 +45,7 @@
     * mettre scroll bar carte destinations
     * mettre scroll bar pour la main du joueur
     * alert moins de 1 destinations choisie
+    * gestion des actions limitees
 
 
 
@@ -66,5 +67,5 @@
     * En plus
         * empilement des cartes
         * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
-    
+        * gestion tour par tour
 
