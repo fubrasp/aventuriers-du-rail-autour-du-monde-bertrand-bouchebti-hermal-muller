@@ -19,6 +19,7 @@ import java.util.*;
 
 public class PiochesController implements Initializable {
 
+    //faudrait encampsuler l'empechement des actions
 
     private OutilDialog outilDialog = new OutilDialog();
 
@@ -70,28 +71,33 @@ public class PiochesController implements Initializable {
     }
 
     private void piocher(int typePioche) {
-        CarteTransport carteTransportPiochee;
-        String nomPiocheVide = "";
-        if (typePioche == PIOCHE_BATEAU) {
-            //We directly pioche carte transport bateau
-            carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
-            nomPiocheVide = "BATEAUX";
-        } else {
-            carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
-            nomPiocheVide = "WAGONS";
-        }
-
-        if (carteTransportPiochee.getCouleur()==CarteTransport.PIOCHE_REFAITE) {
-            outilDialog.montrerDialogPiocheEpuisee();
-            //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
-            handlePiocheBateau();
-        } else {
-            if (carteTransportPiochee.getCouleur()==CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
-                outilDialog.montrerDialogDefausseVide(nomPiocheVide);
+        if(verifierCapaciteJoueur()){
+            CarteTransport carteTransportPiochee;
+            String nomPiocheVide = "";
+            if (typePioche == PIOCHE_BATEAU) {
+                //We directly pioche carte transport bateau
+                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+                nomPiocheVide = "BATEAUX";
             } else {
-                //On l'ajoute a la main du joueur (en horizontal)
-                gererAjoutCarteMain(carteTransportPiochee);
+                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+                nomPiocheVide = "WAGONS";
             }
+
+            if (carteTransportPiochee.getCouleur()==CarteTransport.PIOCHE_REFAITE) {
+                outilDialog.montrerDialogPiocheEpuisee();
+                //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
+                handlePiocheBateau();
+            } else {
+                if (carteTransportPiochee.getCouleur()==CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
+                    outilDialog.montrerDialogDefausseVide(nomPiocheVide);
+                } else {
+                    //On l'ajoute a la main du joueur (en horizontal)
+                    diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    gererAjoutCarteMain(carteTransportPiochee);
+                }
+            }
+        }else{
+            outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
         }
     }
 
@@ -120,20 +126,25 @@ public class PiochesController implements Initializable {
     }
 
     private void gererPiocheDestination(){
-        PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
+        if(this.verifierALaCapaciteDePiocherDesCartesDestinations()){
+            PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
-        if (piocheDestination.estVide()) {
-            outilDialog.montrerDialogErreurPiocheDestination();
-        } else {
-            this.carteDestinations = piocheDestination.piocherCartesDestination();
-
-            if (this.carteDestinations.isEmpty()) {
+            if (piocheDestination.estVide()) {
                 outilDialog.montrerDialogErreurPiocheDestination();
             } else {
-                outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
-                //Nouvel element dans listeDestinations
-                ajouterDestinationUser();
+                this.carteDestinations = piocheDestination.piocherCartesDestination();
+                this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
+                if (this.carteDestinations.isEmpty()) {
+                    outilDialog.montrerDialogErreurPiocheDestination();
+                    this.augmenterCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
+                } else {
+                    outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
+                    //Nouvel element dans listeDestinations
+                    ajouterDestinationUser();
+                }
             }
+        }else{
+            outilDialog.montrerDialogActionNonPossible("piocher de cartes destination");
         }
     }
 
@@ -226,37 +237,55 @@ public class PiochesController implements Initializable {
 
 
     private void transfererCarteVisibleALaMainDuJoueur(String id) {
-        int idInt = Integer.parseInt(id);
+        if(verifierCapaciteJoueur()){
+            int idInt = Integer.parseInt(id);
 
-        ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
+            ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
 
-        CarteTransport carteTransportATransferer;
-        CarteTransport carteTransportPiochee;
+            CarteTransport carteTransportATransferer;
+            CarteTransport carteTransportPiochee;
 
-        carteTransportATransferer = cartesVisibles.get(idInt);
+            carteTransportATransferer = cartesVisibles.get(idInt);
 
-        //On pioche une nouvelle carte
-        carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
+            //On pioche une nouvelle carte
+            carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
 
-        if(carteTransportPiochee.getCouleur()!=CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE){
-            //On remplace la carte dans la liste des cartes visibles
-            Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
+            if(carteTransportPiochee.getCouleur()!=CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE){
+                if(carteTransportATransferer.getCouleur()==CarteTransport.JOKER){
+                    if(this.joueurPeutPrendreJokerCartesVisibles()){
+                        this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE);
+                        this.impacterJeuEtCartesVisibles(idInt,carteTransportATransferer,carteTransportPiochee);
+                    }else{
+                        outilDialog.montrerDialogActionNonPossible("piocher carte joker, piocher une autre carte (pioche ou carte visible non joker)");
+                    }
+                }else{
+                    this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    this.impacterJeuEtCartesVisibles(idInt,carteTransportATransferer,carteTransportPiochee);
+                }
+            }else{
+                AnchorPane anchorePaneSansCarte = (AnchorPane) this.listeBouttonsCartesVisibles.getChildren().get(idInt);
+                anchorePaneSansCarte.getChildren().set(0, OutilGraphique.creerImageView("src/main/resources/images/cartes/transport/vide.jpeg"));
+                anchorePaneSansCarte.setMaxWidth(50);
+                anchorePaneSansCarte.setMaxHeight(50);
+                //BIZARRE
+                this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneSansCarte);
 
-            //On remplace le boutton
-            AnchorPane anchorePaneAChanger = creerBouttonImageCarteVisibles(carteTransportPiochee);
-            anchorePaneAChanger.setId("" + idInt);
-            this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneAChanger);
-
-            gererAjoutCarteMain(carteTransportATransferer);
+            }
         }else{
-            AnchorPane anchorePaneSansCarte = (AnchorPane) this.listeBouttonsCartesVisibles.getChildren().get(idInt);
-            anchorePaneSansCarte.getChildren().set(0, OutilGraphique.creerImageView("src/main/resources/images/cartes/transport/vide.jpeg"));
-            anchorePaneSansCarte.setMaxWidth(50);
-            anchorePaneSansCarte.setMaxHeight(50);
-            //BIZARRE
-            this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneSansCarte);
-
+            outilDialog.montrerDialogActionNonPossible("piocher de cartes visibles");
         }
+    }
+
+    private void impacterJeuEtCartesVisibles(int idInt, CarteTransport carteTransportATransferer, CarteTransport carteTransportPiochee){
+        //On remplace la carte dans la liste des cartes visibles
+        Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
+
+        //On remplace le boutton
+        AnchorPane anchorePaneAChanger = creerBouttonImageCarteVisibles(carteTransportPiochee);
+        anchorePaneAChanger.setId("" + idInt);
+        this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneAChanger);
+
+        gererAjoutCarteMain(carteTransportATransferer);
     }
 
 
@@ -308,5 +337,31 @@ public class PiochesController implements Initializable {
             }
             choixUtilisateursCartesDestinations.clear();
         }
+    }
+
+    private boolean verifierCapaciteJoueur(){
+        return Jeu.getInstance().getJoueurCourant().aLaCapaciteDeJouer();
+    }
+
+    private boolean verifierALaCapaciteDePiocherDesCartesDestinations(){
+        return Jeu.getInstance().getJoueurCourant().aLaCapaciteDePiocherDesCartesDestinations();
+    }
+
+    private void diminuerCapaciteJoueur(int value){
+        Jeu.getInstance().getJoueurCourant().diminuerCapaciteJoueur(value);
+    }
+
+    private void augmenterCapaciteJoueur(int value){
+        Jeu.getInstance().getJoueurCourant().augmenterCapaciteJoueur(value);
+    }
+
+    private boolean joueurPeutPrendreJokerCartesVisibles(){
+        return Jeu.getInstance().getJoueurCourant().peutPiocherJokerCartesVisibles();
+    }
+
+    @FXML
+    private void handleRESET(){
+        Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
+        System.out.println("CAPACITE DU JOUEUR : "+Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
     }
 }

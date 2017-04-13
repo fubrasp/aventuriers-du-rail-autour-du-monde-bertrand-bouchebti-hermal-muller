@@ -12,6 +12,8 @@ public class Joueur {
 
 	private String couleur = "pink";
 
+	private int capaciteJeu = 2;
+
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
@@ -79,4 +81,36 @@ public class Joueur {
 		//On construit
 		//On impacte au niveau graphique
 	}*/
+
+	public int getCapaciteJeu() {
+		return capaciteJeu;
+	}
+
+	public void setCapaciteJeu(int capaciteJeu) {
+		this.capaciteJeu = capaciteJeu;
+	}
+
+	public boolean aLaCapaciteDeJouer(){
+		return this.capaciteJeu>0;
+	}
+
+	public boolean aLaCapaciteDePiocherDesCartesDestinations(){
+		return this.capaciteJeu>=2;
+	}
+
+
+
+	public void diminuerCapaciteJoueur(int value){
+		this.capaciteJeu-=value;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
+	public void augmenterCapaciteJoueur(int value){
+		this.capaciteJeu+=value;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
+	public boolean peutPiocherJokerCartesVisibles(){
+		return this.capaciteJeu>=2;
+	}
 }

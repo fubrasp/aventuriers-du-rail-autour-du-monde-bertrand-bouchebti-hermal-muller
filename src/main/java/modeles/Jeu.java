@@ -15,6 +15,7 @@ public class Jeu {
 
 	// joueurs participants a une partie
 	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+	private int indexJeu = 0;
 
 	// Routes d'une partie
 	private Map<String,Route> routes;
@@ -98,5 +99,19 @@ public class Jeu {
 
 	public void setJoueurs(ArrayList<Joueur> joueurs) {
 		this.joueurs = joueurs;
+	}
+
+	public void determinerIndexJoueurSuivant(){
+		if(this.indexJeu<joueurs.size()-1){
+			this.indexJeu++;
+		}else{
+			this.indexJeu=0;
+		}
+	}
+
+	public void realiserTourDeJeu(){
+		//We change the joueurCourant
+		determinerIndexJoueurSuivant();
+		this.joueurCourant = this.joueurs.get(this.indexJeu);
 	}
 }

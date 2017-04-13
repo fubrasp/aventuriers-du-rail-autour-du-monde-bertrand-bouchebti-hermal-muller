@@ -170,7 +170,7 @@ public class PiocheTest {
     @Test
     public void testInitialisationPiocheDestinations(){
         PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        assertEquals("", PiocheDestination.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille());
+        assertEquals("", ConstantesJeu.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille());
     }
 
     @Test
