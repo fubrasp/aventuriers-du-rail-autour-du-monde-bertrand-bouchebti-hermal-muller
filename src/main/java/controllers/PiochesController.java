@@ -62,10 +62,10 @@ public class PiochesController implements Initializable {
 
         this.addToVBoxBoutton(cartesVisibles);
 
-        verifierTraiterJokers();
+        //verifierTraiterJokers();
 
-        System.out.println("CHECK INIT MAIN JOUEUR l67");
-        //this.initialiserMainJoueur();
+        System.out.println("BUG QUAND VERIFICATION DES CARTES VISIBLES AU START");
+        this.initialiserMainJoueur();
 
         //CARTE DESTINATIONS CHOISIES AU DEBUT A AJOUTER
 
@@ -86,6 +86,7 @@ public class PiochesController implements Initializable {
         }
     }*/
 
+    //FAIL ATTENTION A VERIFIER
     private void initialiserMainJoueur() {
         ArrayList<CarteTransport> cartesinitialiseesAAjouter = INTJ.obtenirCartesTransportInitJoueur();
         gererAjoutMultipleCarteMain(cartesinitialiseesAAjouter);
@@ -370,17 +371,22 @@ public class PiochesController implements Initializable {
             AnchorPane bouttonDestinationCree = null;
             for (CarteDestination carteDestinationChoisie :
                     cartesDestinationsChoisies) {
-                bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
-                bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
-                    }
-                });
-                this.listeDestinations.getChildren().add(bouttonDestinationCree);
+            this.creerAnchorPaneDestination(carteDestinationChoisie);
             }
             choixUtilisateursCartesDestinations.clear();
         }
+    }
+
+    public void creerAnchorPaneDestination(CarteDestination carteDestinationChoisie){
+        AnchorPane bouttonDestinationCree = null;
+        bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
+        bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
+            }
+        });
+        this.listeDestinations.getChildren().add(bouttonDestinationCree);
     }
 
 
@@ -395,7 +401,25 @@ public class PiochesController implements Initializable {
         this.thrower.Throw();
 
         //We refresh the text area
+        //User name and score
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
+
+        //We refresh the 2 views where gamer cards are displayed..
+        this.listeBouttonsUserCourant.getChildren().clear();
+        this.listeDestinations.getChildren().clear();
+        refreshUserDestinationCards();
+    }
+
+    public void refreshUserTransportCards(){
+
+    }
+
+    public void refreshUserDestinationCards(){
+        ArrayList<CarteDestination> cartesDestinationsUserCourant = Jeu.getInstance().getJoueurCourant().getCartesDestination();
+        for (CarteDestination carteDestinationUser:
+             cartesDestinationsUserCourant) {
+            this.creerAnchorPaneDestination(carteDestinationUser);
+        }
     }
 
 }

@@ -70,4 +70,5 @@
         * empilement des cartes
         * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
         * fix changement de main a chaque tour :)
+        * fix bug cartes visibles joker 3 regles initialisation
 
