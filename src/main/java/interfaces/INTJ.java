@@ -7,6 +7,8 @@ import modeles.Jeu;
  */
 public class INTJ {
 
+    //Actions of the gamer
+    //Verify
     public static boolean verifierCapaciteJoueur() {
         return Jeu.getInstance().getJoueurCourant().aLaCapaciteDeJouer();
     }
@@ -15,11 +17,20 @@ public class INTJ {
         return Jeu.getInstance().getJoueurCourant().aLaCapaciteDePiocherDesCartesDestinations();
     }
 
+    public static boolean joueurPeutPrendreJokerCartesVisibles() {
+        return Jeu.getInstance().getJoueurCourant().peutPiocherJokerCartesVisibles();
+    }
+
+    //Manage
     public static void diminuerCapaciteJoueur(int value) {
         Jeu.getInstance().getJoueurCourant().diminuerCapaciteJoueur(value);
     }
 
     public static void augmenterCapaciteJoueur(int value) {
         Jeu.getInstance().getJoueurCourant().augmenterCapaciteJoueur(value);
+    }
+
+    public static void resterCapaciteJoueur(){
+        Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
     }
 }

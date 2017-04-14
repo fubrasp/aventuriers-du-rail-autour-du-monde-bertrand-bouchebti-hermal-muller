@@ -281,7 +281,7 @@ public class PiochesController implements Initializable {
 
             if (carteTransportPiochee.getCouleur() != CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
                 if (carteTransportATransferer.getCouleur() == CarteTransport.JOKER) {
-                    if (this.joueurPeutPrendreJokerCartesVisibles()) {
+                    if (INTJ.joueurPeutPrendreJokerCartesVisibles()) {
                         INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE);
                         this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
                     } else {
@@ -371,13 +371,10 @@ public class PiochesController implements Initializable {
         }
     }
 
-    private boolean joueurPeutPrendreJokerCartesVisibles() {
-        return Jeu.getInstance().getJoueurCourant().peutPiocherJokerCartesVisibles();
-    }
 
     @FXML
     private void handleRESET() {
-        Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
+        INTJ.resterCapaciteJoueur();
         System.out.println("CAPACITE DU JOUEUR : " + Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
     }
 
