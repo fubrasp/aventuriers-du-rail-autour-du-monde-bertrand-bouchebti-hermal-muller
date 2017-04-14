@@ -8,7 +8,7 @@ public class Jeu implements ThrowListener {
 
 
 	// Joeur qui est entrain d'effectuer un coup
-	private Joueur joueurCourant = new Joueur();
+	private Joueur joueurCourant = new Joueur("Youssef");
 	// private int nombreDeCartePioche;
 
 	// on peut utiliser un dictionnary pour les perfs..
@@ -80,7 +80,7 @@ public class Jeu implements ThrowListener {
 
 		//FOR TESTING
 		System.out.println("REFRACTOR THIS L82, Jeu.java");
-		Joueur deuxiemeJoueur = new Joueur();
+		Joueur deuxiemeJoueur = new Joueur("Guillaume");
 		this.joueurs.add(this.joueurCourant);
 		this.joueurs.add(deuxiemeJoueur);
 	}
@@ -119,8 +119,10 @@ public class Jeu implements ThrowListener {
 
 	public void realiserTourDeJeu(){
 		//We change the joueurCourant
+		this.joueurCourant.reseterCapaciteJoueur();
 		determinerIndexJoueurSuivant();
 		this.joueurCourant = this.joueurs.get(this.indexJeu);
+		System.out.println("JOUEUR PRECEDENT : "+this.joueurCourant.getPseudo());
 	}
 
 	//EVENTS

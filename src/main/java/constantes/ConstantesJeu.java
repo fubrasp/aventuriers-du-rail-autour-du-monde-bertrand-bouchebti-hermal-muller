@@ -30,6 +30,9 @@ public class ConstantesJeu {
     public static final int VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE = 2;
     public static final int VALEUR_CARTE_DESTINATIONS_PIOCHEES = 2;
 
+    //Re-Initialize actions capacities
+    public static final int VALEUR_ACTIONS = 2;
+
 
 
 

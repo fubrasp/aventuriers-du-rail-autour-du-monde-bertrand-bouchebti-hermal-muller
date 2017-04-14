@@ -1,5 +1,7 @@
 package modeles;
 
+import constantes.ConstantesJeu;
+
 import java.util.ArrayList;
 
 public class Joueur {
@@ -14,6 +16,10 @@ public class Joueur {
 
 	private int capaciteJeu = 2;
 
+	private String pseudo;
+
+	private int scoreCourant = 0;
+
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
@@ -23,6 +29,12 @@ public class Joueur {
 	public Joueur(){
 
 	}
+
+	public Joueur(String pseudo){
+		this.pseudo = pseudo;
+	}
+
+
 
 	public ArrayList<CarteDestination> getCartesDestination() {
 		return cartesDestination;
@@ -110,7 +122,28 @@ public class Joueur {
 		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
 	}
 
+	public void reseterCapaciteJoueur(){
+		this.capaciteJeu= ConstantesJeu.VALEUR_ACTIONS;
+		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+	}
+
 	public boolean peutPiocherJokerCartesVisibles(){
 		return this.capaciteJeu>=2;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public int getScoreCourant() {
+		return scoreCourant;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public void setScoreCourant(int scoreCourant) {
+		this.scoreCourant = scoreCourant;
 	}
 }
