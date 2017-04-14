@@ -1,8 +1,10 @@
 package modeles;
 
 import constantes.ConstantesJeu;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Joueur {
 
@@ -163,4 +165,24 @@ public class Joueur {
 		}
 		return cartesTransportsInitialisation;
 	}
+
+	//<reference card, number of occurence>
+	public HashMap<String, Integer> compterOccurencesCartes(){
+		//TRES LOURD, A TRAITER AUTREMENT
+		HashMap<String, Integer> comptes = new HashMap<String, Integer>();
+		int compteurCourant = 0;
+		for (CarteTransport carteCourante:
+			 this.cartesTransport) {
+			compteurCourant = 0;
+			for (CarteTransport carteCourantedeux:
+				 this.cartesTransport) {
+				if(carteCourante.getReference().equals(carteCourantedeux.getReference()))
+					compteurCourant++;
+			}
+			comptes.put(carteCourante.getReference(), compteurCourant);
+		}
+		return comptes;
+	}
+
+
 }
