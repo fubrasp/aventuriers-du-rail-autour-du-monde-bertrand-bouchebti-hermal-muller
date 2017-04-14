@@ -1,6 +1,7 @@
 package controllers;
 
 import constantes.ConstantesJeu;
+import interfaces.INTJ;
 import events.Thrower;
 import javafx.scene.input.*;
 import outil.OutilDialog;
@@ -54,7 +55,7 @@ public class PiochesController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         this.initializationCartesVisibles();
-        this.refreshUserInformations();
+        OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
     }
 
     public void initializationCartesVisibles() {
@@ -87,7 +88,7 @@ public class PiochesController implements Initializable {
     }
 
     private void piocher(int typePioche) {
-        if (verifierCapaciteJoueur()) {
+        if (INTJ.verifierCapaciteJoueur()) {
             CarteTransport carteTransportPiochee;
             String nomPiocheVide = "";
             if (typePioche == PIOCHE_BATEAU) {
@@ -108,7 +109,7 @@ public class PiochesController implements Initializable {
                     outilDialog.montrerDialogDefausseVide(nomPiocheVide);
                 } else {
                     //On l'ajoute a la main du joueur (en horizontal)
-                    diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
                     gererAjoutCarteMain(carteTransportPiochee);
                 }
             }
@@ -144,18 +145,24 @@ public class PiochesController implements Initializable {
         this.gererPiocheDestination();
     }
 
+    @FXML
+    private void handleTourFini() {
+        this.lancerEvenement();
+    }
+
+
     private void gererPiocheDestination() {
-        if (this.verifierALaCapaciteDePiocherDesCartesDestinations()) {
+        if (INTJ.verifierALaCapaciteDePiocherDesCartesDestinations()) {
             PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
             if (piocheDestination.estVide()) {
                 outilDialog.montrerDialogErreurPiocheDestination();
             } else {
                 this.carteDestinations = piocheDestination.piocherCartesDestination();
-                this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
+                INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
                 if (this.carteDestinations.isEmpty()) {
                     outilDialog.montrerDialogErreurPiocheDestination();
-                    this.augmenterCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
+                    INTJ.augmenterCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
                 } else {
                     outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
                     //Nouvel element dans listeDestinations
@@ -259,7 +266,7 @@ public class PiochesController implements Initializable {
 
 
     private void transfererCarteVisibleALaMainDuJoueur(String id) {
-        if (verifierCapaciteJoueur()) {
+        if (INTJ.verifierCapaciteJoueur()) {
             int idInt = Integer.parseInt(id);
 
             ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
@@ -275,13 +282,13 @@ public class PiochesController implements Initializable {
             if (carteTransportPiochee.getCouleur() != CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
                 if (carteTransportATransferer.getCouleur() == CarteTransport.JOKER) {
                     if (this.joueurPeutPrendreJokerCartesVisibles()) {
-                        this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE);
+                        INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE);
                         this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
                     } else {
                         outilDialog.montrerDialogActionNonPossible("piocher carte joker, piocher une autre carte (pioche ou carte visible non joker)");
                     }
                 } else {
-                    this.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
                     this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
                 }
             } else {
@@ -364,22 +371,6 @@ public class PiochesController implements Initializable {
         }
     }
 
-    private boolean verifierCapaciteJoueur() {
-        return Jeu.getInstance().getJoueurCourant().aLaCapaciteDeJouer();
-    }
-
-    private boolean verifierALaCapaciteDePiocherDesCartesDestinations() {
-        return Jeu.getInstance().getJoueurCourant().aLaCapaciteDePiocherDesCartesDestinations();
-    }
-
-    private void diminuerCapaciteJoueur(int value) {
-        Jeu.getInstance().getJoueurCourant().diminuerCapaciteJoueur(value);
-    }
-
-    private void augmenterCapaciteJoueur(int value) {
-        Jeu.getInstance().getJoueurCourant().augmenterCapaciteJoueur(value);
-    }
-
     private boolean joueurPeutPrendreJokerCartesVisibles() {
         return Jeu.getInstance().getJoueurCourant().peutPiocherJokerCartesVisibles();
     }
@@ -395,11 +386,7 @@ public class PiochesController implements Initializable {
         this.thrower.Throw();
 
         //We refresh the text area
-        this.refreshUserInformations();
+        OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
     }
 
-    private void refreshUserInformations(){
-        textPseudoJoueur.setText("Joueur : "+Jeu.getInstance().getJoueurCourant().getPseudo());
-        textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScoreCourant());
-    }
 }

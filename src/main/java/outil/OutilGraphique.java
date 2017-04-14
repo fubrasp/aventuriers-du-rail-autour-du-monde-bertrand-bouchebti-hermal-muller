@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import modeles.Jeu;
 
 import java.io.*;
 
@@ -87,5 +88,10 @@ public class OutilGraphique {
         imv.setFitHeight(100);
         imv.setFitWidth(150);
         return imv;
+    }
+
+    public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur){
+        textPseudoJoueur.setText("Joueur : "+ Jeu.getInstance().getJoueurCourant().getPseudo());
+        textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScoreCourant());
     }
 }
