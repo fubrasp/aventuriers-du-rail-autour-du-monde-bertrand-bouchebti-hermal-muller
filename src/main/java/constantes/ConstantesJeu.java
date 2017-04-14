@@ -25,6 +25,7 @@ public class ConstantesJeu {
     public static final int NOMBRE_CARTES_BATEAU_INITIALISATION = 7;
     public static final int NOMBRE_CARTES_WAGON_INITIALISATION = 3;
 
+    //Actions system (use for step by step approach)
     //Card actions values
     public static final int VALEUR_CARTE_TRANSPORT_PIOCHEE = 1;
     public static final int VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE = 2;
@@ -32,6 +33,11 @@ public class ConstantesJeu {
 
     //Re-Initialize actions capacities
     public static final int VALEUR_ACTIONS = 2;
+
+    //Pioches constantes
+    public final static int PIOCHE_BATEAU = 1;
+    public final static int PIOCHE_WAGON = 2;
+
 
 
 

@@ -146,4 +146,21 @@ public class Joueur {
 	public void setScoreCourant(int scoreCourant) {
 		this.scoreCourant = scoreCourant;
 	}
+
+	public ArrayList<CarteTransport> initialiserMainJoueur() {
+		//We don't verify uneuseful cases :
+		// (we have enough card this method is called at the start of the game :))
+		ArrayList<CarteTransport> cartesTransportsInitialisation = new ArrayList<CarteTransport>();
+		CarteTransport carteAAjouter;
+		for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_BATEAU_INITIALISATION; i++) {
+			carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+			cartesTransportsInitialisation.add(carteAAjouter);
+		}
+
+		for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_WAGON_INITIALISATION; i++) {
+			carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+			cartesTransportsInitialisation.add(carteAAjouter);
+		}
+		return cartesTransportsInitialisation;
+	}
 }

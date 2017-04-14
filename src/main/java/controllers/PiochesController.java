@@ -3,7 +3,6 @@ package controllers;
 import constantes.ConstantesJeu;
 import interfaces.INTJ;
 import events.Thrower;
-import javafx.scene.input.*;
 import outil.OutilDialog;
 import outil.OutilGraphique;
 import outil.OutilPratique;
@@ -14,6 +13,7 @@ import javafx.scene.control.*;
 import modeles.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.scene.input.*;
 import javafx.event.*;
 
 import java.net.*;
@@ -42,14 +42,11 @@ public class PiochesController implements Initializable {
     @FXML
     private Text textScoreJoueur = new Text();
 
-    private final static int PIOCHE_BATEAU = 1;
-    private final static int PIOCHE_WAGON = 2;
-
     private static ArrayList<String> choixUtilisateursCartesDestinations = new ArrayList<String>();
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
 
-    //TEST EVENTS
+    //EVENTS
     Thrower thrower = new Thrower();
 
 
@@ -67,15 +64,17 @@ public class PiochesController implements Initializable {
 
         verifierTraiterJokers();
 
-        this.initialiserMainJoueur();
+        System.out.println("CHECK INIT MAIN JOUEUR l67");
+        //this.initialiserMainJoueur();
+
         //CARTE DESTINATIONS CHOISIES AU DEBUT A AJOUTER
 
 
-        //TEST EVENTS
+        //EVENTS
         thrower.addThrowListener(Jeu.getInstance());
     }
 
-    private void initialiserMainJoueur() {
+    /*private void initialiserMainJoueur() {
         CarteTransport carteAAjouter;
         for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_BATEAU_INITIALISATION; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
@@ -85,13 +84,20 @@ public class PiochesController implements Initializable {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }
+    }*/
+
+    private void initialiserMainJoueur() {
+        ArrayList<CarteTransport> cartesinitialiseesAAjouter = INTJ.obtenirCartesTransportInitJoueur();
+        gererAjoutMultipleCarteMain(cartesinitialiseesAAjouter);
     }
+
+
 
     private void piocher(int typePioche) {
         if (INTJ.verifierCapaciteJoueur()) {
             CarteTransport carteTransportPiochee;
             String nomPiocheVide = "";
-            if (typePioche == PIOCHE_BATEAU) {
+            if (typePioche == ConstantesJeu.PIOCHE_BATEAU) {
                 //We directly pioche carte transport bateau
                 carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
                 nomPiocheVide = "BATEAUX";
@@ -126,7 +132,7 @@ public class PiochesController implements Initializable {
      */
     @FXML
     private void handlePiocheBateau() {
-        this.piocher(PIOCHE_BATEAU);
+        this.piocher(ConstantesJeu.PIOCHE_BATEAU);
     }
 
     /**
@@ -134,7 +140,7 @@ public class PiochesController implements Initializable {
      */
     @FXML
     private void handlePiocheWagon() {
-        this.piocher(PIOCHE_WAGON);
+        this.piocher(ConstantesJeu.PIOCHE_WAGON);
     }
 
     /**
@@ -177,6 +183,12 @@ public class PiochesController implements Initializable {
         }
     }
 
+    private void gererAjoutMultipleCarteMain(ArrayList<CarteTransport> cartesAAjouter){
+        for (CarteTransport carteAAjouter:
+             cartesAAjouter) {
+            this.gererAjoutCarteMain(carteAAjouter);
+        }
+    }
 
     /**
      * Methode permmettant de savoir si une carte est deja visible depuis la main du joueur permet de concatener plusieurs carte en 1 boutton
@@ -253,7 +265,7 @@ public class PiochesController implements Initializable {
 
     private void verifierTraiterJokers() {
         if (Jeu.getInstance().detecterTropJokersVisibles()) {
-            reseterCartesVisibles();
+            this.reseterCartesVisibles();
             outilDialog.montrerDialogErreurJokers();
         }
     }
@@ -261,7 +273,7 @@ public class PiochesController implements Initializable {
     private void reseterCartesVisibles() {
         Jeu.getInstance().getGestionnairePioches().reseterCartesVisibles();
         listeBouttonsCartesVisibles.getChildren().clear();
-        initializationCartesVisibles();
+        this.initializationCartesVisibles();
     }
 
 

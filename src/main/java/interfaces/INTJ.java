@@ -1,6 +1,9 @@
 package interfaces;
 
+import modeles.CarteTransport;
 import modeles.Jeu;
+
+import java.util.ArrayList;
 
 /**
  * Created by bertran95u on 14/04/2017.
@@ -32,5 +35,9 @@ public class INTJ {
 
     public static void resterCapaciteJoueur(){
         Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
+    }
+
+    public static ArrayList<CarteTransport> obtenirCartesTransportInitJoueur(){
+        return Jeu.getInstance().getJoueurCourant().initialiserMainJoueur();
     }
 }
