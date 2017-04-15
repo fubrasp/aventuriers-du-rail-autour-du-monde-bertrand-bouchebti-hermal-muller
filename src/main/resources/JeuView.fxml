@@ -43,6 +43,7 @@
                                                                   <Image url="@images/cartes/destinations/CarteDestinationPioche.png" />
                                                                </image>
                                                             </ImageView>
+                                                            <Button layoutX="6.0" layoutY="129.0" mnemonicParsing="false" onAction="#handleEchangerPions" prefHeight="27.0" prefWidth="188.0" text="Echanger des pions" />
                                                          </children>
                                                       </AnchorPane>
                                                    </content>

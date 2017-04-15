@@ -70,6 +70,11 @@ public class PiochesController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleEchangerPions(){
+        System.out.println("Echange de pions");
+    }
+
     private void piocher(int typePioche) {
         CarteTransport carteTransportPiochee;
         String nomPiocheVide = "";
