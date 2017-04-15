@@ -186,24 +186,26 @@ public class OutilDialog {
 
         Label infoBM = new Label("Nombre de bateaux dans la main :");
         Label nbBM = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()));
+        Button BMPlus = new Button("+");
+        Button BMMoins = new Button("-");
         Label infoBR = new Label("Nombre de bateaux dans la réserve :");
         Label nbBR = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve()));
         Label infoWM = new Label("Nombre de wagons dans la main :");
         Label nbWM = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagons()));
+        Button WMPlus = new Button("+");
+        Button WMMoins = new Button("-");
         Label infoWR = new Label("Nombre de wagons dans la réserve :");
         Label nbWR = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()));
 
-
-        hboxBM.getChildren().addAll(infoBM, nbBM);
+        hboxBM.getChildren().addAll(infoBM, nbBM, BMMoins, BMPlus);
         hboxBR.getChildren().addAll(infoBR, nbBR);
-        hboxWM.getChildren().addAll(infoWM, nbWM);
+        hboxWM.getChildren().addAll(infoWM, nbWM, WMMoins, WMPlus);
         hboxWR.getChildren().addAll(infoWR, nbWR);
 
         HBox hboxBoutons = new HBox();
         Button buttonAnnuler = new Button("Annuler");
         Button buttonOk = new Button("Échanger");
         hboxBoutons.getChildren().addAll(buttonAnnuler, buttonOk);
-
 
         lignes.getChildren().addAll(hboxBM, hboxBR, hboxWM, hboxWR, hboxBoutons);
 
@@ -215,12 +217,9 @@ public class OutilDialog {
         root.setHgap(20);
         root.getChildren().addAll(lignes);
 
-
         Alert alertCustomEchange = new Alert(Alert.AlertType.NONE);
         alertCustomEchange.getDialogPane().contentProperty().set(root);
 
         alertCustomEchange.showAndWait();
-
     }
-
 }
