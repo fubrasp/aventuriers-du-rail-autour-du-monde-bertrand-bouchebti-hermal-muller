@@ -445,7 +445,7 @@ public class PiochesController implements Initializable {
                     if (nombreApparitions >= 9) {
                         textCourant.setLayoutX(35);
                     }
-                    textCourant.setText("X" + (nombreApparitions + 1));
+                    textCourant.setText("X" + (nombreApparitions));
 
                 }
             }
