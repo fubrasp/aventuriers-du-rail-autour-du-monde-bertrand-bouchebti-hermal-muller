@@ -19,7 +19,9 @@
     * carte transport avec indicateur sexy (juste l'image + chiffre)
     * gestion cas tres particulier cartes visibles (afficher image vides)
     * Init
-
+    * fix cartes transport a refresh (verifier nombre OK)
+    * fix changement de main a chaque tour :)
+    * fix bug X0
 
 
 * refractor
@@ -69,7 +71,4 @@
     * En plus
         * empilement des cartes
         * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
-        * fix changement de main a chaque tour :)
         * fix bug cartes visibles joker 3 regles initialisation (mauvais recet des points)
-        * fix cartes transport a refresh (verifier nombre OK)
-

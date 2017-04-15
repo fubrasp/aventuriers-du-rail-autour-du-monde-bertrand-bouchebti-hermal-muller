@@ -116,17 +116,17 @@ public class Joueur {
 
 	public void diminuerCapaciteJoueur(int value){
 		this.capaciteJeu-=value;
-		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+		//System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
 	}
 
 	public void augmenterCapaciteJoueur(int value){
 		this.capaciteJeu+=value;
-		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+		//System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
 	}
 
 	public void reseterCapaciteJoueur(){
 		this.capaciteJeu= ConstantesJeu.VALEUR_ACTIONS;
-		System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
+		//System.out.println("CAPACITE DU JOUEUR : "+capaciteJeu);
 	}
 
 	public boolean peutPiocherJokerCartesVisibles(){
@@ -166,6 +166,7 @@ public class Joueur {
 		return cartesTransportsInitialisation;
 	}
 
+	//Elle marche visiblement cette methode
 	//<reference card, number of occurence>
 	public HashMap<String, Integer> compterOccurencesCartes(){
 		//TRES LOURD, A TRAITER AUTREMENT
@@ -181,8 +182,22 @@ public class Joueur {
 			}
 			comptes.put(carteCourante.getReference(), compteurCourant);
 		}
+
+		//System.out.println("CHECK-:");
+		//this.printMap(comptes);
+		//System.out.println("CHECK-:");
+
+
 		return comptes;
 	}
 
+	public void printMap(Map mp) {
+		Iterator it = mp.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			System.out.println(pair.getKey() + " = " + pair.getValue());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
+	}
 
 }

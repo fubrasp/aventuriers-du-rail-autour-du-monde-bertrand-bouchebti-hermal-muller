@@ -23,7 +23,7 @@ import java.util.*;//import of java.util.event
     public void addThrowListener(ThrowListener toAdd){ listeners.add(toAdd); }
     //Set of functions that Throw Events.
     public void Throw(){ for (ThrowListener hl : listeners) hl.Catch();
-        System.out.println("J'ai fini mes actions :) !!");
+        //System.out.println("J'ai fini mes actions :) !!");
     }
 ////Optional: 2 things to send events to a class that is a member of the current class
 ////instantiation of a Catcher object

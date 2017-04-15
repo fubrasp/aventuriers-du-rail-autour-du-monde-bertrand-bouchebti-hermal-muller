@@ -122,13 +122,13 @@ public class Jeu implements ThrowListener {
 		this.joueurCourant.reseterCapaciteJoueur();
 		determinerIndexJoueurSuivant();
 		this.joueurCourant = this.joueurs.get(this.indexJeu);
-		System.out.println("JOUEUR PRECEDENT : "+this.joueurCourant.getPseudo());
+		//System.out.println("JOUEUR PRECEDENT : "+this.joueurCourant.getPseudo());
 	}
 
 	//EVENTS
 	@Override
 	public void Catch() {
-		System.out.println("Ok je passe au joueur suivant :) !!");
+		//System.out.println("Ok je passe au joueur suivant :) !!");
 		this.realiserTourDeJeu();
 	}
 }
