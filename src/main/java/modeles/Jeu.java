@@ -15,7 +15,7 @@ public class Jeu {
 	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
 	// Joeur qui est entrain d'effectuer un coup
-	private Joueur joueurCourant = new Joueur();
+	private Joueur joueurCourant = new Joueur("Joueur 1","Rouge");
 	// private int nombreDeCartePioche;
 
 	// on peut utiliser un dictionnary pour les perfs..

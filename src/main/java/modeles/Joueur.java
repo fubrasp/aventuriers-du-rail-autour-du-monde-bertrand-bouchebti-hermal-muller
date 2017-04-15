@@ -7,6 +7,9 @@ public class Joueur {
 	//carte de destinations ou itineraire que possede le joueur concerne
 	private ArrayList<CarteDestination> cartesDestination = new ArrayList<CarteDestination>();
 
+	//Pseudo du joueur
+	private String pseudo;
+
 	//Pions en possession du joueur
 	private int nbPionsBateau;
 	private int nbPionsBateauReserve;
@@ -19,13 +22,14 @@ public class Joueur {
 
 	private String couleur = "pink";
 
-	public Joueur(ArrayList<CarteDestination> cartesDestination, int nbPionsBateau, int nbPionsBateauReserve, int nbPionsWagons, int nbPionsWagonsReserve, ArrayList<CarteTransport> cartesTransport, String couleur) {
-		this.cartesDestination = cartesDestination;
+	public Joueur(String pseudo, String couleur) {
+	    this.pseudo = pseudo;
+		this.cartesDestination = new ArrayList<CarteDestination>();
 		this.nbPionsBateau = 20;
 		this.nbPionsBateauReserve = 5;
 		this.nbPionsWagons = 40;
 		this.nbPionsWagonsReserve = 10;
-		this.cartesTransport = cartesTransport;
+		this.cartesTransport = new ArrayList<CarteTransport>();
 		this.couleur = couleur;
 	}
 
