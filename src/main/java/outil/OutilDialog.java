@@ -1,12 +1,15 @@
 package outil;
 
+import javafx.scene.control.Label;
 import modeles.CarteDestination;
 import controllers.PiochesController;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import modeles.Jeu;
 import modeles.Ville;
+import javafx.scene.control.Button;
 
 import java.util.*;
 
@@ -24,6 +27,8 @@ public class OutilDialog {
 
     //2 VBoxes for the labels and checkboxes
     private HBox vbchecks, vbImages,vblabels;
+
+    private HBox hboxWM, hboxWR, hboxBM, hboxBR;
 
     private Alert makeDialog(String titre, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -153,6 +158,69 @@ public class OutilDialog {
         String titreDialog = "INFORMATION : FIN DU JEU DANS 2 TOURS";
         String messageDialog = "Un joueur a moins de 6 pions.";
         makeDialog(titreDialog, messageDialog);
+    }
+
+    public void montrerDialogEchangePions(){
+
+        VBox lignes = new VBox();
+
+        //HBox pour les bateaux dans la main courante
+        hboxBM = new HBox();
+        hboxBM.setSpacing(10);
+        hboxBM.setPadding(new Insets(20));
+
+        //HBox pour les bateaux dans la réserve
+        hboxBR = new HBox();
+        hboxBR.setSpacing(10);
+        hboxBR.setPadding(new Insets(20));
+
+        //HBox pour les wagons dans la main courante
+        hboxWM = new HBox();
+        hboxWM.setSpacing(10);
+        hboxWM.setPadding(new Insets(20));
+
+        //HBox pour les wagons dans la réserve
+        hboxWR = new HBox();
+        hboxWR.setSpacing(10);
+        hboxWR.setPadding(new Insets(20));
+
+        Label infoBM = new Label("Nombre de bateaux dans la main :");
+        Label nbBM = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()));
+        Label infoBR = new Label("Nombre de bateaux dans la réserve :");
+        Label nbBR = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve()));
+        Label infoWM = new Label("Nombre de wagons dans la main :");
+        Label nbWM = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagons()));
+        Label infoWR = new Label("Nombre de wagons dans la réserve :");
+        Label nbWR = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()));
+
+
+        hboxBM.getChildren().addAll(infoBM, nbBM);
+        hboxBR.getChildren().addAll(infoBR, nbBR);
+        hboxWM.getChildren().addAll(infoWM, nbWM);
+        hboxWR.getChildren().addAll(infoWR, nbWR);
+
+        HBox hboxBoutons = new HBox();
+        Button buttonAnnuler = new Button("Annuler");
+        Button buttonOk = new Button("Échanger");
+        hboxBoutons.getChildren().addAll(buttonAnnuler, buttonOk);
+
+
+        lignes.getChildren().addAll(hboxBM, hboxBR, hboxWM, hboxWR, hboxBoutons);
+
+
+        //create main container and add vboxes to it
+        FlowPane root = new FlowPane();
+        root.setMinWidth(800);
+        root.setMinHeight(400);
+        root.setHgap(20);
+        root.getChildren().addAll(lignes);
+
+
+        Alert alertCustomEchange = new Alert(Alert.AlertType.NONE);
+        alertCustomEchange.getDialogPane().contentProperty().set(root);
+
+        alertCustomEchange.showAndWait();
+
     }
 
 }

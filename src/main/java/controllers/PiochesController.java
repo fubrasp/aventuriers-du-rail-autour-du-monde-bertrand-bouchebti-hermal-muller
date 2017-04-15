@@ -1,5 +1,6 @@
 package controllers;
 
+import application.MainApp;
 import javafx.scene.input.*;
 import outil.OutilDialog;
 import outil.OutilGraphique;
@@ -57,6 +58,12 @@ public class PiochesController implements Initializable {
     }
 
     @FXML
+    private void handleEchangerPions() {
+        System.out.println("Echanger");
+        outilDialog.montrerDialogEchangePions();
+    }
+
+    @FXML
     private void handleInitialiserMainJoueur() {
         System.out.println("TEST");
         CarteTransport carteAAjouter;
@@ -68,11 +75,6 @@ public class PiochesController implements Initializable {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
             gererAjoutCarteMain(carteAAjouter);
         }
-    }
-
-    @FXML
-    private void handleEchangerPions(){
-        System.out.println("Echange de pions");
     }
 
     private void piocher(int typePioche) {
