@@ -47,14 +47,14 @@ public class PiochesController implements Initializable {
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
 
     //EVENTS
-    Thrower thrower = new Thrower();
+    private Thrower thrower = new Thrower();
 
 
     public void initialize(URL location, ResourceBundle resources) {
         this.initializationCartesVisibles();
-        OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
         //EVENTS
         thrower.addThrowListener(Jeu.getInstance());
+        this.rafraichirInterface();
     }
 
     public void initializationCartesVisibles() {
@@ -64,23 +64,8 @@ public class PiochesController implements Initializable {
 
         this.addToVBoxBoutton(cartesVisibles);
 
-        //verifierTraiterJokers();
-
-        System.out.println("BUG QUAND VERIFICATION DES CARTES VISIBLES AU START");
-        //this.initialiserMainJoueur();
-
-        //CARTE DESTINATIONS CHOISIES AU DEBUT A AJOUTER
-
-
-
+        verifierTraiterJokersSansDialog();
     }
-
-    //FAIL ATTENTION A VERIFIER
-    private void initialiserMainJoueur() {
-        ArrayList<CarteTransport> cartesinitialiseesAAjouter = INTJ.obtenirCartesTransportInitJoueur();
-        gererAjoutMultipleCarteMain(cartesinitialiseesAAjouter);
-    }
-
 
     private void piocher(int typePioche) {
         if (INTJ.verifierCapaciteJoueur()) {
@@ -108,10 +93,8 @@ public class PiochesController implements Initializable {
                     gererAjoutCarteMain(carteTransportPiochee);
                 }
             }
-        } else {
+        }else{
             outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
-
-            //EVENTS
             this.lancerEvenement();
         }
     }
@@ -145,8 +128,32 @@ public class PiochesController implements Initializable {
         this.lancerEvenement();
     }
 
+    @FXML
+    public static void handleButtonAction(ActionEvent e) {
+        int count = 0;
+        String choices = "";
+
+        for (CheckBox cb :
+                OutilDialog.checkBoxes) {
+            if (cb.isSelected()) {
+                count++;
+                choices += cb.getText() + "\n";
+                choixUtilisateursCartesDestinations.add(cb.getText());
+            }
+        }
+
+        OutilDialog.lbltotal.setText("Cartes destination/itineraire choisies" + count);
+        OutilDialog.lbllist.setText(choices);
+    }
+
+    @FXML
+    private void handleRESET() {
+        INTJ.resterCapaciteJoueur();
+        //System.out.println("CAPACITE DU JOUEUR : " + Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
+    }
 
     private void gererPiocheDestination() {
+        //Quand on utilise la methode generique on a un plantage
         if (INTJ.verifierALaCapaciteDePiocherDesCartesDestinations()) {
             PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
@@ -169,13 +176,6 @@ public class PiochesController implements Initializable {
 
             //EVENTS
             this.lancerEvenement();
-        }
-    }
-
-    private void gererAjoutMultipleCarteMain(ArrayList<CarteTransport> cartesAAjouter) {
-        for (CarteTransport carteAAjouter :
-                cartesAAjouter) {
-            this.gererAjoutCarteMain(carteAAjouter);
         }
     }
 
@@ -247,9 +247,17 @@ public class PiochesController implements Initializable {
         return nouveauAnchorPaneClickable;
     }
 
-    private void verifierTraiterJokers() {
+    private boolean verifierTraiterJokersSansDialog(){
         if (Jeu.getInstance().detecterTropJokersVisibles()) {
             this.reseterCartesVisibles();
+            System.out.println("Verifier joker sans dialog");
+            return true;
+        }
+        return false;
+    }
+
+    private void verifierTraiterJokers() {
+        if(this.verifierTraiterJokersSansDialog()){
             outilDialog.montrerDialogErreurJokers();
         }
     }
@@ -316,25 +324,6 @@ public class PiochesController implements Initializable {
         gererAjoutCarteMain(carteTransportATransferer);
     }
 
-
-    @FXML
-    public static void handleButtonAction(ActionEvent e) {
-        int count = 0;
-        String choices = "";
-
-        for (CheckBox cb :
-                OutilDialog.checkBoxes) {
-            if (cb.isSelected()) {
-                count++;
-                choices += cb.getText() + "\n";
-                choixUtilisateursCartesDestinations.add(cb.getText());
-            }
-        }
-
-        OutilDialog.lbltotal.setText("Cartes destination/itineraire choisies" + count);
-        OutilDialog.lbllist.setText(choices);
-    }
-
     private void ajouterDestinationUser() {
         //On recupere le resultat de l'alert
         if (choixUtilisateursCartesDestinations.isEmpty()) {
@@ -351,7 +340,6 @@ public class PiochesController implements Initializable {
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
             //On impacte de maniere graphique le VBOW concerne
-            AnchorPane bouttonDestinationCree = null;
             for (CarteDestination carteDestinationChoisie :
                     cartesDestinationsChoisies) {
                 this.creerAnchorPaneDestination(carteDestinationChoisie);
@@ -372,28 +360,15 @@ public class PiochesController implements Initializable {
         this.listeDestinations.getChildren().add(bouttonDestinationCree);
     }
 
-
-    @FXML
-    private void handleRESET() {
-        INTJ.resterCapaciteJoueur();
-        //System.out.println("CAPACITE DU JOUEUR : " + Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
-    }
-
     private void lancerEvenement() {
         //We say to Jeu ==> Hi! we have to pass to the other gamer
         this.thrower.Throw();
 
-        //We refresh the text area
-        //User name and score
-        OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
-
+        //We the display for the user
         //We refresh the 2 views where gamer cards are displayed..
         this.listeBouttonsUserCourant.getChildren().clear();
         this.listeDestinations.getChildren().clear();
-        this.refreshUserDestinationCards();
-
-
-        this.refreshUserTransportCards();
+        this.rafraichirInterface();
     }
 
     private HashMap<String, CarteTransport> supprimerCartesDupliquees(ArrayList<CarteTransport> cartesANettoyer) {
@@ -414,42 +389,6 @@ public class PiochesController implements Initializable {
         }
         return false;
     }
-
-    /*public void refreshUserTransportCards(){
-        ArrayList<AnchorPane> anchorPanesPrecedents = new ArrayList<AnchorPane>();
-        //XO la carte n'est pas dedans ???
-        HashMap<String, Integer> occurenceCartesTransport = Jeu.getInstance().getJoueurCourant().compterOccurencesCartes();
-
-
-        //Pour chaque carte du joueur
-        for (CarteTransport carteTransportCourante:
-                Jeu.getInstance().getJoueurCourant().getCartesTransport()) {
-            //Pour chaque chaque carte precedente
-            for (AnchorPane anchorPanePrecedentCourant:
-                 anchorPanesPrecedents) {
-                //Si la nouvelle match avec une ancienne on modifie le signe de l'ancienne
-                if(anchorPanePrecedentCourant.getAccessibleText().equals(carteTransportCourante.getReference())){
-                            Text textCourant = ((Text) anchorPanePrecedentCourant.getChildren().get(1));
-                    int nombreApparitions = this.returnValue(occurenceCartesTransport, carteTransportCourante);
-
-                    if (nombreApparitions >= 9) {
-                        textCourant.setLayoutX(35);
-                    }
-                    System.out.println("TEST BUG X0 : " + nombreApparitions);
-                    textCourant.setText("X" + nombreApparitions);
-
-                }
-            }
-
-            //Si carte courante pas dans les cartes precedentes
-            if(!referenceContenue(anchorPanesPrecedents, carteTransportCourante)){
-                AnchorPane anchorPaneAAjouter = OutilGraphique.creerAnchorPane(carteTransportCourante);
-                anchorPanesPrecedents.add(anchorPaneAAjouter);
-                this.listeBouttonsUserCourant.getChildren().add(anchorPaneAAjouter);
-            }
-        }
-    }*/
-
 
     public void refreshUserTransportCards(){
         //Preparer les variables
@@ -498,5 +437,29 @@ public class PiochesController implements Initializable {
                 cartesDestinationsUserCourant) {
             this.creerAnchorPaneDestination(carteDestinationUser);
         }
+    }
+
+    /*private boolean verifierCapaciteJoueur(){
+        boolean capaciteJoueur = INTJ.verifierCapaciteJoueur();
+        traiterIncapacite(capaciteJoueur, "piocher de cartes transport");
+        return capaciteJoueur;
+    }
+
+    sprivate boolean verifierALaCapaciteDePiocherDesCartesDestinations(){
+        boolean capaciteJoueur = INTJ.verifierALaCapaciteDePiocherDesCartesDestinations();
+        traiterIncapacite(capaciteJoueur, "piocher de cartes destination");
+        return capaciteJoueur;
+    }
+
+    private void traiterIncapacite(boolean capaciteJoueur, String message){
+        if(!capaciteJoueur)
+            outilDialog.montrerDialogActionNonPossible(message);
+        this.lancerEvenement();
+    }*/
+
+    public void rafraichirInterface(){
+        OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
+        this.refreshUserDestinationCards();
+        this.refreshUserTransportCards();
     }
 }

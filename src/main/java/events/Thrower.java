@@ -17,9 +17,10 @@ ____________________________________________________________*/
 //4 Things needed in a class file to send events to a class:
 import java.util.*;//import of java.util.event
 
-/*_____________________________________________________________*/public class Thrower {
+/*_____________________________________________________________*/
+public class Thrower {
     //list of catchers & corresponding function to add/remove them in the list
-    List<ThrowListener> listeners = new ArrayList<ThrowListener>();
+    public List<ThrowListener> listeners = new ArrayList<ThrowListener>();
     public void addThrowListener(ThrowListener toAdd){ listeners.add(toAdd); }
     //Set of functions that Throw Events.
     public void Throw(){ for (ThrowListener hl : listeners) hl.Catch();
