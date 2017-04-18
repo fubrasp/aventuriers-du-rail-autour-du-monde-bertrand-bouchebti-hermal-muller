@@ -1,6 +1,5 @@
 package outil;
 
-import application.MainApp;
 import modeles.CarteTransport;
 import modeles.Jeu;
 

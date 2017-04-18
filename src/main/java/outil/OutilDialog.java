@@ -71,23 +71,25 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
+    private void setHBoxStyle(ArrayList<HBox> hBoxs){
+        for (HBox hBox:
+             hBoxs) {
+            hBox.setSpacing(10);
+            hBox.setPadding(new Insets(20));
+        }
+    }
+
     public void montrerDialogChoixCartesDestination(ArrayList<CarteDestination> cartesAChoisir) {
 
         //hbox for checkboxes
         vbchecks = new HBox();
-        vbchecks.setSpacing(10);
-        vbchecks.setPadding(new Insets(20));
 
         //hbox for images
         vbImages = new HBox();
-        vbImages.setSpacing(10);
-        vbImages.setPadding(new Insets(20));
 
         //hbox for labels
         vblabels = new HBox();
-        vblabels.setSpacing(10);
-        vblabels.setPadding(new Insets(20));
-
+        this.setHBoxStyle(new ArrayList<HBox>(Arrays.asList(vbchecks, vbImages, vblabels)));
 
 
         for (CarteDestination cd :

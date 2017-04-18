@@ -133,8 +133,13 @@ public class PiochesController implements Initializable {
         int count = 0;
         String choices = "";
 
+        //REFRESH CHOICES...
+        choices = "";
+        choixUtilisateursCartesDestinations.clear();
+
         for (CheckBox cb :
                 OutilDialog.checkBoxes) {
+
             if (cb.isSelected()) {
                 count++;
                 choices += cb.getText() + "\n";
@@ -332,10 +337,10 @@ public class PiochesController implements Initializable {
             outilDialog.montrerDialogChoixCartesDestination(Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().getCartesPrecedentes());
             ajouterDestinationUser();
         } else {
-            for (String choix :
+            /*for (String choix :
                     choixUtilisateursCartesDestinations) {
                 System.out.println(choix);
-            }
+            }*/
             ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
