@@ -22,7 +22,10 @@
     * fix cartes transport a refresh (verifier nombre OK)
     * fix changement de main a chaque tour :)
     * fix bug X0
-
+    * fix bug au minimum une carte destination (quand on veut ajouter des cartes destinations depuis son ecran)
+    * fix bug test (quand on pioche un wagon ==> incomprhensible) 
+    * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
+    * fix bug cartes visibles joker 3 regles initialisation (mauvais reset des points)
 
 * refractor
     * merger handle des 2 pioches
@@ -49,26 +52,27 @@
     * alert moins de 1 destinations choisie
     * gestion des actions limitees
     * gestion tour par tour
+    * gestion de plusieurs joueurs    
 
 
 
 
 # TO DO
-* fix bug au minimum une carte destination (quand on veut ajouter des cartes destinations depuis son ecran)
-* fix bug test (quand on pioche un wagon ==> incomprhensible) 
 * creer partie
 * ecran d'acceuil destinations
 * prendre une route
 * echanger des wagons et des bateaux
 * supprimer attribut bateau double ?
 * vrai cartes en HD avec le modele derriere
-    * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
     * refractor non repris d'exemple
-    * carte destination selectionne encadree en rouge
+    * (carte destination selectionne encadree en rouge)
     * Priorite
         * split des controllers
-        * gestion de plusieurs joueurs    
+        * commentaires en anglais
     * En plus
         * empilement des cartes
-        * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a verifier)
-        * fix bug cartes visibles joker 3 regles initialisation (mauvais recet des points)
+        * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a gerer une fois les autres parties dévellopees)
+            * prevoir evenement quand pioche resetee ? 
+            * si une carte visible est vide ? Quel attribut verifier ? --> repiocher ?
+            * quand lancer le reset ?
+                * des qu'une personne prend une route

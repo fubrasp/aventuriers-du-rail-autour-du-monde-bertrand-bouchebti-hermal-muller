@@ -21,27 +21,33 @@ import java.util.*;
 
 public class PiochesController implements Initializable {
 
-    //faudrait encampsuler l'empechement des actions
+    //faudrait encampsuler l'empechement des actions mais le refractor ne marche pas convenablement !
 
+    //Manage alert with this external class
     private OutilDialog outilDialog = new OutilDialog();
 
     private static int compteurPositionNouveauBoutonsCartesVisibles = 0;
 
+    //User's hand (cartes transport)
     @FXML
     private HBox listeBouttonsUserCourant = new HBox();
 
+    //Games's cartes visibles
     @FXML
     private VBox listeBouttonsCartesVisibles = new VBox();
 
+    //User's cartes destinations
     @FXML
     private VBox listeDestinations = new VBox();
 
+    //These two text items display user informations
     @FXML
     private Text textPseudoJoueur = new Text();
 
     @FXML
     private Text textScoreJoueur = new Text();
 
+    //These two list are for choices of cartes destinations
     private static ArrayList<String> choixUtilisateursCartesDestinations = new ArrayList<String>();
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
@@ -50,53 +56,24 @@ public class PiochesController implements Initializable {
     private Thrower thrower = new Thrower();
 
 
+    //INITIALIZE
     public void initialize(URL location, ResourceBundle resources) {
+        //Display the cartes visibles (it is dynamic!)
         this.initializationCartesVisibles();
-        //EVENTS
+        //Add a target for event (when turn is finished we throw an event)
         thrower.addThrowListener(Jeu.getInstance());
+        //allow us to display the pre-loaded cards when initialize the gamer for the first time (7 bateaux and 3 wagons)
         this.rafraichirInterface();
     }
 
     public void initializationCartesVisibles() {
         compteurPositionNouveauBoutonsCartesVisibles = 0;
-
+        //Get cartes visibles
         ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
-
+        //Add them to the graphic element
         this.addToVBoxBoutton(cartesVisibles);
-
+        //Verify the rule of not displaying 3 jokers on cartes visibes is respected
         verifierTraiterJokersSansDialog();
-    }
-
-    private void piocher(int typePioche) {
-        if (INTJ.verifierCapaciteJoueur()) {
-            CarteTransport carteTransportPiochee;
-            String nomPiocheVide = "";
-            if (typePioche == ConstantesJeu.PIOCHE_BATEAU) {
-                //We directly pioche carte transport bateau
-                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
-                nomPiocheVide = "BATEAUX";
-            } else {
-                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
-                nomPiocheVide = "WAGONS";
-            }
-
-            if (carteTransportPiochee.getCouleur() == CarteTransport.PIOCHE_REFAITE) {
-                outilDialog.montrerDialogPiocheEpuisee();
-                //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
-                handlePiocheBateau();
-            } else {
-                if (carteTransportPiochee.getCouleur() == CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
-                    outilDialog.montrerDialogDefausseVide(nomPiocheVide);
-                } else {
-                    //On l'ajoute a la main du joueur (en horizontal)
-                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
-                    gererAjoutCarteMain(carteTransportPiochee);
-                }
-            }
-        }else{
-            outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
-            this.lancerEvenement();
-        }
     }
 
     /**
@@ -116,18 +93,24 @@ public class PiochesController implements Initializable {
     }
 
     /**
-     * Methode gerant le click sur le boutton d'ajout de destination
+     * Method which manage click on add destinations button
      */
     @FXML
     private void handleDialogNouvelleDestination() {
         this.gererPiocheDestination();
     }
 
+    /**
+     * Method which manage click on TR_FINI button
+     */
     @FXML
     private void handleTourFini() {
         this.lancerEvenement();
     }
 
+    /**
+     * Method which manage selected and unselected elements in dialog ajout carte destination/itineraire
+     */
     @FXML
     public static void handleButtonAction(ActionEvent e) {
         int count = 0;
@@ -151,28 +134,77 @@ public class PiochesController implements Initializable {
         OutilDialog.lbllist.setText(choices);
     }
 
+    //PROVISOIRE
     @FXML
     private void handleRESET() {
         INTJ.resterCapaciteJoueur();
         //System.out.println("CAPACITE DU JOUEUR : " + Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
     }
 
+
+    /**
+     * Method which manage pioches transport
+     */
+    private void piocher(int typePioche) {
+        if (INTJ.verifierCapaciteJoueur()) {
+            CarteTransport carteTransportPiochee;
+            String nomPiocheVide = "";
+            if (typePioche == ConstantesJeu.PIOCHE_BATEAU) {
+                //We directly pioche carte transport bateau
+                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
+                //Use after for error messages
+                nomPiocheVide = "BATEAUX";
+            } else {
+                carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
+                nomPiocheVide = "WAGONS";
+            }
+
+            //If the pioche has been resfreshed
+            if (carteTransportPiochee.getCouleur() == CarteTransport.PIOCHE_REFAITE) {
+                outilDialog.montrerDialogPiocheEpuisee();
+                //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
+                handlePiocheBateau();
+            } else {
+                //If there are no card in defausses
+                if (carteTransportPiochee.getCouleur() == CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
+                    outilDialog.montrerDialogDefausseVide(nomPiocheVide);
+                } else {
+                    //We are in nominal case
+                    //We decrease the level of action ability
+                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    //We had the card to the gamer hand (horizontal)
+                    gererAjoutCarteMain(carteTransportPiochee);
+                }
+            }
+        }else{
+            //Else we display the error case
+            outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
+            this.lancerEvenement();
+        }
+    }
+    /**
+     * Method which manage pioches destinations/itineraire
+     */
     private void gererPiocheDestination() {
         //Quand on utilise la methode generique on a un plantage
+        //On est donc obliger de faire de la duplicatin de code en quelque sorte
         if (INTJ.verifierALaCapaciteDePiocherDesCartesDestinations()) {
             PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
             if (piocheDestination.estVide()) {
+                //We know there are no defausse system in the destination pioche
                 outilDialog.montrerDialogErreurPiocheDestination();
             } else {
+                //We take cards in order to choose one or more of them
                 this.carteDestinations = piocheDestination.piocherCartesDestination();
                 INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
+                //Error Case, we have to choose at least one card
                 if (this.carteDestinations.isEmpty()) {
                     outilDialog.montrerDialogErreurPiocheDestination();
                     INTJ.augmenterCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
                 } else {
                     outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
-                    //Nouvel element dans listeDestinations
+                    //Add the destinations to the user list of destinations
                     ajouterDestinationUser();
                 }
             }
@@ -185,20 +217,20 @@ public class PiochesController implements Initializable {
     }
 
     /**
-     * Methode permmettant de savoir si une carte est deja visible depuis la main du joueur permet de concatener plusieurs carte en 1 boutton
-     *
-     * @param carte carte d'un type donne pourlaquelle on opere la verification
+     * Methode which allow to concatenate card with small number text (X2 for instance)
+     * Did we create a new button or update an existing button accordind to the reference card ?
+     * @param carte carte transport which is checked
      */
     private void gererAjoutCarteMain(CarteTransport carte) {
-        //On compte le nombre de carte du type donne dans la main du joueur
+        //Count the number of card(s) with this reference
         int nombreApparitionCarte = Jeu.getInstance().getJoueurCourant().dejaDansLaMainDuJoueur(carte);
 
-        //on associe dans tous les cas la carte au joueur
-        this.ajouterCarteJoueurCourant(carte);
+        //In all cases this card is associated with the gamer
+        INTJ.ajouterCarteJoueurCourant(carte);
 
-        //Si il y a deja une carte
+        //If we have a card in the gamer's hand
         if (nombreApparitionCarte > 0) {
-            //On ajoute/modifie le texte sur l'image
+            //We update the text
             for (Node n : this.listeBouttonsUserCourant.getChildren()) {
                 AnchorPane anchorPaneClickable = (AnchorPane) n;
                 if (anchorPaneClickable.getAccessibleText().equals(carte.getReference())) {
@@ -209,16 +241,11 @@ public class PiochesController implements Initializable {
                     textCourant.setText("X" + (nombreApparitionCarte + 1));
                 }
             }
-            //Si il n'y a pas cette carte dans la main du joueur
-
+            //If there are no card with this reference
         } else {
-            //On creer un nouveau boutton
+            //Create a button
             this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerAnchorPane(carte));
         }
-    }
-
-    private void ajouterCarteJoueurCourant(CarteTransport ct) {
-        Jeu.getInstance().getJoueurCourant().ajouterCarteTransport(ct);
     }
 
     private void addToVBoxBoutton(ArrayList<CarteTransport> listeCartesVisibles) {
@@ -337,10 +364,6 @@ public class PiochesController implements Initializable {
             outilDialog.montrerDialogChoixCartesDestination(Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().getCartesPrecedentes());
             ajouterDestinationUser();
         } else {
-            /*for (String choix :
-                    choixUtilisateursCartesDestinations) {
-                System.out.println(choix);
-            }*/
             ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
@@ -443,24 +466,6 @@ public class PiochesController implements Initializable {
             this.creerAnchorPaneDestination(carteDestinationUser);
         }
     }
-
-    /*private boolean verifierCapaciteJoueur(){
-        boolean capaciteJoueur = INTJ.verifierCapaciteJoueur();
-        traiterIncapacite(capaciteJoueur, "piocher de cartes transport");
-        return capaciteJoueur;
-    }
-
-    sprivate boolean verifierALaCapaciteDePiocherDesCartesDestinations(){
-        boolean capaciteJoueur = INTJ.verifierALaCapaciteDePiocherDesCartesDestinations();
-        traiterIncapacite(capaciteJoueur, "piocher de cartes destination");
-        return capaciteJoueur;
-    }
-
-    private void traiterIncapacite(boolean capaciteJoueur, String message){
-        if(!capaciteJoueur)
-            outilDialog.montrerDialogActionNonPossible(message);
-        this.lancerEvenement();
-    }*/
 
     public void rafraichirInterface(){
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);

@@ -10,6 +10,11 @@ import java.util.ArrayList;
  */
 public class INTJ {
 
+    //Gamer's cartes transport interactions
+    public static void ajouterCarteJoueurCourant(CarteTransport ct) {
+        Jeu.getInstance().getJoueurCourant().ajouterCarteTransport(ct);
+    }
+
     //Actions of the gamer
     //Verify
     public static boolean verifierCapaciteJoueur() {
