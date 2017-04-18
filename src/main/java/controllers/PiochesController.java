@@ -214,7 +214,6 @@ public class PiochesController implements Initializable {
         } else {
             outilDialog.montrerDialogActionNonPossible("piocher de cartes destination");
 
-            //EVENTS
             this.lancerEvenement();
         }
     }
@@ -251,6 +250,10 @@ public class PiochesController implements Initializable {
         }
     }
 
+    /**
+     * Method which put in the cartes visibles display the clickables images
+     * @param listeCartesVisibles which have to been initialized
+     */
     private void addToVBoxBoutton(ArrayList<CarteTransport> listeCartesVisibles) {
         for (CarteTransport ctw :
                 listeCartesVisibles) {
@@ -258,6 +261,11 @@ public class PiochesController implements Initializable {
         }
     }
 
+    /**
+     * Method with create and add behavior to carte visibles buttons
+     * @param ct carte that we want create a carte visible image clickable
+     * @return image clickable anchorPane
+     */
     private AnchorPane creerBouttonImageCarteVisibles(CarteTransport ct) {
         final AnchorPane nouveauAnchorPaneClickable = OutilGraphique.creerAnchorPane(ct);
         nouveauAnchorPaneClickable.setId("" + compteurPositionNouveauBoutonsCartesVisibles++);
@@ -265,16 +273,14 @@ public class PiochesController implements Initializable {
         nouveauAnchorPaneClickable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //avoir la postion du boutton dans le vbox
+                //We know the element position int the VBOx
 
                 //System.out.println("" + nouveauAnchorPaneClickable.getId());
 
-                //en deduire la position de la carte a transferer dans les une des listes respectives
-                //transferer la carte a la main du joueur
+                //When the element is click put the element in the gamer's hand
                 transfererCarteVisibleALaMainDuJoueur("" + nouveauAnchorPaneClickable.getId());
-                //remplacer la carte visible concernee par une nouvelle carte piochee au hasard dans une des deux pioches ???
 
-                //checker la regle des 3 jokers
+                //Verify we haven't 3 jokers displayed (On peut changer eventuellement la position de ça!!!)
                 verifierTraiterJokers();
             }
         });
@@ -282,6 +288,10 @@ public class PiochesController implements Initializable {
         return nouveauAnchorPaneClickable;
     }
 
+    /**
+     * Method which verify if there are too many jokers
+     * @return
+     */
     private boolean verifierTraiterJokersSansDialog(){
         if (Jeu.getInstance().detecterTropJokersVisibles()) {
             this.reseterCartesVisibles();
@@ -291,33 +301,43 @@ public class PiochesController implements Initializable {
         return false;
     }
 
+    //Use previous method
     private void verifierTraiterJokers() {
         if(this.verifierTraiterJokersSansDialog()){
             outilDialog.montrerDialogErreurJokers();
         }
     }
 
+    /**
+     * Method which done the reset
+     */
     private void reseterCartesVisibles() {
         Jeu.getInstance().getGestionnairePioches().reseterCartesVisibles();
         listeBouttonsCartesVisibles.getChildren().clear();
         this.initializationCartesVisibles();
     }
 
-
+    /**
+     * Method wich allow to transfer card from cartes visibles area
+     * @param id of the card we have to transfer
+     */
     private void transfererCarteVisibleALaMainDuJoueur(String id) {
         if (INTJ.verifierCapaciteJoueur()) {
             int idInt = Integer.parseInt(id);
 
+            //Get cartes visibles
             ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
 
             CarteTransport carteTransportATransferer;
             CarteTransport carteTransportPiochee;
 
+            //Know which card we have to transfer
             carteTransportATransferer = cartesVisibles.get(idInt);
 
-            //On pioche une nouvelle carte
+            //Pioche a new card in order to replace carte transferee
             carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
 
+            //Some errors verifications
             if (carteTransportPiochee.getCouleur() != CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
                 if (carteTransportATransferer.getCouleur() == CarteTransport.JOKER) {
                     if (INTJ.joueurPeutPrendreJokerCartesVisibles()) {
@@ -328,6 +348,7 @@ public class PiochesController implements Initializable {
                     }
                 } else {
                     INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
+                    //Done changes, nominal case
                     this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
                 }
             } else {
@@ -342,16 +363,21 @@ public class PiochesController implements Initializable {
         } else {
             outilDialog.montrerDialogActionNonPossible("piocher de cartes visibles");
 
-            //EVENTS
             this.lancerEvenement();
         }
     }
 
+    /**
+     * Method which physically done changes of transfererCarteVisibleALaMainDuJoueur
+     * @param idInt
+     * @param carteTransportATransferer carte which we transfer
+     * @param carteTransportPiochee carte which has been pioche
+     */
     private void impacterJeuEtCartesVisibles(int idInt, CarteTransport carteTransportATransferer, CarteTransport carteTransportPiochee) {
-        //On remplace la carte dans la liste des cartes visibles
+        //We replace the card
         Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
-        //On remplace le boutton
+        //We replace the clickable image
         AnchorPane anchorePaneAChanger = creerBouttonImageCarteVisibles(carteTransportPiochee);
         anchorePaneAChanger.setId("" + idInt);
         this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneAChanger);
@@ -359,8 +385,12 @@ public class PiochesController implements Initializable {
         gererAjoutCarteMain(carteTransportATransferer);
     }
 
+    /**
+     * Method which add gamer's destinations
+     */
     private void ajouterDestinationUser() {
-        //On recupere le resultat de l'alert
+        //Get the alert result
+        //Error case
         if (choixUtilisateursCartesDestinations.isEmpty()) {
             //A VERIFIER
             outilDialog.montrerDialogAuMoinsUnerCarte();
@@ -370,7 +400,7 @@ public class PiochesController implements Initializable {
             ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
-            //On impacte de maniere graphique le VBOW concerne
+            //We add the clickable image on the gamer's board
             for (CarteDestination carteDestinationChoisie :
                     cartesDestinationsChoisies) {
                 outilGraphique.creerAnchorPaneDestination(carteDestinationChoisie, this.listeDestinations);
@@ -379,7 +409,9 @@ public class PiochesController implements Initializable {
         }
     }
 
-
+    /**
+     * Method which fire events
+     */
     private void lancerEvenement() {
         //We say to Jeu ==> Hi! we have to pass to the other gamer
         this.thrower.Throw();
@@ -391,77 +423,12 @@ public class PiochesController implements Initializable {
         this.rafraichirInterface();
     }
 
-    private HashMap<String, CarteTransport> supprimerCartesDupliquees(ArrayList<CarteTransport> cartesANettoyer) {
-        HashMap<String, CarteTransport> cartesNettoyees = new HashMap<String, CarteTransport>();
-        for (CarteTransport carteCourante :
-                cartesANettoyer) {
-            cartesNettoyees.put(carteCourante.getReference(), carteCourante);
-        }
-        return cartesNettoyees;
-    }
-
-    private boolean referenceContenue(ArrayList<AnchorPane> cartesTransport, CarteTransport carteConcernee){
-        for (AnchorPane anc:
-             cartesTransport) {
-            if(anc.getAccessibleText().equals(carteConcernee.getReference())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void refreshUserTransportCards(){
-        //Preparer les variables
-        HashMap<String, Integer> occurenceCartesTransport = Jeu.getInstance().getJoueurCourant().compterOccurencesCartes();
-
-
-        //Pour chaque carte du joueur
-        for (CarteTransport carteTransportCourante:
-                Jeu.getInstance().getJoueurCourant().getCartesTransport()) {
-
-            int nombreApparitions = occurenceCartesTransport.get(carteTransportCourante.getReference());
-
-            //System.out.println("CARTE : "+carteTransportCourante.getReference() + " NB ==> " +nombreApparitions);
-
-            if(!listeBouttonsUserCourantContientCarte(carteTransportCourante)){
-
-                AnchorPane anchorPaneAAjouter = OutilGraphique.creerAnchorPane(carteTransportCourante);
-                if(nombreApparitions>1){
-                    Text textCourant = ((Text) anchorPaneAAjouter.getChildren().get(1));
-                    if (nombreApparitions >= 9) {
-                        textCourant.setLayoutX(35);
-                    }
-                    textCourant.setText("X" + nombreApparitions);
-                }
-
-                this.listeBouttonsUserCourant.getChildren().add(anchorPaneAAjouter);
-
-            }
-        }
-    }
-
-    private boolean listeBouttonsUserCourantContientCarte(CarteTransport carteTransportCourante){
-        for (Node ancCourant:
-             this.listeBouttonsUserCourant.getChildren()) {
-            if(((AnchorPane)ancCourant).getAccessibleText().equals(carteTransportCourante.getReference())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public void refreshUserDestinationCards() {
-        ArrayList<CarteDestination> cartesDestinationsUserCourant = Jeu.getInstance().getJoueurCourant().getCartesDestination();
-        for (CarteDestination carteDestinationUser :
-                cartesDestinationsUserCourant) {
-            outilGraphique.creerAnchorPaneDestination(carteDestinationUser, this.listeDestinations);
-        }
-    }
-
+    /**
+     * Method which refresh the gamer's interface
+     */
     public void rafraichirInterface(){
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
-        this.refreshUserDestinationCards();
-        this.refreshUserTransportCards();
+        outilGraphique.refreshUserDestinationCards(this.listeDestinations);
+        outilGraphique.refreshUserTransportCards(this.listeBouttonsUserCourant);
     }
 }

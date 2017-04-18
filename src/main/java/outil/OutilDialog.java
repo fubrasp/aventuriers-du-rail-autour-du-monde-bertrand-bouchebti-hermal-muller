@@ -79,6 +79,10 @@ public class OutilDialog {
         }
     }
 
+    /**
+     * Method which manage destinations/itineraires alert
+     * @param cartesAChoisir
+     */
     public void montrerDialogChoixCartesDestination(ArrayList<CarteDestination> cartesAChoisir) {
 
         //hbox for checkboxes
@@ -94,21 +98,19 @@ public class OutilDialog {
 
         for (CarteDestination cd :
                 cartesAChoisir) {
-            //Creer des checkbox pour chaque carte de 1 a 4 seulon ce qui reste dans la pioche
+            //Create checkbox from 1 to 4, depending of what remain in the pioche
             this.checkBoxes.add(new CheckBox(cd.getReference()));
 
-            //Creer des images views a partir des cartes destination
+            //Create imageView for cartes destination
             //On mettera le nom de fichier en dynamique (determine grace a la reference) quand on aura toutes les cartes..
             this.imagesViewsCartesDestinations.add(OutilGraphique.creerImageView(nomFichier));
         }
-        //On creer deux labels pour informer l'utilisateur
+        //Create two labels in order to inform the gamer
         lbltotal = new Label("Cartes destination/itineraire choisies");
         lbllist = new Label("None");
 
-        //add all things to vboxes
-
-        //vbchecks.getChildren().addAll(chksport1, mv,chksport2, mv2,chksport3, mv3,chksport4,mv4);
-        //On sait pertinament que les liste checkboxes et image views ont la meme taille..
+        //Add all things to vboxes
+        //Checkboxes et image views list have the same size
         CheckBox elementCourant;
         for (int i = 0; i < this.checkBoxes.size(); i++) {
             elementCourant = this.checkBoxes.get(i);
@@ -118,7 +120,7 @@ public class OutilDialog {
         }
         vblabels.getChildren().addAll(lbltotal, lbllist);
 
-        //create main container and add vboxes to it
+        //Create main container and add vboxes to it
         FlowPane root = new FlowPane();
         root.setMinWidth(800);
         root.setMinHeight(200);
