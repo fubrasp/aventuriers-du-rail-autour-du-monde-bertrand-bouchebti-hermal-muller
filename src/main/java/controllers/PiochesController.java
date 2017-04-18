@@ -26,6 +26,9 @@ public class PiochesController implements Initializable {
     //Manage alert with this external class
     private OutilDialog outilDialog = new OutilDialog();
 
+    //Manage graphic interactions
+    private OutilGraphique outilGraphique = new OutilGraphique();
+
     private static int compteurPositionNouveauBoutonsCartesVisibles = 0;
 
     //User's hand (cartes transport)
@@ -370,23 +373,12 @@ public class PiochesController implements Initializable {
             //On impacte de maniere graphique le VBOW concerne
             for (CarteDestination carteDestinationChoisie :
                     cartesDestinationsChoisies) {
-                this.creerAnchorPaneDestination(carteDestinationChoisie);
+                outilGraphique.creerAnchorPaneDestination(carteDestinationChoisie, this.listeDestinations);
             }
             choixUtilisateursCartesDestinations.clear();
         }
     }
 
-    public void creerAnchorPaneDestination(CarteDestination carteDestinationChoisie) {
-        AnchorPane bouttonDestinationCree = null;
-        bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
-        bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
-            }
-        });
-        this.listeDestinations.getChildren().add(bouttonDestinationCree);
-    }
 
     private void lancerEvenement() {
         //We say to Jeu ==> Hi! we have to pass to the other gamer
@@ -463,7 +455,7 @@ public class PiochesController implements Initializable {
         ArrayList<CarteDestination> cartesDestinationsUserCourant = Jeu.getInstance().getJoueurCourant().getCartesDestination();
         for (CarteDestination carteDestinationUser :
                 cartesDestinationsUserCourant) {
-            this.creerAnchorPaneDestination(carteDestinationUser);
+            outilGraphique.creerAnchorPaneDestination(carteDestinationUser, this.listeDestinations);
         }
     }
 

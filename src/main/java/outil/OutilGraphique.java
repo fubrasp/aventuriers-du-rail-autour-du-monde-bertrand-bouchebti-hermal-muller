@@ -1,11 +1,13 @@
 package outil;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import modeles.Carte;
 
-import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import modeles.CarteDestination;
 import modeles.Jeu;
 
 import java.io.*;
@@ -15,40 +17,14 @@ import java.io.*;
  */
 public class OutilGraphique {
 
+    private OutilDialog outilDialog = new OutilDialog();
+
+    //CREATE CLICKABLE IMAGES
     /**
-     * @param carte pour laquelle on veut creer un boutton
-     * @return boutton avec image et texte dessus
+     *
+     * @param carte
+     * @return
      */
-    public static Button creerBoutton(Carte carte) {
-        //On utilise un AnchorPane
-        AnchorPane anchorPaneAssocieeNouveauBoutton = new AnchorPane();
-        anchorPaneAssocieeNouveauBoutton.setPrefHeight(60);
-        anchorPaneAssocieeNouveauBoutton.setPrefWidth(80);
-
-        //On prepare l'image et le texte qui doivent apparaître sur le boutton
-        ImageView imageAssocieeNouveauBoutton = OutilGraphique.creerImageView(OutilES.determinerUrl(carte));
-        imageAssocieeNouveauBoutton.setFitWidth(80);
-        imageAssocieeNouveauBoutton.setFitHeight(60);
-
-        Text textAssocieeNouveauBoutton = new Text("");
-        textAssocieeNouveauBoutton.setLayoutX(0);
-        textAssocieeNouveauBoutton.setLayoutY(55);
-
-        //On a les ajoute a l'AnchorPane
-        anchorPaneAssocieeNouveauBoutton.getChildren().add(imageAssocieeNouveauBoutton);
-        anchorPaneAssocieeNouveauBoutton.getChildren().add(textAssocieeNouveauBoutton);
-
-        //On creer le boutton et joue sur sa taille
-        Button nouveauBoutton = new Button(carte.getReference());
-        nouveauBoutton.setMinHeight(60);
-        nouveauBoutton.setMinWidth(80);
-
-        //On associe l'AnchorPane au bouton
-        nouveauBoutton.setGraphic(anchorPaneAssocieeNouveauBoutton);
-
-        return nouveauBoutton;
-    }
-
     public static AnchorPane creerAnchorPane(Carte carte) {
         //On utilise un AnchorPane
         AnchorPane anchorPaneAssocieeNouveauBoutton = new AnchorPane();
@@ -75,6 +51,18 @@ public class OutilGraphique {
         return anchorPaneAssocieeNouveauBoutton;
     }
 
+    public void creerAnchorPaneDestination(CarteDestination carteDestinationChoisie, VBox listeDestinations) {
+        AnchorPane bouttonDestinationCree = null;
+        bouttonDestinationCree = OutilGraphique.creerAnchorPane(carteDestinationChoisie);
+        bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
+            }
+        });
+        listeDestinations.getChildren().add(bouttonDestinationCree);
+    }
+
     /**
      *
      * @param cheminFichier
@@ -90,6 +78,8 @@ public class OutilGraphique {
         return imv;
     }
 
+
+    //REFRESH
     public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur){
         textPseudoJoueur.setText("Joueur : "+ Jeu.getInstance().getJoueurCourant().getPseudo());
         textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScoreCourant());
