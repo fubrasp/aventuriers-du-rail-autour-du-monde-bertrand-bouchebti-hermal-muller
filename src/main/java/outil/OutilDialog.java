@@ -7,10 +7,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import modeles.Jeu;
 import modeles.Ville;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ButtonType;
 import java.util.*;
 
 /**
@@ -197,15 +199,62 @@ public class OutilDialog {
         Label infoWR = new Label("Nombre de wagons dans la réserve :");
         Label nbWR = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()));
 
+        int BMinit = Jeu.getInstance().getJoueurCourant().getNbPionsBateau();
+        int WMinit = Jeu.getInstance().getJoueurCourant().getNbPionsWagons();
+
+        //Actions sur les boutons
+        BMPlus.setOnAction(new EventHandler<ActionEvent>(){
+            @Override public void handle(ActionEvent e){
+                if(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()>0) {
+                    Jeu.getInstance().getJoueurCourant().setNbPionsBateau(Jeu.getInstance().getJoueurCourant().getNbPionsBateau() + 1);
+                    Jeu.getInstance().getJoueurCourant().setNbPionsWagonsReserve(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve() - 1);
+                    nbBM.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()));
+                    nbWR.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()));
+                }
+            }
+        });
+
+        BMMoins.setOnAction(new EventHandler<ActionEvent>(){
+            @Override public void handle(ActionEvent e){
+                if(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()>BMinit) {
+                    Jeu.getInstance().getJoueurCourant().setNbPionsBateau(Jeu.getInstance().getJoueurCourant().getNbPionsBateau() - 1);
+                    Jeu.getInstance().getJoueurCourant().setNbPionsWagonsReserve(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve() + 1);
+                    nbBM.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()));
+                    nbWR.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagonsReserve()));
+                }
+            }
+        });
+
+        WMPlus.setOnAction(new EventHandler<ActionEvent>(){
+            @Override public void handle(ActionEvent e){
+                if(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve()>0) {
+                    Jeu.getInstance().getJoueurCourant().setNbPionsWagons(Jeu.getInstance().getJoueurCourant().getNbPionsWagons() + 1);
+                    Jeu.getInstance().getJoueurCourant().setNbPionsBateauReserve(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve() - 1);
+                    nbWM.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagons()));
+                    nbBR.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve()));
+                }
+            }
+        });
+
+        WMMoins.setOnAction(new EventHandler<ActionEvent>(){
+            @Override public void handle(ActionEvent e){
+                if(Jeu.getInstance().getJoueurCourant().getNbPionsWagons()>WMinit) {
+                    Jeu.getInstance().getJoueurCourant().setNbPionsWagons(Jeu.getInstance().getJoueurCourant().getNbPionsWagons() - 1);
+                    Jeu.getInstance().getJoueurCourant().setNbPionsBateauReserve(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve() + 1);
+                    nbWM.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsWagons()));
+                    nbBR.setText(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateauReserve()));
+                }
+            }
+        });
+
         hboxBM.getChildren().addAll(infoBM, nbBM, BMMoins, BMPlus);
         hboxBR.getChildren().addAll(infoBR, nbBR);
         hboxWM.getChildren().addAll(infoWM, nbWM, WMMoins, WMPlus);
         hboxWR.getChildren().addAll(infoWR, nbWR);
 
         HBox hboxBoutons = new HBox();
-        Button buttonAnnuler = new Button("Annuler");
-        Button buttonOk = new Button("Échanger");
-        hboxBoutons.getChildren().addAll(buttonAnnuler, buttonOk);
+        ButtonType buttonAnnuler = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonOk = new ButtonType("Échanger", ButtonBar.ButtonData.OK_DONE);
 
         lignes.getChildren().addAll(hboxBM, hboxBR, hboxWM, hboxWR, hboxBoutons);
 
@@ -219,7 +268,25 @@ public class OutilDialog {
 
         Alert alertCustomEchange = new Alert(Alert.AlertType.NONE);
         alertCustomEchange.getDialogPane().contentProperty().set(root);
+        alertCustomEchange.getButtonTypes().setAll(buttonOk, buttonAnnuler);
 
-        alertCustomEchange.showAndWait();
+
+        Optional<ButtonType> result = alertCustomEchange.showAndWait();
+        if(!result.isPresent()){
+            //Alert is exited, no button pressed
+        } else if (result.get() == buttonOk){
+            //Calcul des écarts de pions
+            int WMFin = Jeu.getInstance().getJoueurCourant().getNbPionsWagons();
+            int BMFin = Jeu.getInstance().getJoueurCourant().getNbPionsBateau();
+
+            //Malus à appliquer au score
+            int malus = (WMFin-WMinit) + (BMFin-BMinit);
+
+            //Modification du score
+            Jeu.getInstance().getJoueurCourant().setScore(Jeu.getInstance().getJoueurCourant().getScore()-malus);
+
+        } else if (result.get() == buttonAnnuler){
+            //Cancel button pressed
+        }
     }
 }

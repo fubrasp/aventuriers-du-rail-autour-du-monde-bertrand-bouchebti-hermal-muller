@@ -16,14 +16,24 @@ public class Joueur {
 	private int nbPionsWagons;
 	private int nbPionsWagonsReserve;
 
-	
+	//Score du joueur
+	private int score;
+
 	//cartes transports que possede le joueur concerne
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
 
+
 	private String couleur = "pink";
+
+	/*
+	*
+	* CONSTRUCTEUR
+	*
+	*/
 
 	public Joueur(String pseudo, String couleur) {
 	    this.pseudo = pseudo;
+	    this.score = 0;
 		this.cartesDestination = new ArrayList<CarteDestination>();
 		this.nbPionsBateau = 20;
 		this.nbPionsBateauReserve = 5;
@@ -33,14 +43,27 @@ public class Joueur {
 		this.couleur = couleur;
 	}
 
-	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
-		super();
-		this.cartesDestination = cartesDestination;
-		this.cartesTransport = cartesTransport;
+
+	/*
+	*
+	* GETTER & SETTER
+	*
+	*/
+
+	public String getPseudo() {
+		return pseudo;
 	}
 
-	public Joueur(){
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public int getNbPionsBateau() {
@@ -90,7 +113,21 @@ public class Joueur {
 	public void setCartesTransport(ArrayList<CarteTransport> cartesTransport) {
 		this.cartesTransport = cartesTransport;
 	}
-	
+
+	public String getCouleur() {
+		return couleur;
+	}
+
+	public void setCouleur(String couleur) {
+		this.couleur = couleur;
+	}
+
+	/*
+	*
+	* FONCTIONS
+	*
+	*/
+
 	public void ajouterCarteTransport(CarteTransport cartePioche){
 		this.cartesTransport.add(cartePioche);
 	}
@@ -115,13 +152,5 @@ public class Joueur {
 			}
 		}
 		return compteur;
-	}
-
-	public String getCouleur() {
-		return couleur;
-	}
-
-	public void setCouleur(String couleur) {
-		this.couleur = couleur;
 	}
 }
