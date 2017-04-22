@@ -26,13 +26,17 @@
     * fix bug test (quand on pioche un wagon ==> incomprhensible) 
     * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
     * fix bug cartes visibles joker 3 regles initialisation (mauvais reset des points)
+    * vrai cartes en HD avec le modele derriere
+    * prevoir evenement quand pioche resetee ? 
+
 
 * refractor
     * merger handle des 2 pioches
     * merger les listes (Gestionnaire au final) de catesVisibles et refractor l'interface par consequent
     * cleaner le code
     * refractor methode de Jeu
-        
+    * split des controllers
+
 
 * test
     * tester pioches
@@ -63,16 +67,14 @@
 * prendre une route
 * echanger des wagons et des bateaux
 * supprimer attribut bateau double ?
-* vrai cartes en HD avec le modele derriere
     * refractor non repris d'exemple
     * (carte destination selectionne encadree en rouge)
     * Priorite
-        * split des controllers
         * commentaires en anglais
     * En plus
         * empilement des cartes
         * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a gerer une fois les autres parties dévellopees)
-            * prevoir evenement quand pioche resetee ? 
             * si une carte visible est vide ? Quel attribut verifier ? --> repiocher ?
             * quand lancer le reset ?
                 * des qu'une personne prend une route
+            * est ce que l'ecran de la carte destination doit etre plus complet ?    

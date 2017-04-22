@@ -398,6 +398,13 @@ public class PiochesController implements Initializable {
             ajouterDestinationUser();
         } else {
             ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
+            //If not choose it means we have to put this under the pioche destination
+
+            //TESTING
+            ArrayList<CarteDestination> cartesNonChoisies = (ArrayList<CarteDestination>) this.carteDestinations.clone();
+            cartesNonChoisies.removeAll(cartesDestinationsChoisies);
+            Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().remettreSousLaPioche(cartesNonChoisies);
+
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
             //We add the clickable image on the gamer's board

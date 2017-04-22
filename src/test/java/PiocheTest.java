@@ -159,11 +159,26 @@ public class PiocheTest {
     @Test
     public void testPiocheDestinationsPasAssezDeCartes(){
         PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        //We know there 65 elementq in one
+        //We know there 65 elements in one
         piocheDestination.getCartes().subList(0, 64).clear();
         ArrayList<CarteDestination> cartesDestinationsPiochees = piocheDestination.piocherCartesDestination();
         // ???
         assertEquals("Dans le cas ou il n y a pas assez de cartes, on doit proposer au joueur 2 cartes",1, cartesDestinationsPiochees.size());
+    }
+
+    @Test
+    public void testPiocheDestinationsRemiseSousLeTas(){
+        PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
+        ArrayList<CarteDestination> cartesPiochees = piocheDestination.piocherCartesDestination();
+        //We simulate that the gamer has taken one card (nominal cas)
+        cartesPiochees.remove(0);
+        //We simulate the fact to put cart under the pioche
+        piocheDestination.remettreSousLaPioche(cartesPiochees);
+        //We asset that we have the 3 same objects under the pioche
+        ArrayList<Carte> cartesAfterTreatments = piocheDestination.getCartes();
+        assertEquals("pas la meme carte", cartesPiochees.get(0).getReference(), cartesAfterTreatments.get(0).getReference());
+        assertEquals("pas la meme carte", cartesPiochees.get(1).getReference(), cartesAfterTreatments.get(1).getReference());
+        assertEquals("pas la meme carte", cartesPiochees.get(2).getReference(), cartesAfterTreatments.get(2).getReference());
     }
 
 
