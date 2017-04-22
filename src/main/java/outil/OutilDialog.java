@@ -14,7 +14,7 @@ import java.util.*;
  * Created by bertran95u on 03/04/2017.
  */
 public class OutilDialog {
-    public static String nomFichier = "src/main/resources/images/cartes/destinations/CarteDestinationCasablancaMarseille.png";
+    //public static String nomFichier = "src/main/resources/images/cartes/destinations/CarteDestinationCasablancaMarseille.png";
 
     //controls needed for app:
     public static ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
@@ -103,7 +103,9 @@ public class OutilDialog {
 
             //Create imageView for cartes destination
             //On mettera le nom de fichier en dynamique (determine grace a la reference) quand on aura toutes les cartes..
-            this.imagesViewsCartesDestinations.add(OutilGraphique.creerImageView(nomFichier));
+            ImageView nouvelleImageView = OutilGraphique.creerImageView(OutilES.determinerUrl(cd));
+            this.imagesViewsCartesDestinations.add(nouvelleImageView);
+            this.vbImages.getChildren().add(nouvelleImageView);
         }
         //Create two labels in order to inform the gamer
         lbltotal = new Label("Cartes destination/itineraire choisies");
@@ -116,7 +118,7 @@ public class OutilDialog {
             elementCourant = this.checkBoxes.get(i);
             elementCourant.setOnAction(e -> PiochesController.handleButtonAction(e));
             this.vbchecks.getChildren().add(elementCourant);
-            this.vbImages.getChildren().add(this.imagesViewsCartesDestinations.get(i));
+            //this.vbImages.getChildren().add(this.imagesViewsCartesDestinations.get(i));
         }
         vblabels.getChildren().addAll(lbltotal, lbllist);
 
@@ -134,6 +136,8 @@ public class OutilDialog {
 
         vblabels.getChildren().clear();
         vbchecks.getChildren().clear();
+        vbImages.getChildren().clear();
+
         checkBoxes.clear();
     }
 

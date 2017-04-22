@@ -1,6 +1,7 @@
 package outil;
 
 import modeles.Carte;
+import modeles.CarteDestination;
 import modeles.CarteTransport;
 import modeles.CarteTransportBateau;
 
@@ -11,10 +12,12 @@ public class OutilES {
 
     private static final String CHEMIN_BASE_TRANSPORT = "src/main/resources/images/cartes/transport/";
     private static final String CHEMIN_BASE_CARTE_WAGON = CHEMIN_BASE_TRANSPORT + "wagons/wagons";
+    private static final String CHEMIN_BASE_CARTE_WAGON_PORT = CHEMIN_BASE_TRANSPORT + "wagons/port/wagons";
     private static final String CHEMIN_BASE_CARTE_BATEAU = CHEMIN_BASE_TRANSPORT + "bateaux/";
     private static final String CHEMIN_BASE_CARTE_BATEAU_SIMPLE = CHEMIN_BASE_CARTE_BATEAU + "bateaux";
     private static final String CHEMIN_BASE_CARTE_BATEAU_DOUBLE = CHEMIN_BASE_CARTE_BATEAU + "doubles/bateaux";
-    public static final String EXTENSION_IMAGES = ".jpeg";
+    private static final String CHEMIN_BASE_CARTE_DESTINATIONS_ITINERAIRES = "src/main/resources/images/cartes/destinations/";
+    public static final String EXTENSION_IMAGES = ".png";
 
     public static String determinerUrl(Carte ct) {
         String chemin = "";
@@ -27,15 +30,18 @@ public class OutilES {
                         chemin = CHEMIN_BASE_CARTE_BATEAU_SIMPLE + ((CarteTransport)ct).getUrlAssociatedWithColor();
                     }
                 } else {
-                    chemin = CHEMIN_BASE_CARTE_WAGON + ((CarteTransport)ct).getUrlAssociatedWithColor();
+                    if(((CarteTransport) ct).isPort()){
+                        chemin = CHEMIN_BASE_CARTE_WAGON_PORT + ((CarteTransport)ct).getUrlAssociatedWithColor();
+                    }else{
+                        chemin = CHEMIN_BASE_CARTE_WAGON + ((CarteTransport)ct).getUrlAssociatedWithColor();
+                    }
                 }
             } else {
                 chemin = CHEMIN_BASE_TRANSPORT + CarteTransport.JOKER + EXTENSION_IMAGES;
             }
         }else{
             //Si carte destination
-            chemin = OutilDialog.nomFichier;
-            System.out.print("CHEMIN A MODIFIER DANS DETERMINER URL CLASSE OUTIL ES");
+            chemin = CHEMIN_BASE_CARTE_DESTINATIONS_ITINERAIRES + ((CarteDestination)ct).getNomsVilles() + EXTENSION_IMAGES;
         }
         return chemin;
     }

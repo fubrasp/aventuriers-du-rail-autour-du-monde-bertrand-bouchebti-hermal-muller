@@ -36,12 +36,19 @@ public class CarteDestination extends Carte {
 				'}';
 	}
 
-	public String getReference(){
-		String str =  this.pointsScoreAssoccies+"_";
+	public String getNomsVilles(){
+		String str = "";
 		for (Ville v:
-			 this.villes) {
+				this.villes) {
 			str+=v.getNom();
 		}
+		return str;
+	}
+
+
+	public String getReference(){
+		String str =  this.pointsScoreAssoccies+"_";
+		str+=this.getNomsVilles();
 		return str;
 	}
 
