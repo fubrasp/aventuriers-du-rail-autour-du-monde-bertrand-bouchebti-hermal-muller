@@ -59,7 +59,6 @@ public class PiochesController implements Initializable {
 
     @FXML
     private void handleEchangerPions() {
-        System.out.println("Echanger");
         outilDialog.montrerDialogEchangePions();
     }
 

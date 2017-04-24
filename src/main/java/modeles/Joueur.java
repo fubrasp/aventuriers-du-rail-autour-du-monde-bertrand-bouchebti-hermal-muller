@@ -153,4 +153,18 @@ public class Joueur {
 		}
 		return compteur;
 	}
+
+	public void majScoreEchange(int nbWInit, int nbBInit){
+
+		//Nombre de pions dans la main à la fin de l'échange
+		int WMFin = Jeu.getInstance().getJoueurCourant().getNbPionsWagons();
+		int BMFin = Jeu.getInstance().getJoueurCourant().getNbPionsBateau();
+
+		//Calcul du malus à appliquer au score
+		int malus = (WMFin-nbWInit) + (BMFin-nbBInit);
+
+		//Modification du score
+		Jeu.getInstance().getJoueurCourant().setScore(Jeu.getInstance().getJoueurCourant().getScore()-malus);
+
+	}
 }
