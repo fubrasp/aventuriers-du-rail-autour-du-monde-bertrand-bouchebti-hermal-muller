@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
  * Created by vincenthermal on 24/04/2017.
  */
 @RunWith(JUnitPlatform.class)
-public class EchangeTest {
+public class ScoreTest {
 
     Jeu jeu;
     Joueur joueur;
