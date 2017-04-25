@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PiochesController">
@@ -49,6 +48,7 @@
                                                                </image>
                                                             </ImageView>
                                                             <Button layoutX="120.0" layoutY="74.0" mnemonicParsing="false" onAction="#handleRESET" text="RS_ACT" />
+                                                            <Button layoutX="6.0" layoutY="129.0" mnemonicParsing="false" onAction="#handleEchangerPions" prefHeight="27.0" prefWidth="188.0" text="Echanger des pions" />
                                                          </children>
                                                       </AnchorPane>
                                                    </content>
@@ -59,7 +59,7 @@
                                                         <content>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="129.0" prefWidth="596.0">
                                                                <children>
-                                                                  <HBox fx:id="listeBouttonsUserCourant" prefHeight="57.0" prefWidth="559.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="0.0" />
+                                                                  <HBox fx:id="listeBouttonsUserCourant" prefHeight="128.0" prefWidth="579.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-379.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                         </content>

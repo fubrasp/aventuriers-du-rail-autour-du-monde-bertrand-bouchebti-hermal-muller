@@ -1,14 +1,22 @@
 package modeles;
-
-import events.ThrowListener;
-
 import java.util.*;
+import events.ThrowListener;
+import java.util.Map;
 
 public class Jeu implements ThrowListener {
 
+	public static final int NOMBRE_CARTES_TRANSPORT_WAGON = 80;
+	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU = 60;
+	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR = 4;
+	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR = 6;
+	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE = 24;
+	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE = 36;
+	public static final int NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR = 11;
+	public static final int NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR = 4;
+	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
 	// Joeur qui est entrain d'effectuer un coup
-	private Joueur joueurCourant = new Joueur("Youssef");
+	private Joueur joueurCourant = new Joueur("Joueur 1","Rouge");
 	// private int nombreDeCartePioche;
 
 	// on peut utiliser un dictionnary pour les perfs..

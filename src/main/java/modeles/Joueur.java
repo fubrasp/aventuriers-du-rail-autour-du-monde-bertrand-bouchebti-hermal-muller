@@ -10,7 +10,19 @@ public class Joueur {
 
 	//carte de destinations ou itineraire que possede le joueur concerne
 	private ArrayList<CarteDestination> cartesDestination = new ArrayList<CarteDestination>();
-	
+
+	//Pseudo du joueur
+	private String pseudo;
+
+	//Pions en possession du joueur
+	private int nbPionsBateau;
+	private int nbPionsBateauReserve;
+	private int nbPionsWagons;
+	private int nbPionsWagonsReserve;
+
+	//Score du joueur
+	private int score;
+
 	//cartes transports que possede le joueur concerne
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
 
@@ -18,18 +30,82 @@ public class Joueur {
 
 	private int capaciteJeu = 2;
 
-	private String pseudo;
-
 	private int scoreCourant = 0;
 
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
 		this.cartesTransport = cartesTransport;
+	/*
+	*
+	* CONSTRUCTEUR
+	*
+	*/
+
+	public Joueur(String pseudo, String couleur) {
+	    this.pseudo = pseudo;
+	    this.score = 0;
+		this.cartesDestination = new ArrayList<CarteDestination>();
+		this.nbPionsBateau = 20;
+		this.nbPionsBateauReserve = 5;
+		this.nbPionsWagons = 40;
+		this.nbPionsWagonsReserve = 10;
+		this.cartesTransport = new ArrayList<CarteTransport>();
+		this.couleur = couleur;
 	}
 
-	public Joueur(){
+	/*
+	*
+	* GETTER & SETTER
+	*
+	*/
 
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getNbPionsBateau() {
+		return nbPionsBateau;
+	}
+
+	public void setNbPionsBateau(int nbPionsBateau) {
+		this.nbPionsBateau = nbPionsBateau;
+	}
+
+	public int getNbPionsBateauReserve() {
+		return nbPionsBateauReserve;
+	}
+
+	public void setNbPionsBateauReserve(int nbPionsBateauReserve) {
+		this.nbPionsBateauReserve = nbPionsBateauReserve;
+	}
+
+	public int getNbPionsWagons() {
+		return nbPionsWagons;
+	}
+
+	public void setNbPionsWagons(int nbPionsWagons) {
+		this.nbPionsWagons = nbPionsWagons;
+	}
+
+	public int getNbPionsWagonsReserve() {
+		return nbPionsWagonsReserve;
+	}
+
+	public void setNbPionsWagonsReserve(int nbPionsWagonsReserve) {
+		this.nbPionsWagonsReserve = nbPionsWagonsReserve;
 	}
 
 	public Joueur(String pseudo){
@@ -53,7 +129,21 @@ public class Joueur {
 	public void setCartesTransport(ArrayList<CarteTransport> cartesTransport) {
 		this.cartesTransport = cartesTransport;
 	}
-	
+
+	public String getCouleur() {
+		return couleur;
+	}
+
+	public void setCouleur(String couleur) {
+		this.couleur = couleur;
+	}
+
+	/*
+	*
+	* FONCTIONS
+	*
+	*/
+
 	public void ajouterCarteTransport(CarteTransport cartePioche){
 		this.cartesTransport.add(cartePioche);
 	}
@@ -80,12 +170,18 @@ public class Joueur {
 		return compteur;
 	}
 
-	public String getCouleur() {
-		return couleur;
-	}
+	public void majScoreEchange(int nbWInit, int nbBInit){
 
-	public void setCouleur(String couleur) {
-		this.couleur = couleur;
+		//Nombre de pions dans la main à la fin de l'échange
+		int WMFin = this.getNbPionsWagons();
+		int BMFin = this.getNbPionsBateau();
+
+		//Calcul du malus à appliquer au score
+		int malus = (WMFin-nbWInit) + (BMFin-nbBInit);
+
+		//Modification du score
+		this.setScore(this.getScore()-malus);
+
 	}
 
 	/*public boolean construirePort(Route routeSelectionne){

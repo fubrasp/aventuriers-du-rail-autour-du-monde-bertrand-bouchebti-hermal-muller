@@ -1,5 +1,6 @@
 package controllers;
 
+import application.MainApp;
 import constantes.ConstantesJeu;
 import interfaces.INTJ;
 import events.Thrower;
@@ -47,6 +48,9 @@ public class PiochesController implements Initializable {
     @FXML
     private Text textPseudoJoueur = new Text();
 
+    private final static int PIOCHE_BATEAU = 1;
+    private final static int PIOCHE_WAGON = 2;
+
     @FXML
     private Text textScoreJoueur = new Text();
 
@@ -79,9 +83,11 @@ public class PiochesController implements Initializable {
         verifierTraiterJokersSansDialog();
     }
 
-    /**
-     * Method which manage click on pioche bateau button
-     */
+    @FXML
+    private void handleEchangerPions() {
+        outilDialog.montrerDialogEchangePions();
+    }
+
     @FXML
     private void handlePiocheBateau() {
         this.piocher(ConstantesJeu.PIOCHE_BATEAU);
