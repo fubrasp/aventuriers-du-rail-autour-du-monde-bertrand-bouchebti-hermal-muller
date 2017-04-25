@@ -36,6 +36,7 @@ public class Joueur {
 		super();
 		this.cartesDestination = cartesDestination;
 		this.cartesTransport = cartesTransport;
+	}
 	/*
 	*
 	* CONSTRUCTEUR
@@ -229,16 +230,9 @@ public class Joueur {
 		return this.capaciteJeu>=2;
 	}
 
-	public String getPseudo() {
-		return pseudo;
-	}
 
 	public int getScoreCourant() {
 		return scoreCourant;
-	}
-
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
 	}
 
 	public void setScoreCourant(int scoreCourant) {
