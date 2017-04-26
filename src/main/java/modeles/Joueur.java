@@ -30,8 +30,6 @@ public class Joueur {
 
 	private int capaciteJeu = 2;
 
-	private int scoreCourant = 0;
-
 	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
 		super();
 		this.cartesDestination = cartesDestination;
@@ -228,15 +226,6 @@ public class Joueur {
 
 	public boolean peutPiocherJokerCartesVisibles(){
 		return this.capaciteJeu>=2;
-	}
-
-
-	public int getScoreCourant() {
-		return scoreCourant;
-	}
-
-	public void setScoreCourant(int scoreCourant) {
-		this.scoreCourant = scoreCourant;
 	}
 
 	public ArrayList<CarteTransport> initialiserMainJoueur() {

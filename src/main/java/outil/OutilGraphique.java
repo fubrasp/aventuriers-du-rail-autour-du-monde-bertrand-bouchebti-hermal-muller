@@ -97,7 +97,7 @@ public class OutilGraphique {
      */
     public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur){
         textPseudoJoueur.setText("Joueur : "+ Jeu.getInstance().getJoueurCourant().getPseudo());
-        textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScoreCourant());
+        textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScore());
     }
 
     /**
