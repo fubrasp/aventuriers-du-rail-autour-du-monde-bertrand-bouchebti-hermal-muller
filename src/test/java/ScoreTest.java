@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(JUnitPlatform.class)
 public class ScoreTest {
-    
+
     Joueur joueur;
 
     public static int randomInt(int min, int max) {
