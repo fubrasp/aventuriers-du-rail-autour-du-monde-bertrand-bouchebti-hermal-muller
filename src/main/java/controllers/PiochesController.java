@@ -4,6 +4,7 @@ import application.MainApp;
 import constantes.ConstantesJeu;
 import interfaces.INTJ;
 import events.Thrower;
+import interfaces.JeuListener;
 import outil.OutilDialog;
 import outil.OutilGraphique;
 import outil.OutilPratique;
@@ -20,7 +21,7 @@ import javafx.event.*;
 import java.net.*;
 import java.util.*;
 
-public class PiochesController implements Initializable {
+public class PiochesController implements Initializable, JeuListener {
 
     //faudrait encampsuler l'empechement des actions mais le refractor ne marche pas convenablement !
 
@@ -65,6 +66,8 @@ public class PiochesController implements Initializable {
 
     //INITIALIZE
     public void initialize(URL location, ResourceBundle resources) {
+        Jeu.getInstance().addListener(this);
+
         //Display the cartes visibles (it is dynamic!)
         this.initializationCartesVisibles();
         //Add a target for event (when turn is finished we throw an event)
@@ -252,7 +255,11 @@ public class PiochesController implements Initializable {
             //If there are no card with this reference
         } else {
             //Create a button
-            this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerAnchorPane(carte));
+            //this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerAnchorPane(carte));
+
+            // Added these 2 lines
+            this.listeBouttonsUserCourant.getChildren().clear();
+            this.rafraichirInterface();
         }
     }
 
@@ -440,8 +447,18 @@ public class PiochesController implements Initializable {
      * Method which refresh the gamer's interface
      */
     public void rafraichirInterface(){
+        System.out.println("########### rafraichirInterface");
+        //System.out.println("Joueur nb carte : "+Jeu.getInstance().getJoueurCourant().getCartesTransport().size());
+
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
         outilGraphique.refreshUserDestinationCards(this.listeDestinations);
         outilGraphique.refreshUserTransportCards(this.listeBouttonsUserCourant);
+    }
+
+    @Override
+    public void refreshInterface() {
+        System.out.println("rafraichirInterface");
+        this.listeBouttonsUserCourant.getChildren().clear();
+        this.rafraichirInterface();
     }
 }

@@ -1,6 +1,8 @@
 package modeles;
 import java.util.*;
 import events.ThrowListener;
+import interfaces.JeuListener;
+
 import java.util.Map;
 
 public class Jeu implements ThrowListener {
@@ -16,7 +18,7 @@ public class Jeu implements ThrowListener {
 	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
 	// Joeur qui est entrain d'effectuer un coup
-	private Joueur joueurCourant = new Joueur("Joueur 1","Rouge");
+	private Joueur joueurCourant = new Joueur("Joueur 1","red");
 	// private int nombreDeCartePioche;
 
 	// on peut utiliser un dictionnary pour les perfs..
@@ -138,5 +140,17 @@ public class Jeu implements ThrowListener {
 	public void Catch() {
 		//System.out.println("Ok je passe au joueur suivant :) !!");
 		this.realiserTourDeJeu();
+	}
+
+	private List<JeuListener> listeners = new ArrayList<JeuListener>();
+
+	public void addListener(JeuListener listener) {
+		listeners.add(listener);
+	}
+
+	public void refreshInterface() {
+		// Notify everybody that may be interested.
+		for (JeuListener jl : listeners)
+			jl.refreshInterface();
 	}
 }

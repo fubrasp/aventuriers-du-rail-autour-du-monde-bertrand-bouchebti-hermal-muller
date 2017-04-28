@@ -67,7 +67,7 @@ public class MapController implements Initializable {
                                 if(!road.isTaken()){
                                     highlightRoad(node,originalColor);
                                 }else{
-                                    highlightRoad(node,Paint.valueOf(jeu.getJoueurCourant().getCouleur()));
+                                    highlightRoad(node,Paint.valueOf(road.getPossesseur().getCouleur()));
                                 }
                                 node.setCursor(Cursor.DEFAULT);
                             }
@@ -78,12 +78,12 @@ public class MapController implements Initializable {
                             public void handle(MouseEvent event) {
                                 setRoadToPlayer(node,road);
 
-                                System.out.println("Road clicked # " +
+                                /*System.out.println("Road clicked # " +
                                         "Maritime : "+road.isMaritime()+" " +
                                         "Color : "+road.getCouleur()+" " +
                                         "VilleDep : "+road.getVilleDepart().getNom()+" " +
                                         "VilleArr : "+road.getVilleArrivee().getNom()+" " +
-                                        "Size : "+road.getNombreEtapes());
+                                        "Size : "+road.getNombreEtapes());*/
                             }
                         });
             }
@@ -115,8 +115,13 @@ public class MapController implements Initializable {
     private void setRoadToPlayer(Node initialNode, Route road){
         if(initialNode.getStyleClass().size() >0 ){
             Joueur joueur = jeu.getJoueurCourant();
-
-            road.takeRoad(joueur);
+            boolean roadTaken = joueur.takeRoad(road);
+            if(roadTaken){
+                System.out.println("Route prise : Refresh Interface");
+                Jeu.getInstance().refreshInterface();
+            }else{
+                System.out.println("Route non prise");
+            }
 
             colorizeRoad(initialNode,Paint.valueOf(joueur.getCouleur()));
         }
