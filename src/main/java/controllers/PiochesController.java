@@ -447,8 +447,7 @@ public class PiochesController implements Initializable, JeuListener {
      * Method which refresh the gamer's interface
      */
     public void rafraichirInterface(){
-        System.out.println("########### rafraichirInterface");
-        //System.out.println("Joueur nb carte : "+Jeu.getInstance().getJoueurCourant().getCartesTransport().size());
+        Jeu.getInstance().getJoueurCourant().getSelectedCards().clear();
 
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
         outilGraphique.refreshUserDestinationCards(this.listeDestinations);
@@ -457,7 +456,6 @@ public class PiochesController implements Initializable, JeuListener {
 
     @Override
     public void refreshInterface() {
-        System.out.println("rafraichirInterface");
         this.listeBouttonsUserCourant.getChildren().clear();
         this.rafraichirInterface();
     }

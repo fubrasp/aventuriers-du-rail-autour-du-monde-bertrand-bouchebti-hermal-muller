@@ -2,7 +2,9 @@ package outil;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import modeles.Carte;
 
 import javafx.scene.image.*;
@@ -47,10 +49,17 @@ public class OutilGraphique {
         textAssocieeNouveauBoutton.setLayoutX(50);
         textAssocieeNouveauBoutton.setLayoutY(20);
 
+        Text textNbCardSelected = new Text("");
+        police = Font.font("Verdana", FontWeight.BOLD, 20);
+        textNbCardSelected.setFont(police);
+        textNbCardSelected.setLayoutX(0);
+        textNbCardSelected.setLayoutY(20);
+
 
         //We add children to parent (anchorPane)
         anchorPaneAssocieeNouveauBoutton.getChildren().add(imageAssocieeNouveauBoutton);
         anchorPaneAssocieeNouveauBoutton.getChildren().add(textAssocieeNouveauBoutton);
+        anchorPaneAssocieeNouveauBoutton.getChildren().add(textNbCardSelected);
 
         return anchorPaneAssocieeNouveauBoutton;
     }
@@ -118,6 +127,7 @@ public class OutilGraphique {
      * @param listeBouttonsUserCourant
      */
     public void refreshUserTransportCards(HBox listeBouttonsUserCourant){
+        System.out.println("refreshUserTransportCards");
         HashMap<String, Integer> occurenceCartesTransport = Jeu.getInstance().getJoueurCourant().compterOccurencesCartes();
 
         for (CarteTransport carteTransportCourante:
@@ -138,8 +148,47 @@ public class OutilGraphique {
                     textCourant.setText("X" + nombreApparitions);
                 }
 
-                listeBouttonsUserCourant.getChildren().add(anchorPaneAAjouter);
+                anchorPaneAAjouter.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                if(event.getButton() == MouseButton.SECONDARY){
+                                    // RIGHT CLICK
+                                    Jeu.getInstance().getJoueurCourant().removeSelectCard(carteTransportCourante);
+                                }else{
+                                    // LEFT CLICK
+                                    Jeu.getInstance().getJoueurCourant().addSelectCard(carteTransportCourante);
+                                }
+                                HashMap<String, Integer> occurenceCartesTransport = Jeu.getInstance()
+                                        .getJoueurCourant().compterOccurencesCartes();
+                                int nombreApparitions = occurenceCartesTransport.get(carteTransportCourante.getReference());
+                                int nbOccurence = Jeu.getInstance()
+                                        .getJoueurCourant()
+                                        .nbOccurenceCarteSelectionnee(carteTransportCourante);
+                                Text textCourant = ((Text) anchorPaneAAjouter.getChildren().get(2));
+                                textCourant.setFill(Color.BLUE);
+                                if(nbOccurence>0){
+                                    if(nbOccurence>nombreApparitions){
+                                        // Permet au joueur de ne pas selectionner plus de carte que ce qu'il a dans la main
+                                        Jeu.getInstance().getJoueurCourant().removeSelectCard(carteTransportCourante);
+                                        nbOccurence = nbOccurence-1;
+                                    }
+                                    anchorPaneAAjouter.setBorder(createBorder()); // ADD RED BORDER
+                                    textCourant.setText("X" + nbOccurence);
+                                }else{
+                                    anchorPaneAAjouter.setBorder(null); // REMOVE BORDER
+                                    textCourant.setText("");
+                                }
+                                System.out.println("NbOccurence : "+nbOccurence);
+                                System.out.println("Carte de la meme couleur selectionnee : "+Jeu.getInstance()
+                                        .getJoueurCourant()
+                                        .getSelectedCards()
+                                        .get(carteTransportCourante
+                                                .getCouleur()).size());
+                            }
+                        });
 
+                listeBouttonsUserCourant.getChildren().add(anchorPaneAAjouter);
             }
         }
     }
@@ -158,6 +207,11 @@ public class OutilGraphique {
             }
         }
         return false;
+    }
+
+    private Border createBorder(){
+        return new Border(new BorderStroke(Color.RED,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
     }
 
 

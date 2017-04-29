@@ -115,7 +115,7 @@ public class MapController implements Initializable {
     private void setRoadToPlayer(Node initialNode, Route road){
         if(initialNode.getStyleClass().size() >0 ){
             Joueur joueur = jeu.getJoueurCourant();
-            boolean roadTaken = joueur.takeRoad(road);
+            boolean roadTaken = joueur.selectRoad(road);
             if(roadTaken){
                 System.out.println("Route prise : Refresh Interface");
                 Jeu.getInstance().refreshInterface();

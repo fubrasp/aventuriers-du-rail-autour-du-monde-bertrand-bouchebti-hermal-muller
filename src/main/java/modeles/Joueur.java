@@ -20,12 +20,7 @@ public class Joueur {
 	//Score du joueur
 	private int score;
 
-	//cartes transports que possede le joueur concerne
-	private ArrayList<CarteTransportWagon> cartesTransportWagon = new ArrayList<>();
-	private ArrayList<CarteTransportBateau> cartesTransportBateau = new ArrayList<>();
-	private ArrayList<CarteTransport> cartesTransportJoker = new ArrayList<>();
-
-	private ArrayList<CarteTransport> cartesSelectionnee = new ArrayList<>();
+	private HashMap<Integer,ArrayList<CarteTransport>> selectedCards = new HashMap<>();
 
 	//cartes transports que possede le joueur concerne
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
@@ -141,6 +136,44 @@ public class Joueur {
 		this.couleur = couleur;
 	}
 
+	public HashMap<Integer, ArrayList<CarteTransport>> getSelectedCards() {
+		return selectedCards;
+	}
+
+	public void setSelectedCards(HashMap<Integer, ArrayList<CarteTransport>> selectedCards) {
+		this.selectedCards = selectedCards;
+	}
+
+	public void addSelectCard(CarteTransport carteTransport){
+		if(selectedCards.containsKey(carteTransport.getCouleur())){
+			selectedCards.get(carteTransport.getCouleur()).add(carteTransport);
+		}else{
+			ArrayList<CarteTransport> cards = new ArrayList<>();
+			cards.add(carteTransport);
+			selectedCards.put(carteTransport.getCouleur(),cards);
+		}
+	}
+
+	public void removeSelectCard(CarteTransport carteTransport){
+		if(selectedCards.containsKey(carteTransport.getCouleur())){
+			selectedCards.get(carteTransport.getCouleur()).remove(carteTransport);
+		}
+	}
+
+	public int nbOccurenceCarteSelectionnee(CarteTransport carteSelectionnee){
+		int nbOccurence = 0;
+		if(selectedCards.containsKey(carteSelectionnee.getCouleur())){
+			ArrayList<CarteTransport> cards = selectedCards.get(carteSelectionnee.getCouleur());
+			for(int i=0;i<cards.size();i++){
+				if(cards.get(i) == carteSelectionnee){
+					nbOccurence = nbOccurence+1;
+				}
+			}
+		}
+
+		return nbOccurence;
+	}
+
 	/*
 	*
 	* FONCTIONS
@@ -149,18 +182,6 @@ public class Joueur {
 
 	public void ajouterCarteTransport(CarteTransport cartePioche){
 		this.cartesTransport.add(cartePioche);
-		if(cartePioche.getCouleur() == CarteTransport.JOKER){
-			this.cartesTransportJoker.add(cartePioche);
-			System.out.println("Add joker");
-		}else{
-			if(cartePioche instanceof CarteTransportBateau){
-				this.cartesTransportBateau.add((CarteTransportBateau) cartePioche);
-				System.out.println("Add carte bateau");
-			}else if(cartePioche instanceof CarteTransportWagon){
-				this.cartesTransportWagon.add((CarteTransportWagon) cartePioche);
-				System.out.println("Add carte wagon");
-			}
-		}
 	}
 
 	public void ajouterCarteDestination(CarteDestination cd){
@@ -295,49 +316,13 @@ public class Joueur {
 		}
 	}
 
-	public ArrayList<CarteTransportWagon> getCartesTransportWagon() {
-		return cartesTransportWagon;
-	}
-
-	public void setCartesTransportWagon(ArrayList<CarteTransportWagon> cartesTransportWagon) {
-		this.cartesTransportWagon = cartesTransportWagon;
-	}
-
-	public ArrayList<CarteTransportBateau> getCartesTransportBateau() {
-		return cartesTransportBateau;
-	}
-
-	public void setCartesTransportBateau(ArrayList<CarteTransportBateau> cartesTransportBateau) {
-		this.cartesTransportBateau = cartesTransportBateau;
-	}
-
-	public ArrayList<CarteTransport> getCartesTransportJoker() {
-		return cartesTransportJoker;
-	}
-
-	public void setCartesTransportJoker(ArrayList<CarteTransport> cartesTransportJoker) {
-		this.cartesTransportJoker = cartesTransportJoker;
-	}
-
-	public ArrayList<CarteTransport> getCartesSelectionnee() {
-		return cartesSelectionnee;
-	}
-
-	public void setCartesSelectionnee(ArrayList<CarteTransport> cartesSelectionnee) {
-		this.cartesSelectionnee = cartesSelectionnee;
-	}
-
-	/* TAKE ROAD METHOD */
-
 	/*
-		**********       INCOMPLETE   ***************
-		Return true if road is taken successfully, else false
-		@return boolean
+		Check if road is not taken and if player has the required card, select road then
+		@param road : selected road
+		@return boolean , true if player has selected successfully the road
 	 */
-	public boolean takeRoad(Route road){
+	public boolean selectRoad(Route road){
 		boolean result = false;
-		System.out.println("TakeRoad method");
-
 		if(road.isTaken()){
 			System.out.println("Impossible d'attribuer la route : Route déjà prise");
 		}else{
@@ -348,87 +333,111 @@ public class Joueur {
 				System.out.println("Impossible d'attribuer la route : Pas de carte requise");
 			}
 		}
-
 		return result;
 	}
 
+	/*
+		Check if player has required cards in hand to take the selected road,
+		remove card from hand if true
+		@param road : selected road
+		@return boolean , true if player has the required card to take the selected road
+	 */
 	public boolean hasRequiredCardsInHand(Route road){
 		boolean hasRequiredCardsInHand = true;
-		int nbGoodCardInHand;
-		ArrayList<CarteTransport> requiredCards = new ArrayList<>();
+		int nbGoodCardInHand = 0;
+		ArrayList<CarteTransport> usedCard = new ArrayList<>(); // List card retained to take a road
 		switch (road.getCouleur()){
 			case Couleur.SPE :{
 				System.out.println("Route spéciale non traité");
 				break;
 			}
 			case Couleur.GRIS:{
-				System.out.println("Route grise non traité");
+				nbGoodCardInHand = takeGreyRoad(road,usedCard);
 				break;
 			}
 			default:{
-				nbGoodCardInHand = getColoredCards(road,requiredCards);
+				nbGoodCardInHand = getSizeRoadCanBeTake(road,usedCard);
 				break;
 			}
 		}
 
-		int nbCardMissed = road.getNombreEtapes()-requiredCards.size();
-		if(requiredCards.size() < road.getNombreEtapes()){
-			hasRequiredCardsInHand = addJoker(requiredCards,nbCardMissed);
+		int nbCardMissed = road.getNombreEtapes()-nbGoodCardInHand;
+		if(nbCardMissed > 0){
+			int jokerNeeded = nbJokerNeeded(nbCardMissed);
+			hasRequiredCardsInHand = useJoker(jokerNeeded,usedCard);
+		}else{
+			hasRequiredCardsInHand = true;
 		}
 
 		if(hasRequiredCardsInHand){
-			removeCardInHand(requiredCards);
+			removeCardInHand(usedCard);
 		}
 
 		return hasRequiredCardsInHand;
 	}
 
-	public int getColoredCards(Route road, ArrayList<CarteTransport> coloredCards){
-		int nbCards = 0;
-
-		if(road.isMaritime()){
-			int i=0;
-
-			while(nbCards<road.getNombreEtapes() && i < this.cartesTransportBateau.size()){
-				CarteTransportBateau bateau = cartesTransportBateau.get(i);
-				if(bateau.getCouleur() == road.getCouleur()){
-					if(bateau.isBateauDouble()){
-						nbCards = nbCards+2;
-					}else{
-						nbCards = nbCards+1;
+	/*
+		Get the maximum road size that can be take with selected card
+		@param road : selected road
+		@param useCards : Array contains cards used to take a road
+		@return integer, maximum road size that can be take with selected card
+	 */
+	public int getSizeRoadCanBeTake(Route road, ArrayList<CarteTransport> useCards){
+		// Get all card with road color
+		int nbOccurence = 0;
+		if(selectedCards.containsKey(road.getCouleur())){
+			ArrayList<CarteTransport> carteTransports = selectedCards.get(road.getCouleur());
+			if(road.isMaritime()){
+				int i=0;
+				while(nbOccurence<road.getNombreEtapes() && i<carteTransports.size() ){
+					if(carteTransports.get(i) instanceof CarteTransportBateau){
+						if(((CarteTransportBateau) carteTransports.get(i)).isBateauDouble()){
+							nbOccurence = nbOccurence+2;
+						}else{
+							nbOccurence = nbOccurence+1;
+						}
+						useCards.add(carteTransports.get(i));
 					}
-					coloredCards.add(bateau);
+					i++;
 				}
-				i++;
-			}
-		}else{
-			for(CarteTransport carteTransport : this.cartesTransportWagon){
-				if(carteTransport.getCouleur() == road.getCouleur() && coloredCards.size()<road.getNombreEtapes()){
-					coloredCards.add(carteTransport);
+			}else{
+				int i=0;
+				while(nbOccurence<road.getNombreEtapes() && i<carteTransports.size() ){
+					if(carteTransports.get(i) instanceof CarteTransportWagon){
+						nbOccurence = nbOccurence+1;
+						useCards.add(carteTransports.get(i));
+					}
+					i++;
 				}
 			}
-			nbCards = coloredCards.size();
 		}
-
-		return nbCards;
+		return nbOccurence;
 	}
 
 	/*
-		Return true if add joker successfully , false if not enough joker
-		@param cards list of card required
-		@return integer
+		Use joker if enough joker in hand, return true if enough joker
+		@param jokerNeeded : number joker need to take a road
+		@param useCard : card used to take a road, add joker in this list if enough joker
+		@return boolean , true if enough joker otherwise false
 	 */
-	public boolean addJoker(ArrayList<CarteTransport> cards, int nbCardMissed){
-		int nbJokerNeeded = nbJokerNeeded(nbCardMissed);
-		if(nbJokerNeeded > cartesTransportJoker.size()){
-			return false;
-		}else{
-			for(int i=0; i<nbJokerNeeded;i++){
-				cards.add(cartesTransportJoker.get(i));
+	public boolean useJoker(int jokerNeeded,ArrayList<CarteTransport> useCard){
+		boolean asEnoughJoker = false;
+		if(selectedCards.containsKey(CarteTransport.JOKER)){
+			ArrayList<CarteTransport> jokerSelected = selectedCards.get(CarteTransport.JOKER);
+			if(jokerSelected.size() >= jokerNeeded){
+				int i=0;
+				while (i<jokerNeeded){
+					useCard.add(jokerSelected.get(i));
+					i++;
+				}
+				asEnoughJoker=true;
 			}
-			return true;
 		}
+
+		return asEnoughJoker;
 	}
+
+
 
 	/*
 		Return the number of joker needed
@@ -441,26 +450,84 @@ public class Joueur {
 			// Divide by 2 because a joker = 2 card
 			jokerNeeded = (int)Math.ceil((double)nbCardMissed/2);
 		}
-
-		System.out.println("Joker needed : "+jokerNeeded);
 		return jokerNeeded;
 	}
 
-	public void removeCardInHand(ArrayList<CarteTransport> requiredCard){
-		this.cartesTransport.removeAll(requiredCard);
-		for(CarteTransport transportCard : requiredCard){
-			if(transportCard.getCouleur() == CarteTransport.JOKER){
-				this.cartesTransportJoker.remove(transportCard);
-			}else{
-				if(transportCard instanceof CarteTransportBateau){
-					this.cartesTransportBateau.remove(transportCard);
-				}else{
-					if(transportCard instanceof CarteTransportWagon){
-						this.cartesTransportWagon.remove(transportCard);
-					}
+
+	/*
+		Remove a list of card in hand
+		@param cardUsed list of card used to take a road
+	 */
+	public void removeCardInHand(ArrayList<CarteTransport> cardUsed){
+		for(int i=0;i<cardUsed.size();i++){
+			cartesTransport.remove(cardUsed.get(i));
+			removeSelectCard(cardUsed.get(i));
+		}
+	}
+
+	/*
+		Return number card select that can be placed
+		@param road selected road
+		@param useCard card used to complete a road
+		@return integer
+	 */
+	public int takeGreyRoad(Route roadSelected,ArrayList<CarteTransport> useCard){
+		int result = 0;
+		Integer colorWhichHasMaxOccurence = -1;
+		for(Integer key : selectedCards.keySet()){
+			if(!key.equals(CarteTransport.JOKER)){
+				int colorOccurence = getOccurenceByColor(roadSelected,key,useCard);
+				if( colorOccurence > colorWhichHasMaxOccurence){
+					colorWhichHasMaxOccurence = key;
 				}
 			}
 		}
+
+		useCard.clear();
+		if(selectedCards.containsKey(colorWhichHasMaxOccurence)){
+			result = getOccurenceByColor(roadSelected,colorWhichHasMaxOccurence,useCard);
+		}
+
+		return result;
+	}
+
+	/*
+		Return number card occurence by color, double bateau will incremente number by 2
+		@param road selected road
+		@param cardColor color to get occurence
+		@param useCard card used to complete a road
+		@return number card occurence by color
+	 */
+	public int getOccurenceByColor(Route road, Integer cardColor, ArrayList<CarteTransport> useCard){
+		// Get all card with road color
+		int nbOccurence = 0;
+		if(selectedCards.containsKey(cardColor)){
+			ArrayList<CarteTransport> carteTransports = selectedCards.get(cardColor);
+			if(road.isMaritime()){
+				int i=0;
+				while(nbOccurence<road.getNombreEtapes() && i<carteTransports.size() ){
+					if(carteTransports.get(i) instanceof CarteTransportBateau){
+						if(((CarteTransportBateau) carteTransports.get(i)).isBateauDouble()){
+							nbOccurence = nbOccurence+2;
+						}else{
+							nbOccurence = nbOccurence+1;
+						}
+						useCard.add(carteTransports.get(i));
+					}
+					i++;
+				}
+			}else{
+				int i=0;
+				while(nbOccurence<road.getNombreEtapes() && i<carteTransports.size() ){
+					if(carteTransports.get(i) instanceof CarteTransportWagon){
+						nbOccurence = nbOccurence+1;
+						useCard.add(carteTransports.get(i));
+					}
+					i++;
+				}
+			}
+		}
+		return nbOccurence;
 	}
 
 }
