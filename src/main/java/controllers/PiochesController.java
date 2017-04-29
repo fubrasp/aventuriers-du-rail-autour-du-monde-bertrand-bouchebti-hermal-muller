@@ -88,7 +88,12 @@ public class PiochesController implements Initializable, JeuListener {
 
     @FXML
     private void handleEchangerPions() {
-        outilDialog.montrerDialogEchangePions();
+        if(INTJ.verifierCapaciteJoueur()){
+            outilDialog.montrerDialogEchangePions();
+            INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_ECHANGE_PIONS);
+        }else{
+            this.notifierEtPasserLeTour("vous ne pouvez plus echanger de pions");
+        }
     }
 
     @FXML
@@ -190,10 +195,15 @@ public class PiochesController implements Initializable, JeuListener {
             }
         }else{
             //Else we display the error case
-            outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
-            this.lancerEvenement();
+            this.notifierEtPasserLeTour("piocher de cartes transport");
         }
     }
+
+    private void notifierEtPasserLeTour(String message){
+        outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
+        this.lancerEvenement();
+    }
+
     /**
      * Method which manage pioches destinations/itineraire
      */
@@ -221,9 +231,7 @@ public class PiochesController implements Initializable, JeuListener {
                 }
             }
         } else {
-            outilDialog.montrerDialogActionNonPossible("piocher de cartes destination");
-
-            this.lancerEvenement();
+            this.notifierEtPasserLeTour("piocher de cartes destination");
         }
     }
 
@@ -374,9 +382,7 @@ public class PiochesController implements Initializable, JeuListener {
 
             }
         } else {
-            outilDialog.montrerDialogActionNonPossible("piocher de cartes visibles");
-
-            this.lancerEvenement();
+            this.notifierEtPasserLeTour("piocher de cartes visibles");
         }
     }
 

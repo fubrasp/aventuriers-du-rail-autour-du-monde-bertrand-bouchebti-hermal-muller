@@ -1,5 +1,7 @@
 package controllers;
 
+import constantes.ConstantesJeu;
+import interfaces.INTJ;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -18,6 +20,7 @@ import javafx.util.Duration;
 import modeles.Jeu;
 import modeles.Joueur;
 import modeles.Route;
+import outil.OutilDialog;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -26,7 +29,7 @@ import java.util.*;
 public class MapController implements Initializable {
     @FXML private AnchorPane mapContainer;
     private Jeu jeu;
-
+    private OutilDialog outilDialog = new OutilDialog();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,17 +116,22 @@ public class MapController implements Initializable {
         @param road the chosen road
      */
     private void setRoadToPlayer(Node initialNode, Route road){
-        if(initialNode.getStyleClass().size() >0 ){
-            Joueur joueur = jeu.getJoueurCourant();
-            boolean roadTaken = joueur.selectRoad(road);
-            if(roadTaken){
-                System.out.println("Route prise : Refresh Interface");
-                Jeu.getInstance().refreshInterface();
-            }else{
-                System.out.println("Route non prise");
-            }
+        if(INTJ.verifierCapaciteJoueur()){
+            if(initialNode.getStyleClass().size() >0 ){
+                Joueur joueur = jeu.getJoueurCourant();
+                boolean roadTaken = joueur.selectRoad(road);
+                if(roadTaken){
+                    System.out.println("Route prise : Refresh Interface");
+                    Jeu.getInstance().refreshInterface();
+                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_PRISE_DE_ROUTE);
+                }else{
+                    System.out.println("Route non prise");
+                }
 
-            colorizeRoad(initialNode,Paint.valueOf(joueur.getCouleur()));
+                colorizeRoad(initialNode,Paint.valueOf(joueur.getCouleur()));
+            }
+        }else{
+            outilDialog.montrerDialogActionNonPossible("prendre des routes");
         }
     }
 

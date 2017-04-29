@@ -31,12 +31,22 @@ public class ConstantesJeu {
     public static final int VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE = 2;
     public static final int VALEUR_CARTE_DESTINATIONS_PIOCHEES = 2;
 
+    //Take road constants
+    public static final int VALEUR_PRISE_DE_ROUTE = 2;
+
+    //Exhange of pions constants
+    public static final int VALEUR_ECHANGE_PIONS = 2;
+
+
     //Re-Initialize actions capacities
     public static final int VALEUR_ACTIONS = 2;
 
     //Pioches constantes
     public final static int PIOCHE_BATEAU = 1;
     public final static int PIOCHE_WAGON = 2;
+
+
+
 
 
 
