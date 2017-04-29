@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PiochesController">
    <children>
@@ -42,7 +42,7 @@
                                                    <content>
                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="218.0">
                                                          <children>
-                                                            <VBox fx:id="listeDestinations" prefHeight="237.0" prefWidth="100.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="0.0" />
+                                                            <VBox fx:id="listeDestinations" prefHeight="287.0" prefWidth="100.0" AnchorPane.bottomAnchor="-37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="0.0" />
                                                             <ImageView fitHeight="66.0" fitWidth="81.0" layoutX="109.0" layoutY="14.0" onMouseClicked="#handleDialogNouvelleDestination" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@images/cartes/destinations/Pioche.png" />
@@ -58,7 +58,7 @@
                                                    <children>
                                                       <ScrollPane layoutX="-8.0" prefHeight="124.0" prefWidth="590.0" AnchorPane.bottomAnchor="133.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <content>
-                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="129.0" prefWidth="596.0">
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="129.0" prefWidth="1157.0">
                                                                <children>
                                                                   <HBox fx:id="listeBouttonsUserCourant" prefHeight="128.0" prefWidth="579.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-379.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
