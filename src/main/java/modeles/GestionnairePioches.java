@@ -71,6 +71,7 @@ public class GestionnairePioches {
     public void preparerPioches(){
         this.piocheCartesTransportWagon.melanger();
         this.piocheCartesTransportBateau.melanger();
+        this.piocheCartesDestination.melanger();
 
         this.initialiserCarteVisibles();
     }

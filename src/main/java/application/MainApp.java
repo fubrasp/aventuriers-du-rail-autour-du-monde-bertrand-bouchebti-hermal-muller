@@ -24,7 +24,7 @@ public class MainApp extends Application {
 	public MainApp(){
 	    this.jeu = Jeu.getInstance();
 	    this.jeu.initialiserJeu();
-	    this.jeu.getGestionnairePioches().preparerPioches();
+        this.jeu.getGestionnairePioches().preparerPioches();
 	    System.out.println("MAIN_APP");
     }
 

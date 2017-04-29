@@ -180,7 +180,11 @@ public class PiochesController implements Initializable, JeuListener {
             if (carteTransportPiochee.getCouleur() == CarteTransport.PIOCHE_REFAITE) {
                 outilDialog.montrerDialogPiocheEpuisee();
                 //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
-                handlePiocheBateau();
+                if(typePioche == ConstantesJeu.PIOCHE_BATEAU){
+                    handlePiocheBateau();
+                }else {
+                    handlePiocheWagon();
+                }
             } else {
                 //If there are no card in defausses
                 if (carteTransportPiochee.getCouleur() == CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
