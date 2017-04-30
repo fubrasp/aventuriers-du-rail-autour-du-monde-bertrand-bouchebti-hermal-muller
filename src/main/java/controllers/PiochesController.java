@@ -204,7 +204,7 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     private void notifierEtPasserLeTour(String message){
-        outilDialog.montrerDialogActionNonPossible("piocher de cartes transport");
+        outilDialog.montrerDialogActionNonPossible(message);
         this.lancerEvenement();
     }
 
