@@ -12,7 +12,7 @@ import javafx.stage.*;
 public class MainApp extends Application {
 	
 	private static final String CHEMIN_ROOT_LAYOUT = "/RootLayout.fxml";
-	private static final String CHEMIN_VUE_JEU = "/JeuView.fxml";
+	public static final String CHEMIN_VUE_JEU = "/JeuView.fxml";
 	private static final String TITRE_APPLICATION = "Les aventuriers du rail autour du monde : BERTRAND - BOUCHEBTI - HERMAL - MULLER";
 
 
@@ -21,7 +21,9 @@ public class MainApp extends Application {
 
 	private Jeu jeu;
 
-	public MainApp(){
+    public static int nbr_joueur=0;
+
+    public MainApp(){
 	    this.jeu = Jeu.getInstance();
 	    this.jeu.initialiserJeu();
         this.jeu.getGestionnairePioches().preparerPioches();
@@ -64,7 +66,13 @@ public class MainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(MainApp.CHEMIN_VUE_JEU));
+
+            //Parent root = null;
+            //root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
+            loader.setLocation(getClass().getResource("/sample.fxml"));
+
+            //loader.setLocation(MainApp.class.getResource(MainApp.CHEMIN_VUE_JEU));
+
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.

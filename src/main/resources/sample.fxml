@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreationPartieController">
+    <children>
+        <Pane layoutX="13.0" layoutY="19.0" prefHeight="302.0" prefWidth="491.0" style="-fx-background-color: #ffffff;">
+            <children>
+                <JFXTextField fx:id="username" focusColor="#09b6bc" labelFloat="true" layoutX="81.0" layoutY="108.0" prefHeight="50.0" prefWidth="252.0" promptText="Nom joueur">
+                    <font>
+                        <Font size="20.0" />
+                    </font></JFXTextField>
+                <JFXButton fx:id="login" layoutX="138.0" layoutY="230.0" onAction="#makelogin" prefHeight="38.0" prefWidth="92.0" ripplerFill="WHITE" style="-fx-background-color: #2196F3;" text="Login" textFill="WHITE" />
+            <JFXButton fx:id="Start" layoutX="265.0" layoutY="230.0" onAction="#start" prefHeight="38.0" prefWidth="92.0" ripplerFill="WHITE" style="-fx-background-color: #2196F3;" text="Start" textFill="WHITE" />
+            <JFXComboBox fx:id="combo" focusColor="#09b6bc" labelFloat="true" layoutX="357.0" layoutY="127.0" promptText="couleur" />
+            </children>
+            <effect>
+                <DropShadow blurType="GAUSSIAN" />
+            </effect>
+        </Pane>
+    </children>
+</AnchorPane>

@@ -18,7 +18,8 @@ public class Jeu implements ThrowListener {
 	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
 
 	// Joeur qui est entrain d'effectuer un coup
-	private Joueur joueurCourant = new Joueur("Joueur 1","red");
+	//private Joueur joueurCourant = new Joueur("Joueur 1","red");
+	private Joueur joueurCourant = null;
 	// private int nombreDeCartePioche;
 
 	// on peut utiliser un dictionnary pour les perfs..
@@ -90,9 +91,10 @@ public class Jeu implements ThrowListener {
 
 		//FOR TESTING
 		System.out.println("REFRACTOR THIS L82, Jeu.java");
-		Joueur deuxiemeJoueur = new Joueur("Guillaume");
+
+		/*Joueur deuxiemeJoueur = new Joueur("Guillaume");
 		this.joueurs.add(this.joueurCourant);
-		this.joueurs.add(deuxiemeJoueur);
+		this.joueurs.add(deuxiemeJoueur);*/
 	}
 
 	public Joueur getJoueurCourant() {
@@ -152,5 +154,9 @@ public class Jeu implements ThrowListener {
 		// Notify everybody that may be interested.
 		for (JeuListener jl : listeners)
 			jl.refreshInterface();
+	}
+
+	public void setJoueurCourant(Joueur joueurCourant) {
+		this.joueurCourant = joueurCourant;
 	}
 }
