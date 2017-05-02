@@ -175,11 +175,11 @@ public class CreationPartieController implements Initializable {
     public void combo_remplissage()
     {
 
-       combo.getItems().add("Vert");
-       combo.getItems().add("Rouge");
-       combo.getItems().add("Blue");
-       combo.getItems().add("Jaune");
-       combo.getItems().add("Violet");
+       combo.getItems().add("green");
+       combo.getItems().add("red");
+       combo.getItems().add("blue");
+       combo.getItems().add("yellow");
+       combo.getItems().add("purple");
 
     }
     public boolean verify_color(String col)
