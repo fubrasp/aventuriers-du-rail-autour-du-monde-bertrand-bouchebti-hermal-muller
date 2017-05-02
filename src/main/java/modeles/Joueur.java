@@ -218,6 +218,10 @@ public class Joueur {
 		//Modification du score
 		this.setScore(this.getScore()-malus);
 
+		if(this.getScore()<0){
+			this.setScore(0);
+		}
+
 	}
 
 	/*public boolean construirePort(Route routeSelectionne){
@@ -557,6 +561,10 @@ public class Joueur {
 			case 8:
 				this.setScore(this.getScore()+21);
 				break;
+		}
+
+		if(this.getScore()<0){
+			this.setScore(0);
 		}
 	}
 
