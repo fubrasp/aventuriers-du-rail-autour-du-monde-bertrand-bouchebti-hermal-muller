@@ -1,6 +1,7 @@
 package outil;
 
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import modeles.CarteDestination;
 import controllers.PiochesController;
 import javafx.geometry.Insets;
@@ -178,7 +179,7 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
-    public void montrerDialogEchangePions(){
+    public void montrerDialogEchangePions(Text textPseudoJoueur,Text textScoreJoueur){
 
         VBox lignes = new VBox();
 
@@ -282,6 +283,7 @@ public class OutilDialog {
 
             //Appel à la fonction qui met à jour le score
             Jeu.getInstance().getJoueurCourant().majScoreEchange(BMinit,WMinit);
+            OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
 
         } else if (result.get() == buttonAnnuler){
             //Cancel button pressed

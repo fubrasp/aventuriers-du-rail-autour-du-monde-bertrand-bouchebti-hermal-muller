@@ -89,7 +89,7 @@ public class PiochesController implements Initializable, JeuListener {
     @FXML
     private void handleEchangerPions() {
         if(INTJ.verifierCapaciteJoueur()){
-            outilDialog.montrerDialogEchangePions();
+            outilDialog.montrerDialogEchangePions(textPseudoJoueur, textScoreJoueur);
             INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_ECHANGE_PIONS);
         }else{
             this.notifierEtPasserLeTour("vous ne pouvez plus echanger de pions");
