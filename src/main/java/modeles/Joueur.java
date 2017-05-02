@@ -329,6 +329,7 @@ public class Joueur {
 			if(hasRequiredCardsInHand(road)){
 				road.setPossesseur(this);
 				result=true;
+				this.majScoreRoadTaken(road.getNombreEtapes());
 			}else{
 				System.out.println("Impossible d'attribuer la route : Pas de carte requise");
 			}
@@ -528,6 +529,35 @@ public class Joueur {
 			}
 		}
 		return nbOccurence;
+	}
+
+	public void majScoreRoadTaken(int nbCases){
+		switch (nbCases){
+			case 1:
+				this.setScore(this.getScore()+1);
+				break;
+			case 2:
+				this.setScore(this.getScore()+2);
+				break;
+			case 3:
+				this.setScore(this.getScore()+4);
+				break;
+			case 4:
+				this.setScore(this.getScore()+7);
+				break;
+			case 5:
+				this.setScore(this.getScore()+10);
+				break;
+			case 6:
+				this.setScore(this.getScore()+15);
+				break;
+			case 7:
+				this.setScore(this.getScore()+18);
+				break;
+			case 8:
+				this.setScore(this.getScore()+21);
+				break;
+		}
 	}
 
 }
