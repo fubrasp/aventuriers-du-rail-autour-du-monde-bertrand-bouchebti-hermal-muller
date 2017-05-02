@@ -5,11 +5,13 @@ import constantes.ConstantesJeu;
 import java.util.*;
 
 public class Joueur {
-	//carte de destinations ou itineraire que possede le joueur concerne
+
+	//Liste des cartes de destinations ou itinéraires du joueur
 	private ArrayList<CarteDestination> cartesDestination = new ArrayList<CarteDestination>();
 
-	//Pseudo du joueur
+	//Pseudo et couleur du joueur
 	private String pseudo;
+	private String couleur;
 
 	//Pions en possession du joueur
 	private int nbPionsBateau;
@@ -22,18 +24,11 @@ public class Joueur {
 
 	private HashMap<Integer,ArrayList<CarteTransport>> selectedCards = new HashMap<>();
 
-	//cartes transports que possede le joueur concerne
+	//Liste des cartes transports du joueur
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
-
-	private String couleur = "pink";
 
 	private int capaciteJeu = 2;
 
-	public Joueur(ArrayList<CarteDestination> cartesDestination, ArrayList<CarteTransport> cartesTransport) {
-		super();
-		this.cartesDestination = cartesDestination;
-		this.cartesTransport = cartesTransport;
-	}
 	/*
 	*
 	* CONSTRUCTEUR
@@ -110,8 +105,6 @@ public class Joueur {
 		this.pseudo = pseudo;
 	}
 
-
-
 	public ArrayList<CarteDestination> getCartesDestination() {
 		return cartesDestination;
 	}
@@ -144,6 +137,12 @@ public class Joueur {
 		this.selectedCards = selectedCards;
 	}
 
+	/*
+	*
+	* FONCTIONS
+	*
+	*/
+
 	public void addSelectCard(CarteTransport carteTransport){
 		if(selectedCards.containsKey(carteTransport.getCouleur())){
 			selectedCards.get(carteTransport.getCouleur()).add(carteTransport);
@@ -174,12 +173,6 @@ public class Joueur {
 		return nbOccurence;
 	}
 
-	/*
-	*
-	* FONCTIONS
-	*
-	*/
-
 	public void ajouterCarteTransport(CarteTransport cartePioche){
 		this.cartesTransport.add(cartePioche);
 	}
@@ -206,6 +199,7 @@ public class Joueur {
 		return compteur;
 	}
 
+	//Mise à jour du score en cas d'échange de pions
 	public void majScoreEchange(int nbWInit, int nbBInit){
 
 		//Nombre de pions dans la main à la fin de l'échange
@@ -218,6 +212,7 @@ public class Joueur {
 		//Modification du score
 		this.setScore(this.getScore()-malus);
 
+		//Eviter un score négatif
 		if(this.getScore()<0){
 			this.setScore(0);
 		}
@@ -535,6 +530,7 @@ public class Joueur {
 		return nbOccurence;
 	}
 
+	//Mise à jour du score en cas de prise de possession d'une route
 	public void majScoreRoadTaken(int nbCases){
 		switch (nbCases){
 			case 1:
@@ -563,6 +559,7 @@ public class Joueur {
 				break;
 		}
 
+		//Eviter un score négatif
 		if(this.getScore()<0){
 			this.setScore(0);
 		}
