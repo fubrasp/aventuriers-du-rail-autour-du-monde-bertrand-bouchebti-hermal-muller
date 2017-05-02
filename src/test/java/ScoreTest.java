@@ -63,6 +63,14 @@ public class ScoreTest {
         assertEquals(scoreExpected, this.joueur.getScore());
     }
 
+    @Test
+    public void testMajScoreRoute(){
+        System.out.println("TEST MAJ SCORE AVEC PRISE DE POSSESSION D'UNE ROUTE");
+        int scoreExpected = this.joueur.getScore()+21;
+        //Le joueur prend possession d'une route qui est longue de 8 cases et qui devrait donc apporter 21 points au score
+        this.joueur.majScoreRoadTaken(8);
+        assertEquals(scoreExpected, this.joueur.getScore());
+    }
 
 
 
