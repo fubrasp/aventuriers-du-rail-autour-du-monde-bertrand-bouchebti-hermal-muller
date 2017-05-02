@@ -47,8 +47,7 @@ public class CarteDestination extends Carte {
 
 
 	public String getReference(){
-		String str =  this.pointsScoreAssoccies+"_";
-		str+=this.getNomsVilles();
+		String str = this.getNomsVilles();
 		return str;
 	}
 
