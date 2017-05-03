@@ -77,7 +77,7 @@ public class Jeu implements ThrowListener {
 
 	public Jeu(){
 		this.gestionnairePioches = new GestionnairePioches();
-		this.villes = GestionnairePlateau.initCities();
+		this.villes = GestionnairePlateau.cities;
 		this.routes = GestionnairePlateau.initRoads(GestionnairePlateau.parsePlateau());
 	}
 

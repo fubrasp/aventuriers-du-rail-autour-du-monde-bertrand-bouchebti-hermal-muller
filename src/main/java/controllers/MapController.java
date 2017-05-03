@@ -20,6 +20,7 @@ import javafx.util.Duration;
 import modeles.Jeu;
 import modeles.Joueur;
 import modeles.Route;
+import modeles.Ville;
 import outil.OutilDialog;
 
 import java.lang.reflect.Field;
@@ -46,6 +47,17 @@ public class MapController implements Initializable {
                                 String fullName = nameOfCity.get(className[1]);
                                 Tooltip tooltip = createTooltip(fullName);
                                 Tooltip.install(node,tooltip);
+                            }
+                        });
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent e) { // Click on city
+                                node.setCursor(Cursor.HAND);
+                                String[] className = node.getStyleClass().get(0).split("_");
+                                Ville city = Jeu.getInstance().getVilles().get(className[1]);
+                                createPort(node,city);
+                                //System.out.println("city clicked : "+city.getNom()+" possesseur : "+city.hasPossesseur());
                             }
                         });
             }
@@ -132,6 +144,30 @@ public class MapController implements Initializable {
             }
         }else{
             outilDialog.montrerDialogActionNonPossible("prendre des routes");
+        }
+    }
+
+    /*
+        Colorize the chosen city and set the player to the city
+        @param initialNode
+        @param city the chosen city
+     */
+    private void createPort(Node initialNode, Ville ville){
+        if(INTJ.verifierCapaciteJoueur()){
+            if(initialNode.getStyleClass().size() > 0 ){
+                Joueur joueur = jeu.getJoueurCourant();
+                boolean isPortCreated = joueur.takePort(ville);
+                if(isPortCreated){
+                    System.out.println("Port construit pour : "+ville.getNom());
+                    Jeu.getInstance().refreshInterface();
+                    INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_PRISE_DE_ROUTE);
+                }else{
+                    System.out.println("Port non construit");
+                }
+                ((Circle)initialNode).setFill(Paint.valueOf(joueur.getCouleur()));
+            }
+        }else{
+            outilDialog.montrerDialogActionNonPossible("prendre des ports");
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GestionnairePlateau {
-    private static Map<String, Ville> cities = initCities();
+    public static Map<String, Ville> cities = initCities();
 
     /*
         Parse plateau.fxml

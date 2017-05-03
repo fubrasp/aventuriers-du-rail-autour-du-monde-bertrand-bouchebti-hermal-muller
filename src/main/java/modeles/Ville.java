@@ -3,6 +3,7 @@ package modeles;
 public class Ville {
 	private String nom;
 	private boolean capacitePort;
+	private Joueur possesseur;
 
 	public Ville(String nom, boolean capacitePort) {
 		super();
@@ -24,6 +25,14 @@ public class Ville {
 
 	public void setCapacitePort(boolean capacitePort) {
 		this.capacitePort = capacitePort;
+	}
+
+	public void setPossesseur(Joueur possesseur) {
+		this.possesseur = possesseur;
+	}
+
+	public boolean hasPossesseur(){
+		return this.possesseur != null;
 	}
 	
 	

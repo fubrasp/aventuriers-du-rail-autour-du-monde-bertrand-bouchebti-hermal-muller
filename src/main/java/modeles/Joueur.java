@@ -27,6 +27,9 @@ public class Joueur {
 	//Liste des cartes transports du joueur
 	private ArrayList<CarteTransport> cartesTransport = new ArrayList<CarteTransport>();
 
+	private ArrayList<Ville> villesPossedees = new ArrayList<Ville>();
+	private ArrayList<Route> routesPossedees = new ArrayList<Route>();
+
 	private int capaciteJeu = 2;
 
 	/*
@@ -136,6 +139,19 @@ public class Joueur {
 	public void setSelectedCards(HashMap<Integer, ArrayList<CarteTransport>> selectedCards) {
 		this.selectedCards = selectedCards;
 	}
+
+	public ArrayList<Ville> getVillesPossedees() {
+		return villesPossedees;
+	}
+
+	public ArrayList<Route> getRoutesPossedees() {
+		return routesPossedees;
+	}
+
+	public void ajouterRoute(Route route){
+		this.routesPossedees.add(route);
+	}
+
 
 	/*
 	*
@@ -329,6 +345,7 @@ public class Joueur {
 				road.setPossesseur(this);
 				result=true;
 				this.majScoreRoadTaken(road.getNombreEtapes());
+				routesPossedees.add(road);
 			}else{
 				System.out.println("Impossible d'attribuer la route : Pas de carte requise");
 			}
@@ -563,6 +580,121 @@ public class Joueur {
 		if(this.getScore()<0){
 			this.setScore(0);
 		}
+	}
+
+	/*
+
+	 */
+	public boolean takePort(Ville ville){
+		boolean hasRequiredCard = false;
+		ArrayList<CarteTransport> carteUtilisees = new ArrayList<>();
+		if(ville.isCapacitePort()){
+			if(ville.hasPossesseur()){
+				System.out.println("Vous ne pouvez pas construire de port sur "+ville.getNom()+" car la ville " +
+						"à déjà un possesseur");
+			}else{
+				if(isRoadConstructed(ville)){
+					if(getSelectedCardToTakePort(carteUtilisees)){
+						hasRequiredCard = true;
+						villesPossedees.add(ville);
+					}else{
+						System.out.println("Vous ne pouvez pas construire de port sur "+ville.getNom()+" car vous n'avez " +
+								"pas les cartes requises");
+					}
+				}else{
+					System.out.println("Vous ne pouvez pas construire de port sur "+ville.getNom()+" car vous ne " +
+							"possédez pas de route menant à cette ville");
+				}
+			}
+		}else{
+			System.out.println("Ville "+ville.getNom()+" non portuaire ne peut pas avoir de port");
+		}
+
+		if(hasRequiredCard){
+			removeCardInHand(carteUtilisees);
+		}
+
+		return hasRequiredCard;
+	}
+
+	/*
+		Vérifie si le joueur à une route construite menant à une ville donnée
+		@param ville
+		@return boolean, true si le joueur à une route construire menant à une ville, false sino
+	 */
+	public boolean isRoadConstructed(Ville ville){
+		boolean canBeTake = false;
+		int i=0;
+		while(i<routesPossedees.size() && !canBeTake){
+			if(routesPossedees.get(i).getVilleArrivee() == ville ||
+					routesPossedees.get(i).getVilleDepart() == ville){
+				canBeTake = true;
+			}
+			i++;
+		}
+
+		return canBeTake;
+	}
+
+	/*
+
+	 */
+	public boolean getSelectedCardToTakePort(ArrayList<CarteTransport> cartesUtilisees){
+		Integer bestColor = -1;
+		int bestScoreByColor = 0;
+		int scoreByColor = 0;
+
+		for(Integer key : selectedCards.keySet()){
+			if(!key.equals(CarteTransport.JOKER)){
+				scoreByColor = checkIfTwoShipTwoRailByColor(key,cartesUtilisees);
+				if(scoreByColor > bestScoreByColor){
+					bestScoreByColor = scoreByColor;
+					bestColor = key;
+				}
+			}
+		}
+
+		checkIfTwoShipTwoRailByColor(bestColor,cartesUtilisees);
+		if(bestScoreByColor < 4){
+			int nbJokerNeeded = nbJokerNeeded(4-bestScoreByColor);
+			return useJoker(nbJokerNeeded,cartesUtilisees);
+		}else{
+			return true;
+		}
+	}
+
+	public int checkIfTwoShipTwoRailByColor(Integer color,ArrayList<CarteTransport> usedCard){
+		usedCard.clear();
+		if(selectedCards.containsKey(color)){
+			ArrayList<CarteTransport> carteTransports = selectedCards.get(color);
+			int nbCarteBateauSimple = 0;
+			int nbCarteWagon = 0;
+			int i=0;
+			CarteTransport carteTransport;
+			while(i<carteTransports.size() && nbCarteBateauSimple < 2){
+				carteTransport = carteTransports.get(i);
+				if(carteTransport.isPort()){
+					if(carteTransport instanceof CarteTransportBateau){
+						nbCarteBateauSimple = nbCarteBateauSimple+1;
+						usedCard.add(carteTransport);
+					}
+				}
+				i++;
+			}
+			i=0;
+			while(i<carteTransports.size() && nbCarteWagon < 2){
+				carteTransport = carteTransports.get(i);
+				if(carteTransport.isPort()){
+					if(carteTransport instanceof CarteTransportWagon){
+						nbCarteWagon = nbCarteWagon+1;
+						usedCard.add(carteTransport);
+					}
+				}
+				i++;
+			}
+		}
+
+		return usedCard.size();
 	}
 
 }

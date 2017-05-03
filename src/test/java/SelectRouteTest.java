@@ -21,7 +21,8 @@ public class SelectRouteTest {
     @BeforeEach
     public void executedBeforeEach() {
         jeu = Jeu.getInstance();
-        joueur = jeu.getJoueurCourant();
+        joueur = new Joueur("flo","red");
+        jeu.setJoueurCourant(joueur);
         routeTerrestreJaune3 = jeu.getRoutes().get("w_j_3_yaku_beij");
         routeMaritimeVerte4 = jeu.getRoutes().get("b_ve_4_reyk_murm");
         routeMaritimeGrise6 = jeu.getRoutes().get("b_g_6_rio_luan");
