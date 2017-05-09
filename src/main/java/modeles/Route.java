@@ -45,6 +45,15 @@ public class Route {
 		}
 	}
 
+	/*
+		Verifie si une ville donné est une ville depart ou arrivé
+		@param ville donné
+		@return true si la ville donné est une ville départ ou arrivé
+	 */
+	public boolean containsCity(Ville ville) {
+		return villeArrivee == ville || villeDepart == ville;
+	}
+
 	public Ville getVilleDepart() {
 		return villeDepart;
 	}

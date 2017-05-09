@@ -99,4 +99,22 @@ public class SelectRouteTest {
         Assert.assertFalse(joueur.useJoker(jokerNeeded,requiredCard));
         Assert.assertEquals(0,requiredCard.size());
     }
+
+    @Test
+    public void getNbWagonByColorTest(){
+        joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,false,false));
+        joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,false,false));
+
+        CarteTransport carteBateauJaune = new CarteTransportBateau(Couleur.JAUNE,false,false);
+        joueur.addSelectCard(carteBateauJaune);
+        joueur.removeSelectCard(carteBateauJaune);
+
+        Assert.assertEquals(0,joueur.getNbWagon(Couleur.VERT));
+
+        joueur.addSelectCard(new CarteTransportWagon(Couleur.VERT,false));
+        joueur.addSelectCard(new CarteTransportWagon(Couleur.VERT,false));
+
+        Assert.assertEquals(2,joueur.getNbWagon(Couleur.VERT));
+        Assert.assertEquals(0,joueur.getNbWagon(Couleur.JAUNE));
+    }
 }

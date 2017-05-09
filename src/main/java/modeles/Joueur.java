@@ -2,6 +2,7 @@ package modeles;
 
 import constantes.ConstantesJeu;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Joueur {
@@ -363,22 +364,26 @@ public class Joueur {
 		boolean hasRequiredCardsInHand = true;
 		int nbGoodCardInHand = 0;
 		ArrayList<CarteTransport> usedCard = new ArrayList<>(); // List card retained to take a road
+		int nbCardMissed = 0;
+
 		switch (road.getCouleur()){
 			case Couleur.SPE :{
-				System.out.println("Route spéciale non traité");
+				//nbGoodCardInHand = takePairRoad(road, usedCard);
+				nbCardMissed = (road.getNombreEtapes()*2)-nbGoodCardInHand;
 				break;
 			}
 			case Couleur.GRIS:{
 				nbGoodCardInHand = takeGreyRoad(road,usedCard);
+				nbCardMissed = road.getNombreEtapes()-nbGoodCardInHand;
 				break;
 			}
 			default:{
 				nbGoodCardInHand = getSizeRoadCanBeTake(road,usedCard);
+				nbCardMissed = road.getNombreEtapes()-nbGoodCardInHand;
 				break;
 			}
 		}
 
-		int nbCardMissed = road.getNombreEtapes()-nbGoodCardInHand;
 		if(nbCardMissed > 0){
 			int jokerNeeded = nbJokerNeeded(nbCardMissed);
 			hasRequiredCardsInHand = useJoker(jokerNeeded,usedCard);
@@ -480,6 +485,54 @@ public class Joueur {
 			cartesTransport.remove(cardUsed.get(i));
 			removeSelectCard(cardUsed.get(i));
 		}
+	}
+
+	/*
+
+	 */
+	public boolean takePairRoad(Route road, ArrayList<CarteTransport> usedCards){
+		int nbJokerNeeded = 0;
+		int nbWagonByColor = 0;
+		int nbCaseCanBeTake = 0;
+
+		for(Integer key : selectedCards.keySet()){
+			nbWagonByColor = getNbWagon(key);
+			if (nbWagonByColor % 2 == 0 && nbWagonByColor != 0) {
+				System.out.println("Pair");
+				nbCaseCanBeTake = nbCaseCanBeTake + (nbWagonByColor/2);
+				//if(nbCaseCanBeTake )
+			}else{
+				nbJokerNeeded = nbJokerNeeded+1;
+			}
+		}
+		return false;
+	}
+
+	/*public void useWagon(Integer color, ArrayList<CarteTransport> usedCards){
+		if(selectedCards.containsKey(color)){
+			ArrayList<CarteTransport> transports = selectedCards.get(color);
+
+			for(CarteTransport carteTransport : transports){
+				if(carteTransport instanceof CarteTransportWagon){
+					nbWagon = nbWagon+1;
+				}
+			}
+		}
+	}*/
+
+	public int getNbWagon(Integer color){
+		int nbWagon = 0;
+		if(selectedCards.containsKey(color)){
+			ArrayList<CarteTransport> transports = selectedCards.get(color);
+
+			for(CarteTransport carteTransport : transports){
+				if(carteTransport instanceof CarteTransportWagon){
+					nbWagon = nbWagon+1;
+				}
+			}
+		}
+
+		return nbWagon;
 	}
 
 	/*
@@ -695,6 +748,65 @@ public class Joueur {
 		}
 
 		return usedCard.size();
+	}
+
+	public ArrayList<ArrayList<Route>> getChemin(){
+		ArrayList<ArrayList<Route>> chemins = new ArrayList<>();
+		int i=0;
+		Route route;
+		while (i<routesPossedees.size()){
+			route = routesPossedees.get(i);
+			constructChemin(chemins,route);
+			i++;
+		}
+
+		return chemins;
+	}
+
+	public void constructChemin(ArrayList<ArrayList<Route>> chemins, Route currentRoute){
+		int i=chemins.size()-1;
+
+		ArrayList<Route> chemin;
+		Route route;
+
+		ArrayList<Integer> indiceChoisi = new ArrayList<>();
+		ArrayList<Route> routeChoisi = null;
+		while(i>=0){
+			chemin = chemins.get(i);
+			int j=0;
+			while(j<chemin.size()){
+				route = chemin.get(j);
+
+				if(route.containsCity(currentRoute.getVilleDepart()) || route.containsCity(currentRoute.getVilleArrivee())){
+					if(routeChoisi != null){
+						chemin.addAll(routeChoisi);
+						routeChoisi = chemin;
+					}else{
+						chemin.add(currentRoute);
+						routeChoisi = chemin;
+					}
+					indiceChoisi.add(i);
+
+					break;
+				}
+				j++;
+			}
+
+			i--;
+		}
+
+		if(indiceChoisi.size()==0){
+			ArrayList<Route> newChemin = new ArrayList<>();
+			newChemin.add(currentRoute);
+			chemins.add(newChemin);
+		}else{
+			i=0;
+			while(i<indiceChoisi.size()-1){
+				int indice = indiceChoisi.get(i);
+				chemins.remove(indice);
+				i++;
+			}
+		}
 	}
 
 }
