@@ -485,6 +485,7 @@ public class PiochesController implements Initializable, JeuListener {
     @Override
     public void refreshInterface() {
         this.listeBouttonsUserCourant.getChildren().clear();
+        this.listeDestinations.getChildren().clear();
         this.rafraichirInterface();
     }
 }
