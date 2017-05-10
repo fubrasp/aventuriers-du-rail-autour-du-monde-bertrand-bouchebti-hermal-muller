@@ -467,6 +467,10 @@ public class PiochesController implements Initializable, JeuListener {
         } else {
             if(nombresTourTotauxRestants==0){
                 outilDialog.montrerDialogFinJeu();
+                //Calcule le score final de chaque joueur
+                for (Joueur joueur:Jeu.getInstance().getJoueurs()) {
+                    joueur.calculerScoreFinal();
+                }
             }
         }
     }

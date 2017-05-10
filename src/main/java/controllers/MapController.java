@@ -224,8 +224,8 @@ public class MapController implements Initializable {
         aMap.put("lima", "Lima");
         aMap.put("valp", "Valparaiso");
         aMap.put("buen", "Buenos Aires");
-        aMap.put("rio", "Rio de Janeiro");
-        aMap.put("cape", "Cape Town");
+        aMap.put("rio", "Rio De Janeiro");
+        aMap.put("cape", "Cap Town");
         aMap.put("camb", "Cambridge Bay");
         aMap.put("reyk", "Reykjavik");
         aMap.put("edin", "Edinburg");

@@ -753,6 +753,17 @@ public class Joueur {
 		return usedCard.size();
 	}
 
+	/*public void afficherChemins(ArrayList<ArrayList<Route>> chemins){
+		int index = 1;
+		for (ArrayList<Route> chemin:chemins) {
+			System.out.println("Chemin n°"+index);
+			index++;
+			for (Route route:chemin) {
+				System.out.println(route.getVilleDepart().getNom()+" - "+route.getVilleArrivee().getNom());
+			}
+		}
+	}*/
+
 	public ArrayList<ArrayList<Route>> getChemin(){
 		ArrayList<ArrayList<Route>> chemins = new ArrayList<>();
 		int i=0;
@@ -764,6 +775,47 @@ public class Joueur {
 		}
 
 		return chemins;
+	}
+
+	//Fonction qui calcule le score final d'un joueur à la fin de la partie
+	public void calculerScoreFinal(){
+		for (CarteDestination destination:this.getCartesDestination()) {
+			this.majScoreDestinations(this.getChemin(),destination);
+		}
+	}
+
+	public void majScorePorts(){
+
+	}
+
+	//Fonction qui met à jour le score à la fin de la partie en fonction d'une carte destination (réussie ou non)
+	public void majScoreDestinations(ArrayList<ArrayList<Route>> chemins, CarteDestination destination){
+		int index = 1;
+		boolean depart;
+		boolean arrivee;
+		boolean reussi = false;
+		for (ArrayList<Route> chemin:chemins) {
+			depart = false;
+			arrivee = false;
+			index++;
+			for (Route route:chemin) {
+				if(destination.getVilles().get(0).getNom().equals(route.getVilleArrivee().getNom()) || destination.getVilles().get(0).getNom().equals(route.getVilleDepart().getNom())){
+					arrivee=true;
+				}
+				if(destination.getVilles().get(1).getNom().equals(route.getVilleArrivee().getNom()) || destination.getVilles().get(1).getNom().equals(route.getVilleDepart().getNom())){
+					depart=true;
+				}
+			}
+			if(depart && arrivee) {
+				reussi = true;
+			}
+
+		}
+		if(reussi){
+			this.setScore(this.getScore()+destination.getPointsScoreAssoccies());
+		} else {
+			this.setScore(this.getScore()-destination.getPointsScoreAssoccies());
+		}
 	}
 
 	public void constructChemin(ArrayList<ArrayList<Route>> chemins, Route currentRoute){
