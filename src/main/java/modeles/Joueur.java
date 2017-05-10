@@ -753,17 +753,6 @@ public class Joueur {
 		return usedCard.size();
 	}
 
-	/*public void afficherChemins(ArrayList<ArrayList<Route>> chemins){
-		int index = 1;
-		for (ArrayList<Route> chemin:chemins) {
-			System.out.println("Chemin n°"+index);
-			index++;
-			for (Route route:chemin) {
-				System.out.println(route.getVilleDepart().getNom()+" - "+route.getVilleArrivee().getNom());
-			}
-		}
-	}*/
-
 	public ArrayList<ArrayList<Route>> getChemin(){
 		ArrayList<ArrayList<Route>> chemins = new ArrayList<>();
 		int i=0;
