@@ -63,6 +63,9 @@ public class PiochesController implements Initializable, JeuListener {
     //EVENTS
     private Thrower thrower = new Thrower();
 
+    private static int nombresTourTotauxRestants;
+
+
 
     //INITIALIZE
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,6 +77,8 @@ public class PiochesController implements Initializable, JeuListener {
         thrower.addThrowListener(Jeu.getInstance());
         //allow us to display the pre-loaded cards when initialize the gamer for the first time (7 bateaux and 3 wagons)
         this.rafraichirInterface();
+        nombresTourTotauxRestants = Jeu.getInstance().determinerNombreToursTotauxRestants();
+
     }
 
     public void initializationCartesVisibles() {
@@ -444,6 +449,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     private void lancerEvenement() {
         //We say to Jeu ==> Hi! we have to pass to the other gamer
+
         this.thrower.Throw();
 
         //We the display for the user
@@ -451,6 +457,18 @@ public class PiochesController implements Initializable, JeuListener {
         this.listeBouttonsUserCourant.getChildren().clear();
         this.listeDestinations.getChildren().clear();
         this.rafraichirInterface();
+
+        if (Jeu.getInstance().determinerFinJeu() && nombresTourTotauxRestants > 0) {
+            if (!Jeu.getInstance().getJoueurCourant().isAEuInformationFinDuJeu()) {
+                outilDialog.montrerDialogFinDuJeuProche();
+                Jeu.getInstance().getJoueurCourant().setAEuInformationFinDuJeu(true);
+            }
+            nombresTourTotauxRestants--;
+        } else {
+            if(nombresTourTotauxRestants==0){
+                outilDialog.montrerDialogFinJeu();
+            }
+        }
     }
 
     /**

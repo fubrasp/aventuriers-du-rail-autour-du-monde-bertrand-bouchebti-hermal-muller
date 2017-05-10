@@ -33,6 +33,9 @@ public class Joueur {
 
 	private int capaciteJeu = 2;
 
+	private boolean aEuInformationFinDuJeu = false;
+
+
 	/*
 	*
 	* CONSTRUCTEUR
@@ -807,6 +810,18 @@ public class Joueur {
 				i++;
 			}
 		}
+	}
+
+	public int getNbBateauxEtWagonsConfondus(){
+		return this.getNbPionsWagons()+this.getNbPionsBateau();
+	}
+
+	public boolean isAEuInformationFinDuJeu() {
+		return aEuInformationFinDuJeu;
+	}
+
+	public void setAEuInformationFinDuJeu(boolean aEuInformationFinDuJeu) {
+		this.aEuInformationFinDuJeu = aEuInformationFinDuJeu;
 	}
 
 }

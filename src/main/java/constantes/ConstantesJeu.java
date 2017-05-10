@@ -46,6 +46,9 @@ public class ConstantesJeu {
     public final static int PIOCHE_WAGON = 2;
 
 
+    //End of game
+    public final static int NOMBRE_PIONS_FIN_JEU = 6;
+    public final static int NOMBRE_TOUR_PAR_JOUEUR_FIN_JEU = 2;
 
 
 

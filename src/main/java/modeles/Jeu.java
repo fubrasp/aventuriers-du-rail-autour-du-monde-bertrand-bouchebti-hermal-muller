@@ -1,5 +1,7 @@
 package modeles;
 import java.util.*;
+
+import constantes.ConstantesJeu;
 import events.ThrowListener;
 import interfaces.JeuListener;
 
@@ -158,5 +160,19 @@ public class Jeu implements ThrowListener {
 
 	public void setJoueurCourant(Joueur joueurCourant) {
 		this.joueurCourant = joueurCourant;
+	}
+
+	public boolean determinerFinJeu(){
+		for (Joueur joueurConcerne:
+				this.joueurs) {
+			if (joueurConcerne.getNbBateauxEtWagonsConfondus()<= ConstantesJeu.NOMBRE_PIONS_FIN_JEU){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int determinerNombreToursTotauxRestants(){
+		return this.joueurs.size()*ConstantesJeu.NOMBRE_TOUR_PAR_JOUEUR_FIN_JEU;
 	}
 }

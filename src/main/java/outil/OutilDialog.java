@@ -179,6 +179,12 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
+    public void montrerDialogFinJeu(){
+        String titreDialog = "INFORMATION : JEU TERMINE";
+        String messageDialog = "Jeu termine.";
+        makeDialog(titreDialog, messageDialog);
+    }
+
     public void montrerDialogEchangePions(Text textPseudoJoueur,Text textScoreJoueur){
 
         VBox lignes = new VBox();
