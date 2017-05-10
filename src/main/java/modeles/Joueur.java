@@ -768,17 +768,52 @@ public class Joueur {
 
 	//Fonction qui calcule le score final d'un joueur à la fin de la partie
 	public void calculerScoreFinal(){
+		ArrayList<CarteDestination> destinationsReussies = new ArrayList<CarteDestination>();
 		for (CarteDestination destination:this.getCartesDestination()) {
-			this.majScoreDestinations(this.getChemin(),destination);
+			boolean reussi = this.majScoreDestinations(this.getChemin(),destination);
+			if(reussi){
+				destinationsReussies.add(destination);
+			}
+		}
+		this.majScorePort(this.villesPossedees,destinationsReussies);
+		this.majScorePortsNonUtilises();
+	}
+
+	public void majScorePort(ArrayList<Ville> ports, ArrayList<CarteDestination> destinations){
+		for (Ville port:ports) {
+			int nbCartes=0;
+			for (CarteDestination destination:destinations) {
+				for (Ville ville:destination.getVilles()) {
+					if(port.getNom().equals(ville.getNom())){
+						nbCartes++;
+					}
+				}
+
+			}
+			switch (nbCartes) {
+				case 0:
+					break;
+				case 1:
+					this.setScore(this.getScore() + 20);
+					break;
+				case 2:
+					this.setScore(this.getScore() + 30);
+					break;
+				default:
+					this.setScore(this.getScore() + 40);
+					break;
+			}
 		}
 	}
 
-	public void majScorePorts(){
+	public void majScorePortsNonUtilises(){
+		int malus = (3-villesPossedees.size())*4;
+		this.setScore(this.getScore()-malus);
 
 	}
 
 	//Fonction qui met à jour le score à la fin de la partie en fonction d'une carte destination (réussie ou non)
-	public void majScoreDestinations(ArrayList<ArrayList<Route>> chemins, CarteDestination destination){
+	public boolean majScoreDestinations(ArrayList<ArrayList<Route>> chemins, CarteDestination destination){
 		int index = 1;
 		boolean depart;
 		boolean arrivee;
@@ -805,6 +840,7 @@ public class Joueur {
 		} else {
 			this.setScore(this.getScore()-destination.getPointsScoreAssoccies());
 		}
+		return reussi;
 	}
 
 	public void constructChemin(ArrayList<ArrayList<Route>> chemins, Route currentRoute){

@@ -96,6 +96,7 @@ public class PiochesController implements Initializable, JeuListener {
         if(INTJ.verifierCapaciteJoueur()){
             outilDialog.montrerDialogEchangePions(textPseudoJoueur, textScoreJoueur);
             INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_ECHANGE_PIONS);
+            Jeu.getInstance().getJoueurCourant().calculerScoreFinal();
         }else{
             this.notifierEtPasserLeTour("vous ne pouvez plus echanger de pions");
         }
