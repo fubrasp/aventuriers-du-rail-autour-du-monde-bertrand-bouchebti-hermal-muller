@@ -766,6 +766,83 @@ public class Joueur {
 		return chemins;
 	}
 
+	//Fonction qui calcule le score final d'un joueur à la fin de la partie
+	public void calculerScoreFinal(){
+		ArrayList<CarteDestination> destinationsReussies = new ArrayList<CarteDestination>();
+		for (CarteDestination destination:this.getCartesDestination()) {
+			boolean reussi = this.majScoreDestinations(this.getChemin(),destination);
+			if(reussi){
+				destinationsReussies.add(destination);
+			}
+		}
+		this.majScorePort(this.villesPossedees,destinationsReussies);
+		this.majScorePortsNonUtilises();
+	}
+
+	public void majScorePort(ArrayList<Ville> ports, ArrayList<CarteDestination> destinations){
+		for (Ville port:ports) {
+			int nbCartes=0;
+			for (CarteDestination destination:destinations) {
+				for (Ville ville:destination.getVilles()) {
+					if(port.getNom().equals(ville.getNom())){
+						nbCartes++;
+					}
+				}
+
+			}
+			switch (nbCartes) {
+				case 0:
+					break;
+				case 1:
+					this.setScore(this.getScore() + 20);
+					break;
+				case 2:
+					this.setScore(this.getScore() + 30);
+					break;
+				default:
+					this.setScore(this.getScore() + 40);
+					break;
+			}
+		}
+	}
+
+	public void majScorePortsNonUtilises(){
+		int malus = (3-villesPossedees.size())*4;
+		this.setScore(this.getScore()-malus);
+
+	}
+
+	//Fonction qui met à jour le score à la fin de la partie en fonction d'une carte destination (réussie ou non)
+	public boolean majScoreDestinations(ArrayList<ArrayList<Route>> chemins, CarteDestination destination){
+		int index = 1;
+		boolean depart;
+		boolean arrivee;
+		boolean reussi = false;
+		for (ArrayList<Route> chemin:chemins) {
+			depart = false;
+			arrivee = false;
+			index++;
+			for (Route route:chemin) {
+				if(destination.getVilles().get(0).getNom().equals(route.getVilleArrivee().getNom()) || destination.getVilles().get(0).getNom().equals(route.getVilleDepart().getNom())){
+					arrivee=true;
+				}
+				if(destination.getVilles().get(1).getNom().equals(route.getVilleArrivee().getNom()) || destination.getVilles().get(1).getNom().equals(route.getVilleDepart().getNom())){
+					depart=true;
+				}
+			}
+			if(depart && arrivee) {
+				reussi = true;
+			}
+
+		}
+		if(reussi){
+			this.setScore(this.getScore()+destination.getPointsScoreAssoccies());
+		} else {
+			this.setScore(this.getScore()-destination.getPointsScoreAssoccies());
+		}
+		return reussi;
+	}
+
 	public void constructChemin(ArrayList<ArrayList<Route>> chemins, Route currentRoute){
 		int i=chemins.size()-1;
 

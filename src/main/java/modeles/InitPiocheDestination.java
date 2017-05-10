@@ -9,7 +9,6 @@ public class InitPiocheDestination {
 
     public static ArrayList<CarteDestination> initDestinationsItineraires(){
 
-        Ville alZahira = new Ville("AlZahira", true);
         Ville sydney = new Ville("Sydney", true);
 
         Ville athina = new Ville("Athina", true);
@@ -18,12 +17,12 @@ public class InitPiocheDestination {
         Ville bangkok = new Ville("Bangkok", true);
         Ville tokyo = new Ville("Tokyo", true);
 
-        Ville buenosAires = new Ville("BuenosAires", true);
+        Ville buenosAires = new Ville("Buenos Aires", true);
 
 
         Ville marseille = new Ville("Marseille", true);
 
-        Ville capTown = new Ville("CapTown", true);
+        Ville capTown = new Ville("Cap Town", true);
         Ville jakarta = new Ville("Jakarta", true);
 
         Ville caracas = new Ville("Caracas", true);
@@ -33,7 +32,7 @@ public class InitPiocheDestination {
 
         Ville yakutsk = new Ville("Yakutsk", false);
 
-        Ville darEsSalaam = new Ville("DarEsSalaam", true);
+        Ville darEsSalaam = new Ville("Dar Es Salaam", true);
 
         Ville djibouti = new Ville("Djibouti", false);
         Ville lahore = new Ville("Lahore", false);
@@ -41,7 +40,7 @@ public class InitPiocheDestination {
         Ville edinburg = new Ville("Edinburg", true);
         Ville luanda = new Ville("Luanda", true);
 
-        Ville hongKong = new Ville("HongKong", true);
+        Ville hongKong = new Ville("Hong Kong", true);
 
         Ville hamburg = new Ville("Hamburg", true);
         Ville beijing = new Ville("Beijing", false);
@@ -52,9 +51,9 @@ public class InitPiocheDestination {
 
         Ville lima = new Ville("Lima", true);
 
-        Ville losAngeles = new Ville("LosAngeles", true);
+        Ville losAngeles = new Ville("Los Angeles", true);
 
-        Ville rioDeJaneiro = new Ville("RioDeJaneiro", true);
+        Ville rioDeJaneiro = new Ville("Rio De Janeiro", true);
 
         Ville christchurch = new Ville("Christchurch", true);
 
@@ -62,7 +61,7 @@ public class InitPiocheDestination {
 
         Ville mumbai = new Ville("Mumbai", true);
 
-        Ville newYork = new Ville("NewYork", true);
+        Ville newYork = new Ville("New York", true);
 
         Ville miami = new Ville("Miami", true);
         Ville moskva = new Ville("Moskva", false);
@@ -88,16 +87,16 @@ public class InitPiocheDestination {
 
         Ville tiksi = new Ville("Tiksi", true);
 
-        Ville cambridgeBay = new Ville("CambridgeBay", true);
+        Ville cambridgeBay = new Ville("Cambridge Bay", true);
 
         Ville anchorage = new Ville("Anchorage", true);
 
-        Ville alQahira = new Ville("AlQahira", true);
+        Ville alQahira = new Ville("Al Qahira", true);
 
-        Ville portMeresby = new Ville("PortMeresby", true);
+        Ville portMeresby = new Ville("Port Moresby", true);
 
         ArrayList<Ville> villesCDalZahiraSydney = new ArrayList<Ville>();
-        villesCDalZahiraSydney.add(alZahira);
+        villesCDalZahiraSydney.add(alQahira);
         villesCDalZahiraSydney.add(sydney);
         CarteDestination alZahiraSydney = new CarteDestination(19, villesCDalZahiraSydney);
 
@@ -149,7 +148,7 @@ public class InitPiocheDestination {
 
         ArrayList<Ville> villesCDcaracasAlZahira = new ArrayList<Ville>();
         villesCDcaracasAlZahira.add(caracas);
-        villesCDcaracasAlZahira.add(alZahira);
+        villesCDcaracasAlZahira.add(alQahira);
         CarteDestination caracasAlZahira = new CarteDestination(13, villesCDcaracasAlZahira);
 
         ArrayList<Ville> villesCDcaracasAthina = new ArrayList<Ville>();
@@ -273,7 +272,7 @@ public class InitPiocheDestination {
 
         ArrayList<Ville> villesCDmarseilleAlZahira = new ArrayList<Ville>();
         villesCDmarseilleAlZahira.add(marseille);
-        villesCDmarseilleAlZahira.add(alZahira);
+        villesCDmarseilleAlZahira.add(alQahira);
         CarteDestination marseilleAlZahira = new CarteDestination(5, villesCDmarseilleAlZahira);
 
         ArrayList<Ville> villesCDmarseilleBeijing = new ArrayList<Ville>();

@@ -51,7 +51,7 @@ public class Route {
 		@return true si la ville donné est une ville départ ou arrivé
 	 */
 	public boolean containsCity(Ville ville) {
-		return villeArrivee == ville || villeDepart == ville;
+		return villeArrivee.equals(ville) || villeDepart.equals(ville);
 	}
 
 	public Ville getVilleDepart() {
