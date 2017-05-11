@@ -462,7 +462,7 @@
       <Circle fill="#bf7e16" layoutX="707.0" layoutY="84.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="city_yaku"/>
       <Circle fill="#bf7e16" layoutX="703.0" layoutY="179.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="city_beij"/>
       <Circle fill="DODGERBLUE" layoutX="884.0" layoutY="272.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="port_hono"/>
-      <Circle fill="#bf7e16" layoutX="506.0" layoutY="294.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="city_tehr"/>
+      <Circle fill="#bf7e16" layoutX="506.0" layoutY="294.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="city_djib"/>
       <Circle fill="#bf7e16" layoutX="585.0" layoutY="468.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="city_paf"/>
    </children>
 </AnchorPane>

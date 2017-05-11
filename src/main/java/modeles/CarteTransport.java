@@ -49,4 +49,32 @@ public class CarteTransport extends Carte {
 	public String getReference(){
 		return null;
 	}
+
+	public boolean compare(CarteTransport carteTransport){
+		if(carteTransport instanceof CarteTransportBateau){
+			return couleur == ((CarteTransportBateau)carteTransport).getCouleur()
+					&& port == ((CarteTransportBateau)carteTransport).isPort()
+					&& ((CarteTransportBateau)this).isBateauDouble() == ((CarteTransportBateau) carteTransport).isBateauDouble();
+		}else if(carteTransport instanceof CarteTransportWagon){
+			return couleur == ((CarteTransport)carteTransport).getCouleur() && port == ((CarteTransport)carteTransport).port;
+		}else{
+			return false;
+		}
+	}
+	/*@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof CarteTransport){
+			if(obj instanceof CarteTransportBateau){
+				return couleur == ((CarteTransportBateau)obj).getCouleur()
+						&& port == ((CarteTransportBateau)obj).isPort()
+						&& ((CarteTransportBateau)this).isBateauDouble() == ((CarteTransportBateau) obj).isBateauDouble();
+			}else if(obj instanceof CarteTransportWagon){
+				return couleur == ((CarteTransport)obj).getCouleur() && port == ((CarteTransport)obj).port;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}*/
 }

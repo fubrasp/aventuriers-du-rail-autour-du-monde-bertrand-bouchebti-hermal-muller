@@ -55,7 +55,7 @@ public class GestionnairePioches {
         this.initialiserCarteVisibles();
     }
 
-    private void dispatcherCartesDefausses(ArrayList<CarteTransport> cartesADefausser){
+    public void dispatcherCartesDefausses(ArrayList<CarteTransport> cartesADefausser){
         for (CarteTransport carteVisibleADefausser:
                 cartesADefausser) {
             if(carteVisibleADefausser instanceof CarteTransportBateau){
