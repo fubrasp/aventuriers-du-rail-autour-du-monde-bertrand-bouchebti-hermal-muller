@@ -128,7 +128,7 @@ public class MapController implements Initializable {
         @param road the chosen road
      */
     private void setRoadToPlayer(Node initialNode, Route road){
-        if(INTJ.verifierCapaciteJoueur()){
+        if(INTJ.verifierCapaciteJoueurPrendreRoute()){
             if(initialNode.getStyleClass().size() >0 ){
                 Joueur joueur = jeu.getJoueurCourant();
                 boolean roadTaken = joueur.selectRoad(road);

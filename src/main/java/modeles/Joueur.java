@@ -264,6 +264,10 @@ public class Joueur {
 		return this.capaciteJeu>=2;
 	}
 
+	public boolean aLaCapaciteDePrendreRoute(){
+		return this.capaciteJeu>=2;
+	}
+
 
 
 	public void diminuerCapaciteJoueur(int value){

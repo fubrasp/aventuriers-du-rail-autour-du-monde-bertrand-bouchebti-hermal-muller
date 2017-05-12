@@ -21,6 +21,10 @@ public class INTJ {
         return Jeu.getInstance().getJoueurCourant().aLaCapaciteDeJouer();
     }
 
+    public static boolean verifierCapaciteJoueurPrendreRoute() {
+        return Jeu.getInstance().getJoueurCourant().aLaCapaciteDePrendreRoute();
+    }
+
     public static boolean verifierALaCapaciteDePiocherDesCartesDestinations() {
         return Jeu.getInstance().getJoueurCourant().aLaCapaciteDePiocherDesCartesDestinations();
     }
