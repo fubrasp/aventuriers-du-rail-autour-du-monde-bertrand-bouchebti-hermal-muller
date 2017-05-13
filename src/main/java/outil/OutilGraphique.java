@@ -21,28 +21,32 @@ import java.util.HashMap;
 /**
  * Created by bertran95u on 03/04/2017.
  */
+
+/**
+ * Classe gerant la pluplart des objets graphiques
+ */
 public class OutilGraphique {
 
     private OutilDialog outilDialog = new OutilDialog();
 
-    //CREATE CLICKABLE IMAGES
     /**
-     * Method which create a custom clickable image
-     * @param carte card concerned
+     * Methode qui creer des images clickables
+     * @param carte card concernee
      * @return anchorPane
      */
     public static AnchorPane creerAnchorPane(Carte carte) {
-        //We use an anchorPane
+        //On utilise un anchorPane
         AnchorPane anchorPaneAssocieeNouveauBoutton = new AnchorPane();
         anchorPaneAssocieeNouveauBoutton.setAccessibleText(carte.getReference());
         anchorPaneAssocieeNouveauBoutton.setPrefHeight(60);
         anchorPaneAssocieeNouveauBoutton.setPrefWidth(80);
 
-        //We prepare the image and we create an imageview
+        //On prepare l'image de la carte avec une imageview
         ImageView imageAssocieeNouveauBoutton = OutilGraphique.creerImageView(OutilES.determinerUrl(carte));
         imageAssocieeNouveauBoutton.setFitWidth(80);
         imageAssocieeNouveauBoutton.setFitHeight(60);
 
+        //On prepare les deux elements textuelles de la carte
         Text textAssocieeNouveauBoutton = new Text("");
         Font police = Font.font("Verdana", FontWeight.BOLD, 20);
         textAssocieeNouveauBoutton.setFont(police);
@@ -56,7 +60,7 @@ public class OutilGraphique {
         textNbCardSelected.setLayoutY(20);
 
 
-        //We add children to parent (anchorPane)
+        //On ajoute les 3 elements  a l'anchorPane
         anchorPaneAssocieeNouveauBoutton.getChildren().add(imageAssocieeNouveauBoutton);
         anchorPaneAssocieeNouveauBoutton.getChildren().add(textAssocieeNouveauBoutton);
         anchorPaneAssocieeNouveauBoutton.getChildren().add(textNbCardSelected);
@@ -65,7 +69,7 @@ public class OutilGraphique {
     }
 
     /**
-     * Method which create a custom clickable image for destinations
+     * Methode qui creer des images clickables pour les cartes destinations
      * @param carteDestinationChoisie
      * @param listeDestinations
      */
@@ -75,6 +79,7 @@ public class OutilGraphique {
         bouttonDestinationCree.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                //Micro Popup
                 outilDialog.montrerDialogCarteDestinationClickee(carteDestinationChoisie);
             }
         });
@@ -82,7 +87,7 @@ public class OutilGraphique {
     }
 
     /**
-     * Method which create a custom imageView
+     * Methode qui creer une image view sur mesure
      * @param cheminFichier
      * @return imageview creer a partir du fichier
      */
@@ -97,12 +102,10 @@ public class OutilGraphique {
     }
 
 
-    //REFRESH
-
     /**
-     * Method which refresh gamer's informations
-     * @param textPseudoJoueur gamer's pseudo
-     * @param textScoreJoueur gamer's score
+     * Methode qui raffraichit les informations du joueur
+     * @param textPseudoJoueur identifiant du joueur
+     * @param textScoreJoueur score du joueur
      */
     public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur){
         textPseudoJoueur.setText("Joueur : "+ Jeu.getInstance().getJoueurCourant().getPseudo());
@@ -110,7 +113,7 @@ public class OutilGraphique {
     }
 
     /**
-     * Method which refresh gamer's destinations cards
+     * Methode qui raffraichit les cartes destinations du joueur
      * @param listeDestinations
      */
     public void refreshUserDestinationCards(VBox listeDestinations) {
@@ -122,8 +125,8 @@ public class OutilGraphique {
     }
 
     /**
-     * Method which refresh gamer's transport cards
-     * Append directly cards in one time according the count method
+     * Methode qui raffraichit les cartes transport du joueur
+     * Ajoute dynamiquement les cartes a la main du joueur
      * @param listeBouttonsUserCourant
      */
     public void refreshUserTransportCards(HBox listeBouttonsUserCourant){
@@ -134,8 +137,6 @@ public class OutilGraphique {
                 Jeu.getInstance().getJoueurCourant().getCartesTransport()) {
 
             int nombreApparitions = occurenceCartesTransport.get(carteTransportCourante.getReference());
-
-            //System.out.println("CARTE : "+carteTransportCourante.getReference() + " NB ==> " +nombreApparitions);
 
             if(!listeBouttonsUserCourantContientCarte(listeBouttonsUserCourant, carteTransportCourante)){
 
@@ -194,9 +195,9 @@ public class OutilGraphique {
     }
 
     /**
-     * Method which determine if a card is contain in visibles gamer's transport cards
-     * @param listeBouttonsUserCourant gamer's hand cartes transport view
-     * @param carteTransportCourante carte transport concerned
+     * Method equi determine si une carte est deja dans la main du joueur
+     * @param listeBouttonsUserCourant main du joueur
+     * @param carteTransportCourante carte transport concernee
      * @return boolean
      */
     private boolean listeBouttonsUserCourantContientCarte(HBox listeBouttonsUserCourant, CarteTransport carteTransportCourante){

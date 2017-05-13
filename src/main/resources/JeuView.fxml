@@ -48,7 +48,7 @@
                                                                   <Image url="@images/cartes/destinations/Pioche.png" />
                                                                </image>
                                                             </ImageView>
-                                                            <Button layoutX="120.0" layoutY="74.0" mnemonicParsing="false" onAction="#handleRESET" text="RS_ACT" />
+                                                            <Button layoutX="120.0" layoutY="74.0" mnemonicParsing="false" onAction="#handleRESET" text="RS_ACT" visible="false" />
                                                             <Button layoutX="6.0" layoutY="129.0" mnemonicParsing="false" onAction="#handleEchangerPions" prefHeight="27.0" prefWidth="188.0" text="Echanger des pions" />
                                                          </children>
                                                       </AnchorPane>

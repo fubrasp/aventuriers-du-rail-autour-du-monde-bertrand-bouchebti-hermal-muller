@@ -1,6 +1,5 @@
 package controllers;
 
-import application.MainApp;
 import constantes.ConstantesJeu;
 import interfaces.INTJ;
 import events.Thrower;
@@ -23,74 +22,90 @@ import java.util.*;
 
 public class PiochesController implements Initializable, JeuListener {
 
-    //faudrait encampsuler l'empechement des actions mais le refractor ne marche pas convenablement !
+    //On pourrait encampsuler l'empechement des actions mais le refractor ne marche pas convenablement !
 
-    //Manage alert with this external class
+    //Gere les alert a partir d'un classe externe
     private OutilDialog outilDialog = new OutilDialog();
 
-    //Manage graphic interactions
+    //Gere les objets graphiques a partir d'une classe externe
     private OutilGraphique outilGraphique = new OutilGraphique();
 
     private static int compteurPositionNouveauBoutonsCartesVisibles = 0;
 
-    //User's hand (cartes transport)
+    //Cartes transport du joueur
     @FXML
     private HBox listeBouttonsUserCourant = new HBox();
 
-    //Games's cartes visibles
+    //Cartes visibles du jeu
     @FXML
     private VBox listeBouttonsCartesVisibles = new VBox();
 
-    //User's cartes destinations
+    //Cartes destinations du joueur
     @FXML
     private VBox listeDestinations = new VBox();
 
-    //These two text items display user informations
+    //informations du joueur (elements textuels)
     @FXML
     private Text textPseudoJoueur = new Text();
-
-    private final static int PIOCHE_BATEAU = 1;
-    private final static int PIOCHE_WAGON = 2;
 
     @FXML
     private Text textScoreJoueur = new Text();
 
-    //These two list are for choices of cartes destinations
+    //Listes pour les cartes destinations
     private static ArrayList<String> choixUtilisateursCartesDestinations = new ArrayList<String>();
 
     private ArrayList<CarteDestination> carteDestinations = new ArrayList<CarteDestination>();
 
-    //EVENTS
+    //Evenements
     private Thrower thrower = new Thrower();
 
     private static int nombresTourTotauxRestants;
 
+    /*
+    *
+	* INITIALISATION DU CONTROLEUR
+	*
+	*/
 
-
-    //INITIALIZE
     public void initialize(URL location, ResourceBundle resources) {
+        //Ajoute ce controller comme listener
         Jeu.getInstance().addListener(this);
 
-        //Display the cartes visibles (it is dynamic!)
+        //Affiche les cartes visibles en dynamique
         this.initializationCartesVisibles();
-        //Add a target for event (when turn is finished we throw an event)
+
+        //Ajoute une cible a ce controlleur qui emet des evenements aussi..
+
         thrower.addThrowListener(Jeu.getInstance());
-        //allow us to display the pre-loaded cards when initialize the gamer for the first time (7 bateaux and 3 wagons)
-        this.rafraichirInterface();
+
+        //permet d'afficher les cartes initialisees (7 bateaux and 3 wagons)
+        this.refreshInterface();
+
         nombresTourTotauxRestants = Jeu.getInstance().determinerNombreToursTotauxRestants();
 
     }
 
     public void initializationCartesVisibles() {
         compteurPositionNouveauBoutonsCartesVisibles = 0;
-        //Get cartes visibles
+        //Get des cartes visibles
         ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
-        //Add them to the graphic element
+
+        //Ajoute ces cartes au vbox
         this.addToVBoxBoutton(cartesVisibles);
-        //Verify the rule of not displaying 3 jokers on cartes visibes is respected
+
+        //verifie la regle des 3 jokers (aurait pu etre fait en amont)
         verifierTraiterJokersSansDialog();
     }
 
+    /*
+	*
+	* FONCTIONS
+	*
+	*/
+
+    /**
+     * Methode qui gere l'echange de pions
+     */
     @FXML
     private void handleEchangerPions() {
         if(INTJ.verifierCapaciteJoueur()){
@@ -102,13 +117,16 @@ public class PiochesController implements Initializable, JeuListener {
         }
     }
 
+    /**
+     * Methode qui gere la pioche bateau
+     */
     @FXML
     private void handlePiocheBateau() {
         this.piocher(ConstantesJeu.PIOCHE_BATEAU);
     }
 
     /**
-     * Method which manage click on pioche wagon button
+     * Methode qui gere la pioche wagon
      */
     @FXML
     private void handlePiocheWagon() {
@@ -116,7 +134,7 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which manage click on add destinations button
+     * Methode qui gere l'ajout de nouvelles cartes destinations
      */
     @FXML
     private void handleDialogNouvelleDestination() {
@@ -124,7 +142,7 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which manage click on TR_FINI button
+     * Methode qui gere le boutton tour fini
      */
     @FXML
     private void handleTourFini() {
@@ -132,14 +150,14 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which manage selected and unselected elements in dialog ajout carte destination/itineraire
+     * Methode qui gere la popup des destiantions
      */
     @FXML
     public static void handleButtonAction(ActionEvent e) {
         int count = 0;
         String choices = "";
 
-        //REFRESH CHOICES...
+        //RAFRAICHIR LES CHOIX...
         choices = "";
         choixUtilisateursCartesDestinations.clear();
 
@@ -157,86 +175,89 @@ public class PiochesController implements Initializable, JeuListener {
         OutilDialog.lbllist.setText(choices);
     }
 
-    //PROVISOIRE
+    //Methode de triche facilitant le devellopement
     @FXML
     private void handleRESET() {
         INTJ.resterCapaciteJoueur();
-        //System.out.println("CAPACITE DU JOUEUR : " + Jeu.getInstance().getJoueurCourant().getCapaciteJeu());
     }
 
 
     /**
-     * Method which manage pioches transport
+     * Methode qui gere l'action de piocher
      */
     private void piocher(int typePioche) {
         if (INTJ.verifierCapaciteJoueur()) {
             CarteTransport carteTransportPiochee;
             String nomPiocheVide = "";
             if (typePioche == ConstantesJeu.PIOCHE_BATEAU) {
-                //We directly pioche carte transport bateau
+                //on pioche la carte bateau
                 carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
-                //Use after for error messages
+                //Ceci est utilise pour les message d'erreurs
                 nomPiocheVide = "BATEAUX";
             } else {
                 carteTransportPiochee = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
                 nomPiocheVide = "WAGONS";
             }
 
-            //If the pioche has been resfreshed
-            if (carteTransportPiochee.getCouleur() == CarteTransport.PIOCHE_REFAITE) {
+            //Si la pioche a ete refaite a partir de la defausse
+            if (carteTransportPiochee.getCouleur() == ConstantesJeu.PIOCHE_REFAITE) {
                 outilDialog.montrerDialogPiocheEpuisee();
-                //We know that the pioche has been resfreshed, we can pioche a new card, so recursive approach
+                //On peut donc piocher une nouvelle carte ! on procede de maniere recursive
                 if(typePioche == ConstantesJeu.PIOCHE_BATEAU){
                     handlePiocheBateau();
                 }else {
                     handlePiocheWagon();
                 }
             } else {
-                //If there are no card in defausses
-                if (carteTransportPiochee.getCouleur() == CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
+                //Si on ne peut pas reseter le jeu faute de cartes dans les defausses
+                if (carteTransportPiochee.getCouleur() == ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
                     outilDialog.montrerDialogDefausseVide(nomPiocheVide);
                 } else {
-                    //We are in nominal case
-                    //We decrease the level of action ability
+                    //Cas nominal
+                    //On enleve 1 piont d'action au joueur
                     INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
-                    //We had the card to the gamer hand (horizontal)
+                    //On ajoute la carte a la main du joeur
                     gererAjoutCarteMain(carteTransportPiochee);
                 }
             }
         }else{
-            //Else we display the error case
+            //Sinon on afiche un message d'erreur
             this.notifierEtPasserLeTour("piocher de cartes transport");
         }
     }
 
+    /**
+     * Methode qui affiche un message et passe directement au joueur suivant
+     * @param message
+     */
     private void notifierEtPasserLeTour(String message){
         outilDialog.montrerDialogActionNonPossible(message);
         this.lancerEvenement();
     }
 
     /**
-     * Method which manage pioches destinations/itineraire
+     * Methode qui gere la picohes de cartes destinations/itinieraire
      */
     private void gererPiocheDestination() {
         //Quand on utilise la methode generique on a un plantage
-        //On est donc obliger de faire de la duplicatin de code en quelque sorte
+        //On est donc obliger de faire de la duplication de code en quelque sorte
         if (INTJ.verifierALaCapaciteDePiocherDesCartesDestinations()) {
             PiocheDestination piocheDestination = Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination();
 
             if (piocheDestination.estVide()) {
-                //We know there are no defausse system in the destination pioche
+                //il n'y a pas de systeme de defausse pour la pioche de cartes destinations/itineraire
                 outilDialog.montrerDialogErreurPiocheDestination();
             } else {
-                //We take cards in order to choose one or more of them
+                //On choisit des cartes parmi celle ci
                 this.carteDestinations = piocheDestination.piocherCartesDestination();
                 INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
-                //Error Case, we have to choose at least one card
+                //Cas d'erreur si aucune carte n'a ete choisie
                 if (this.carteDestinations.isEmpty()) {
                     outilDialog.montrerDialogErreurPiocheDestination();
                     INTJ.augmenterCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
                 } else {
                     outilDialog.montrerDialogChoixCartesDestination(this.carteDestinations);
-                    //Add the destinations to the user list of destinations
+                    //Ajoutes les cartes destinations au joueur
                     ajouterDestinationUser();
                 }
             }
@@ -246,20 +267,20 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Methode which allow to concatenate card with small number text (X2 for instance)
-     * Did we create a new button or update an existing button accordind to the reference card ?
+     * Methode qui permet de concatener les cartes transport dans la main en une seule image clickable
+     * Doit-on creer une nouveau bouton ou non ? cela depend de la reference de la carte..
      * @param carte carte transport which is checked
      */
     private void gererAjoutCarteMain(CarteTransport carte) {
-        //Count the number of card(s) with this reference
+        //Compte le noombre de cartes
         int nombreApparitionCarte = Jeu.getInstance().getJoueurCourant().dejaDansLaMainDuJoueur(carte);
 
-        //In all cases this card is associated with the gamer
+        //Dans tous les cas on ajoute la carte a la main du joueur (modele)
         INTJ.ajouterCarteJoueurCourant(carte);
 
-        //If we have a card in the gamer's hand
+        //Si nous avons deja une carte dans la main du joueur
         if (nombreApparitionCarte > 0) {
-            //We update the text
+            //On met a jour le texte de la carte
             for (Node n : this.listeBouttonsUserCourant.getChildren()) {
                 AnchorPane anchorPaneClickable = (AnchorPane) n;
                 if (anchorPaneClickable.getAccessibleText().equals(carte.getReference())) {
@@ -270,20 +291,19 @@ public class PiochesController implements Initializable, JeuListener {
                     textCourant.setText("X" + (nombreApparitionCarte + 1));
                 }
             }
-            //If there are no card with this reference
+            //S'il n'y a pas de carte
         } else {
-            //Create a button
+            //Creer un boutton
             //this.listeBouttonsUserCourant.getChildren().add(OutilGraphique.creerAnchorPane(carte));
 
-            // Added these 2 lines
             this.listeBouttonsUserCourant.getChildren().clear();
             this.rafraichirInterface();
         }
     }
 
     /**
-     * Method which put in the cartes visibles display the clickables images
-     * @param listeCartesVisibles which have to been initialized
+     * Methode qui affiche les cartes visibles
+     * @param listeCartesVisibles qui a ete initialisee
      */
     private void addToVBoxBoutton(ArrayList<CarteTransport> listeCartesVisibles) {
         for (CarteTransport ctw :
@@ -293,8 +313,8 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method with create and add behavior to carte visibles buttons
-     * @param ct carte that we want create a carte visible image clickable
+     * Methode qui creer et ajoute un comportement aux cartes visibles
+     * @param ct carte pour laquelle nous voulons creer une carte visible
      * @return image clickable anchorPane
      */
     private AnchorPane creerBouttonImageCarteVisibles(CarteTransport ct) {
@@ -304,14 +324,12 @@ public class PiochesController implements Initializable, JeuListener {
         nouveauAnchorPaneClickable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //We know the element position int the VBOx
+                //On connait la position dans le VBox
 
-                //System.out.println("" + nouveauAnchorPaneClickable.getId());
-
-                //When the element is click put the element in the gamer's hand
+                //Lorsqu'un un click sur l'element est effectue on place la carte dans la main du joueur
                 transfererCarteVisibleALaMainDuJoueur("" + nouveauAnchorPaneClickable.getId());
 
-                //Verify we haven't 3 jokers displayed (On peut changer eventuellement la position de ça!!!)
+                //Nous verifions que nous avons 3 jokers suite a l'enlevement de la carte visible
                 verifierTraiterJokers();
             }
         });
@@ -320,19 +338,18 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which verify if there are too many jokers
+     * Methode qui verifie qu'il n'y est pas trop de jokers
      * @return
      */
     private boolean verifierTraiterJokersSansDialog(){
         if (Jeu.getInstance().detecterTropJokersVisibles()) {
             this.reseterCartesVisibles();
-            System.out.println("Verifier joker sans dialog");
             return true;
         }
         return false;
     }
 
-    //Use previous method
+    //Utilise la methode precedente
     private void verifierTraiterJokers() {
         if(this.verifierTraiterJokersSansDialog()){
             outilDialog.montrerDialogErreurJokers();
@@ -340,7 +357,7 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which done the reset
+     * Methode qui effectue le reset des cartes visibles
      */
     private void reseterCartesVisibles() {
         Jeu.getInstance().getGestionnairePioches().reseterCartesVisibles();
@@ -349,28 +366,28 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method wich allow to transfer card from cartes visibles area
-     * @param id of the card we have to transfer
+     * Methode qui permet le transfert des cartes visibles vers la main du joueur
+     * @param id de la carte a transferer
      */
     private void transfererCarteVisibleALaMainDuJoueur(String id) {
         if (INTJ.verifierCapaciteJoueur()) {
             int idInt = Integer.parseInt(id);
 
-            //Get cartes visibles
+            //Obtenir les cartes visibles
             ArrayList<CarteTransport> cartesVisibles = Jeu.getInstance().getGestionnairePioches().getCartesVisibles();
 
             CarteTransport carteTransportATransferer;
             CarteTransport carteTransportPiochee;
 
-            //Know which card we have to transfer
+            //Connaitre celle a transferer
             carteTransportATransferer = cartesVisibles.get(idInt);
 
-            //Pioche a new card in order to replace carte transferee
+            //Piocher une nouvelle carte pour remplacer la carte transferee
             carteTransportPiochee = OutilPratique.piocherCarteTransportRandom();
 
-            //Some errors verifications
-            if (carteTransportPiochee.getCouleur() != CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
-                if (carteTransportATransferer.getCouleur() == CarteTransport.JOKER) {
+            //Verifications de cas d'erreurs
+            if (carteTransportPiochee.getCouleur() != ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE) {
+                if (carteTransportATransferer.getCouleur() == ConstantesJeu.JOKER) {
                     if (INTJ.joueurPeutPrendreJokerCartesVisibles()) {
                         INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_JOKER_VISIBLE);
                         this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
@@ -379,7 +396,7 @@ public class PiochesController implements Initializable, JeuListener {
                     }
                 } else {
                     INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_TRANSPORT_PIOCHEE);
-                    //Done changes, nominal case
+                    //Cas nominal, On effectue les changements
                     this.impacterJeuEtCartesVisibles(idInt, carteTransportATransferer, carteTransportPiochee);
                 }
             } else {
@@ -387,7 +404,8 @@ public class PiochesController implements Initializable, JeuListener {
                 anchorePaneSansCarte.getChildren().set(0, OutilGraphique.creerImageView("src/main/resources/images/cartes/transport/vide.jpeg"));
                 anchorePaneSansCarte.setMaxWidth(50);
                 anchorePaneSansCarte.setMaxHeight(50);
-                //BIZARRE
+
+                //cause un bug en RMI (on a des copie !)
                 this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneSansCarte);
 
             }
@@ -397,16 +415,16 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which physically done changes of transfererCarteVisibleALaMainDuJoueur
-     * @param idInt
-     * @param carteTransportATransferer carte which we transfer
-     * @param carteTransportPiochee carte which has been pioche
+     * Methode qui effectue les changements pour la methode de transfert de carte
+     * @param idInt identifiant de la carte dans le vbox des cartes visibles
+     * @param carteTransportATransferer carte a transferer
+     * @param carteTransportPiochee carte qui a ete piochee
      */
     private void impacterJeuEtCartesVisibles(int idInt, CarteTransport carteTransportATransferer, CarteTransport carteTransportPiochee) {
-        //We replace the card
+        //On remplace la carte
         Jeu.getInstance().getGestionnairePioches().getCartesVisibles().set(idInt, carteTransportPiochee);
 
-        //We replace the clickable image
+        //On remplace l'image clickable
         AnchorPane anchorePaneAChanger = creerBouttonImageCarteVisibles(carteTransportPiochee);
         anchorePaneAChanger.setId("" + idInt);
         this.listeBouttonsCartesVisibles.getChildren().set(idInt, anchorePaneAChanger);
@@ -415,11 +433,11 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which add gamer's destinations
+     * Methode qui ajoute les destinations du joueur
      */
     private void ajouterDestinationUser() {
-        //Get the alert result
-        //Error case
+        //On recupere le resultat de l'alert
+        //Cas d'erreur, on recurse sur la demande de destinations
         if (choixUtilisateursCartesDestinations.isEmpty()) {
             //A VERIFIER
             outilDialog.montrerDialogAuMoinsUnerCarte();
@@ -427,16 +445,15 @@ public class PiochesController implements Initializable, JeuListener {
             ajouterDestinationUser();
         } else {
             ArrayList<CarteDestination> cartesDestinationsChoisies = CarteDestination.renvoyerCarteChoisies(this.carteDestinations, choixUtilisateursCartesDestinations);
-            //If not choose it means we have to put this under the pioche destination
+            //Si des cartes n'ont pas ete choisies on les met sous la pioche destination
 
-            //TESTING
             ArrayList<CarteDestination> cartesNonChoisies = (ArrayList<CarteDestination>) this.carteDestinations.clone();
             cartesNonChoisies.removeAll(cartesDestinationsChoisies);
             Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().remettreSousLaPioche(cartesNonChoisies);
 
             Jeu.getInstance().getJoueurCourant().ajouterCartesDestination(cartesDestinationsChoisies);
 
-            //We add the clickable image on the gamer's board
+            //On ajoute l'image clickable au dashboard du joueur
             for (CarteDestination carteDestinationChoisie :
                     cartesDestinationsChoisies) {
                 outilGraphique.creerAnchorPaneDestination(carteDestinationChoisie, this.listeDestinations);
@@ -446,19 +463,20 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which fire events
+     * Methode qui lance les evenements
      */
     private void lancerEvenement() {
-        //We say to Jeu ==> Hi! we have to pass to the other gamer
+        //On dit a l'objet jeu de passer au joueur suivant
 
         this.thrower.Throw();
 
-        //We the display for the user
-        //We refresh the 2 views where gamer cards are displayed..
+        //On affiche le nouvel user
+        //On raffraichit l'ecran de l'utilisateur
         this.listeBouttonsUserCourant.getChildren().clear();
         this.listeDestinations.getChildren().clear();
         this.rafraichirInterface();
 
+        //Traitements pour la fin du jeu
         if (Jeu.getInstance().determinerFinJeu() && nombresTourTotauxRestants > 0) {
             if (!Jeu.getInstance().getJoueurCourant().isAEuInformationFinDuJeu()) {
                 outilDialog.montrerDialogFinDuJeuProche();
@@ -477,12 +495,13 @@ public class PiochesController implements Initializable, JeuListener {
     }
 
     /**
-     * Method which refresh the gamer's interface
+     * Methode qui raffraichit l'interface
      */
     public void rafraichirInterface(){
         Jeu.getInstance().getJoueurCourant().getSelectedCards().clear();
 
         OutilGraphique.refreshUserInformations(textPseudoJoueur, textScoreJoueur);
+        this.listeDestinations.getChildren().clear();
         outilGraphique.refreshUserDestinationCards(this.listeDestinations);
         outilGraphique.refreshUserTransportCards(this.listeBouttonsUserCourant);
     }

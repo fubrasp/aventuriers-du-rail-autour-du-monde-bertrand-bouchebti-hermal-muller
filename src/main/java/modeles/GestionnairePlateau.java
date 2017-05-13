@@ -1,5 +1,6 @@
 package modeles;
 
+import constantes.ConstantesJeu;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,12 +16,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe modelisant le plateau
+ */
 public class GestionnairePlateau {
-    public static Map<String, Ville> cities = initCities();
+
+    //Villes du plateau
+    public static Map<String, Ville> cities = InitCities.initCities();
 
     /*
-        Parse plateau.fxml
-        @Return Node List in plateau.fxml
+	*
+	* FONCTIONS
+	*
+	*/
+
+    /**
+     * Parse plateau.fxml (construire un graphe)
+     * @return Node List in plateau.fxml
      */
     public static ArrayList<Element> parsePlateau(){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -28,7 +40,7 @@ public class GestionnairePlateau {
 
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            File fileXML = new File("src/main/resources/plateau.fxml");
+            File fileXML = new File(ConstantesJeu.CHEMIN_PLATEAU);
             Document xml = builder.parse(fileXML);
 
             Element root = xml.getDocumentElement();
@@ -44,11 +56,10 @@ public class GestionnairePlateau {
         return list;
     }
 
-    /*
-        Get childNodes for a given node
-        @param n parentNode
-        @param listElement that will contains childNodes
-        @Return Node List in plateau.fxml
+    /**
+     * Obtenir les noeuds enfants
+     * @param n noeud parent
+     * @param listElement liste qui contient les noeuds enfants
      */
     public static void getNodes(Node n, ArrayList<Element> listElement) {
         String str = new String();
@@ -58,6 +69,7 @@ public class GestionnairePlateau {
 
             //Nous allons maintenant traiter les nœuds enfants du nœud en cours de traitement
             int nbChild = n.getChildNodes().getLength();
+
             //Nous récupérons la liste des nœuds enfants
             NodeList list = n.getChildNodes();
 
@@ -74,11 +86,12 @@ public class GestionnairePlateau {
         }
     }
 
-    /*
-        Get roads from a nodeList
-        @Return Map
-            key : String nodeClass format : (b_ve_3_anch_pert)
-            value : Route
+    /**
+     * Obtenir les route a partir de la liste de noud
+     * @param nodeList
+     * @return Map
+     * key : String nodeClass format : (b_ve_3_anch_pert)
+     * value : Route
      */
     public static Map<String, Route> initRoads(ArrayList<Element> nodeList){
         Map<String, Route> roads = new HashMap<>();
@@ -92,10 +105,10 @@ public class GestionnairePlateau {
         return roads;
     }
 
-    /*
-        Parse nodeClass
-        * @param roadClass , String that should be in format (b_ve_3_anch_pert)
-        * @param road
+    /**
+     *
+     * @param roadClass String doit etre au format (b_ve_3_anch_pert)
+     * @param road
      */
     private static void parseRoad(String roadClass, Route road){
         String[] roadMetaData = roadClass.split("_");
@@ -111,65 +124,5 @@ public class GestionnairePlateau {
         road.setVilleArrivee(city1);
         road.setVilleDepart(city2);
         road.setMaritime(roadType.equals("b"));
-    }
-
-    /*
-        @Return Map
-            key : String city abbreviation
-            value : Ville
-     */
-    public static Map<String, Ville> initCities(){
-        Map<String, Ville> aMap = new HashMap<>();
-        aMap.put("vanc", new Ville("Vancouver",true));
-        aMap.put("losa", new Ville("Los Angeles",true));
-        aMap.put("winn", new Ville("Winnipeg",false));
-        aMap.put("newy", new Ville("New York",true));
-        aMap.put("miam", new Ville("Miami",true));
-        aMap.put("cara", new Ville("Caracas",true));
-        aMap.put("lima", new Ville("Lima",true));
-        aMap.put("valp", new Ville("Valparaiso",true));
-        aMap.put("buen", new Ville("Buenos Aires",true));
-        aMap.put("rio", new Ville("Rio de Janeiro",true));
-        aMap.put("cape", new Ville("Cape Town",true));
-        aMap.put("camb", new Ville("Cambridge Bay",true));
-        aMap.put("reyk", new Ville("Reykjavik",true));
-        aMap.put("edin", new Ville("Edinburg",true));
-        aMap.put("mexi", new Ville("Mexico",false));
-        aMap.put("mars", new Ville("Marseille",true));
-        aMap.put("hamb", new Ville("Hamburg",true));
-        aMap.put("atbi", new Ville("Athina",true));
-        aMap.put("murm", new Ville("Murmansk",true));
-        aMap.put("mosk", new Ville("Moskva",false));
-        aMap.put("novo", new Ville("Novosibirsk",false));
-        aMap.put("tehr", new Ville("Tehran",false));
-        aMap.put("alqa", new Ville("Al Qahira",true));
-        aMap.put("lago", new Ville("Lagos",true));
-        aMap.put("djib", new Ville("Djibouti",false));
-        aMap.put("dar", new Ville("Dar Es Salaam",true));
-        aMap.put("luan", new Ville("Luanda",true));
-        aMap.put("cape", new Ville("Cape Town",true));
-        aMap.put("toam", new Ville("Toamasina",true));
-        aMap.put("tiks", new Ville("Tiksi",true));
-        aMap.put("yaku", new Ville("Yakutsk",false));
-        aMap.put("petr", new Ville("Petropavlovsk",true));
-        aMap.put("beij", new Ville("Beijing",false));
-        aMap.put("hong", new Ville("Hong Kong",true));
-        aMap.put("labo", new Ville("Lahore",false));
-        aMap.put("mumb", new Ville("Mumbai",true));
-        aMap.put("bang", new Ville("Bangkok",true));
-        aMap.put("anch", new Ville("Anchorage",true));
-        aMap.put("toky", new Ville("Tokyo",true));
-        aMap.put("mani", new Ville("Manila",true));
-        aMap.put("hono", new Ville("Honolulu",true));
-        aMap.put("jaka", new Ville("Jakarta",true));
-        aMap.put("darw", new Ville("Darwin",true));
-        aMap.put("port", new Ville("Port Moresby",true));
-        aMap.put("pert", new Ville("Perth",true));
-        aMap.put("sydn", new Ville("Sydney",true));
-        aMap.put("chri", new Ville("Christchurch",true));
-        aMap.put("casa", new Ville("Casablanca",true));
-        aMap.put("paf", new Ville("Port Au Français",false));
-
-        return aMap;
     }
 }

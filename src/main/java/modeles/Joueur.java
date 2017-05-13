@@ -2,10 +2,11 @@ package modeles;
 
 import constantes.ConstantesJeu;
 import outil.OutilCarte;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * Classe modelisant un joueur
+ */
 public class Joueur {
 
     //Liste des cartes de destinations ou itinéraires du joueur
@@ -49,6 +50,11 @@ public class Joueur {
 	*
 	*/
 
+    /**
+     * Construit un joueur
+     * @param pseudo identifiant
+     * @param couleur couleur associee au joueur utilisee pour la prise de route
+     */
     public Joueur(String pseudo, String couleur) {
         this.pseudo = pseudo;
         this.score = 0;
@@ -160,20 +166,18 @@ public class Joueur {
 
     }
 
-    public ArrayList<CarteTransport> initialiserMainJoueur() {
+    public void initialiserMainJoueur() {
         // aucune verification de carte est faite car nous savons pertinament que les pioches ont un nombre de carte suffisant
-        ArrayList<CarteTransport> cartesTransportsInitialisation = new ArrayList<CarteTransport>();
         CarteTransport carteAAjouter;
         for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_BATEAU_INITIALISATION; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportBateau().piocherCarte();
-            cartesTransportsInitialisation.add(carteAAjouter);
+            this.cartesTransport.add(carteAAjouter);
         }
 
         for (int i = 0; i < ConstantesJeu.NOMBRE_CARTES_WAGON_INITIALISATION; i++) {
             carteAAjouter = (CarteTransport) Jeu.getInstance().getGestionnairePioches().getPiocheCartesTransportWagon().piocherCarte();
-            cartesTransportsInitialisation.add(carteAAjouter);
+            this.cartesTransport.add(carteAAjouter);
         }
-        return cartesTransportsInitialisation;
     }
 
     //<reference card, number of occurence>
@@ -371,7 +375,7 @@ public class Joueur {
         int scoreByColor = 0;
 
         for (Integer key : selectedCards.keySet()) {
-            if (!key.equals(CarteTransport.JOKER)) {
+            if (!key.equals(ConstantesJeu.JOKER)) {
                 scoreByColor = checkIfTwoShipTwoRailByColor(key, cartesUtilisees);
                 if (scoreByColor > bestScoreByColor) {
                     bestScoreByColor = scoreByColor;

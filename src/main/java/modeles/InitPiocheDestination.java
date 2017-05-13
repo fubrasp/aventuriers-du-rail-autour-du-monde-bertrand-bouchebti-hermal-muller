@@ -5,8 +5,12 @@ import java.util.ArrayList;
 /**
  * Created by bertran95u on 22/04/2017.
  */
+/**
+ * Classe modelisant toutes les cartes destinations et itineraires
+ */
 public class InitPiocheDestination {
 
+    //On aurait aussi pu utiliser une enum
     public static ArrayList<CarteDestination> initDestinationsItineraires(){
 
         Ville sydney = new Ville("Sydney", true);
@@ -18,7 +22,6 @@ public class InitPiocheDestination {
         Ville tokyo = new Ville("Tokyo", true);
 
         Ville buenosAires = new Ville("Buenos Aires", true);
-
 
         Ville marseille = new Ville("Marseille", true);
 

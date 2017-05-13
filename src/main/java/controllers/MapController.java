@@ -17,10 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import modeles.Jeu;
-import modeles.Joueur;
-import modeles.Route;
-import modeles.Ville;
+import modeles.*;
 import outil.OutilDialog;
 
 import java.lang.reflect.Field;
@@ -28,9 +25,17 @@ import java.net.URL;
 import java.util.*;
 
 public class MapController implements Initializable {
+
     @FXML private AnchorPane mapContainer;
     private Jeu jeu;
+
     private OutilDialog outilDialog = new OutilDialog();
+
+    /*
+    *
+	* INITIALISATION DU CONTROLEUR
+	*
+	*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,12 +57,11 @@ public class MapController implements Initializable {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED,
                         new EventHandler<MouseEvent>() {
                             @Override
-                            public void handle(MouseEvent e) { // Click on city
+                            public void handle(MouseEvent e) { // Click sur la ville
                                 node.setCursor(Cursor.HAND);
                                 String[] className = node.getStyleClass().get(0).split("_");
                                 Ville city = Jeu.getInstance().getVilles().get(className[1]);
                                 createPort(node,city);
-                                //System.out.println("city clicked : "+city.getNom()+" possesseur : "+city.hasPossesseur());
                             }
                         });
             }
@@ -92,13 +96,6 @@ public class MapController implements Initializable {
                             @Override
                             public void handle(MouseEvent event) {
                                 setRoadToPlayer(node,road);
-
-                                /*System.out.println("Road clicked # " +
-                                        "Maritime : "+road.isMaritime()+" " +
-                                        "Color : "+road.getCouleur()+" " +
-                                        "VilleDep : "+road.getVilleDepart().getNom()+" " +
-                                        "VilleArr : "+road.getVilleArrivee().getNom()+" " +
-                                        "Size : "+road.getNombreEtapes());*/
                             }
                         });
             }
@@ -106,10 +103,16 @@ public class MapController implements Initializable {
     }
 
     /*
-        Get the first class name of the given node in param,
-        and highlight all node with the same class name
-        * @param  initalNode : The node used to get the class
-        * @param  paint : The highlight color
+	*
+	* FONCTIONS
+	*
+	*/
+
+    /**
+     * Get the first class name of the given node in param,
+     * and highlight all node with the same class name
+     * @param  initialNode : The node used to get the class
+     * @param  paint : The highlight color
      */
     public void highlightRoad(Node initialNode, Paint paint){
         if(initialNode.getStyleClass().size() >0 ){
@@ -122,10 +125,10 @@ public class MapController implements Initializable {
 
     }
 
-    /*
-        Colorize the chosen road and set the player to the road
-        @param initialNode
-        @param road the chosen road
+    /**
+     *  Colorize the chosen road and set the player to the road
+     *  @param initialNode
+     *  @param road the chosen road
      */
     private void setRoadToPlayer(Node initialNode, Route road){
         if(INTJ.verifierCapaciteJoueurPrendreRoute()){
@@ -147,10 +150,10 @@ public class MapController implements Initializable {
         }
     }
 
-    /*
-        Colorize the chosen city and set the player to the city
-        @param initialNode
-        @param city the chosen city
+    /**
+     *  Colorize the chosen city and set the player to the city
+     *  @param initialNode
+     *  @param city the chosen city
      */
     private void createPort(Node initialNode, Ville ville){
         if(INTJ.verifierCapaciteJoueur()){
@@ -171,10 +174,10 @@ public class MapController implements Initializable {
         }
     }
 
-    /*
-        Colorize the chosen road
-        @param initialNode
-        @param paint color of the road
+    /**
+     *  Colorize the chosen road
+     *  @param initialNode
+     *  @param paint color of the road
      */
     private void colorizeRoad(Node initialNode, Paint paint){
         mapContainer.getChildren().stream()
@@ -192,8 +195,8 @@ public class MapController implements Initializable {
     }
 
     /*
-        Because tooltip delay is too slower by default, this is a hack to change his delay
-        Source : http://stackoverflow.com/questions/26854301/control-javafx-tooltip-delay
+     * Because tooltip delay is too slower by default, this is a hack to change his delay
+     * Source : http://stackoverflow.com/questions/26854301/control-javafx-tooltip-delay
      */
     private static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
@@ -213,58 +216,9 @@ public class MapController implements Initializable {
     }
 
     private static final Map<String,String> nameOfCity = createMap();
+
     private static Map<String, String> createMap(){
-        Map<String, String> aMap = new HashMap<>();
-        aMap.put("vanc", "Vancouver");
-        aMap.put("losa", "Los Angeles");
-        aMap.put("winn", "Winnipeg");
-        aMap.put("newy", "New York");
-        aMap.put("miam", "Miami");
-        aMap.put("cara", "Caracas");
-        aMap.put("lima", "Lima");
-        aMap.put("valp", "Valparaiso");
-        aMap.put("buen", "Buenos Aires");
-        aMap.put("rio", "Rio De Janeiro");
-        aMap.put("cape", "Cap Town");
-        aMap.put("camb", "Cambridge Bay");
-        aMap.put("reyk", "Reykjavik");
-        aMap.put("edin", "Edinburg");
-        aMap.put("mexi", "Mexico");
-        aMap.put("mars", "Marseille");
-        aMap.put("hamb", "Hamburg");
-        aMap.put("atbi", "Athina");
-        aMap.put("murm", "Murmansk");
-        aMap.put("mosk", "Moskva");
-        aMap.put("novo", "Novosibirsk");
-        aMap.put("tehr", "Tehran");
-        aMap.put("alqa", "Al Qahira");
-        aMap.put("lago", "Lagos");
-        aMap.put("djib", "Djibouti");
-        aMap.put("dar", "Dar Es Salaam");
-        aMap.put("luan", "Luanda");
-        aMap.put("cape", "Cape Town");
-        aMap.put("toam", "Toamasina");
-        aMap.put("tiks", "Tiksi");
-        aMap.put("yaku", "Yakutsk");
-        aMap.put("petr", "Petropavlovsk");
-        aMap.put("beij", "Beijing");
-        aMap.put("hong", "Hong Kong");
-        aMap.put("labo", "Lahore");
-        aMap.put("mumb", "Mumbai");
-        aMap.put("bang", "Bangkok");
-        aMap.put("anch", "Anchorage");
-        aMap.put("toky", "Tokyo");
-        aMap.put("mani", "Manila");
-        aMap.put("hono", "Honolulu");
-        aMap.put("jaka", "Jakarta");
-        aMap.put("darw", "Darwin");
-        aMap.put("port", "Port Moresby");
-        aMap.put("pert", "Perth");
-        aMap.put("sydn", "Sydney");
-        aMap.put("chri", "Christchurch");
-        aMap.put("casa", "Casablanca");
-        aMap.put("paf", "Port Au Français");
-        return aMap;
+        return InitCities.initCitiesMap();
     }
 
 }

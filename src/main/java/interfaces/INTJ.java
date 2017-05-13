@@ -3,20 +3,23 @@ package interfaces;
 import modeles.CarteTransport;
 import modeles.Jeu;
 
-import java.util.ArrayList;
-
 /**
  * Created by bertran95u on 14/04/2017.
  */
+
+/**
+ * Classe qui permet de faire des raccourcis dans les appels du singleton
+ */
 public class INTJ {
 
-    //Gamer's cartes transport interactions
+    //Cartes transport du joueur
     public static void ajouterCarteJoueurCourant(CarteTransport ct) {
         Jeu.getInstance().getJoueurCourant().ajouterCarteTransport(ct);
     }
 
-    //Actions of the gamer
-    //Verify
+    //Actions du joueur
+
+    //Verifier
     public static boolean verifierCapaciteJoueur() {
         return Jeu.getInstance().getJoueurCourant().aLaCapaciteDeJouer();
     }
@@ -33,7 +36,7 @@ public class INTJ {
         return Jeu.getInstance().getJoueurCourant().peutPiocherJokerCartesVisibles();
     }
 
-    //Manage
+    //Gerer
     public static void diminuerCapaciteJoueur(int value) {
         Jeu.getInstance().getJoueurCourant().diminuerCapaciteJoueur(value);
     }
@@ -46,7 +49,4 @@ public class INTJ {
         Jeu.getInstance().getJoueurCourant().setCapaciteJeu(2);
     }
 
-    public static ArrayList<CarteTransport> obtenirCartesTransportInitJoueur(){
-        return Jeu.getInstance().getJoueurCourant().initialiserMainJoueur();
-    }
 }

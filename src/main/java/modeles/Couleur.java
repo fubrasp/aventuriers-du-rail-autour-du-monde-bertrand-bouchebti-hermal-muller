@@ -1,6 +1,12 @@
 package modeles;
 
+/**
+ * Classe modelisant les couleurs
+ */
 public class Couleur {
+
+    //Constantes
+
     public final static int ROUGE = 0x1;
     public final static int JAUNE = 0x2;
     public final static int VERT = 0x3;
@@ -10,6 +16,11 @@ public class Couleur {
     public final static int GRIS = 0x7;
     public final static int SPE = 0x8;
 
+    /*
+	*
+	* GETTER & SETTER
+	*
+	*/
 
     public static int getColor(String pattern){
         int color;

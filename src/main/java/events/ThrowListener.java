@@ -1,7 +1,8 @@
 package events;
 
-//Declaration of the event's interface type, OR import of the interface,
-//OR declared somewhere else in the package
+/**
+ * Interface listener
+ */
 public interface ThrowListener {
     public void Catch();
 }

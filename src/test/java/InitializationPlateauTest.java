@@ -1,4 +1,5 @@
 import modeles.GestionnairePlateau;
+import modeles.InitCities;
 import modeles.Ville;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class InitializationPlateauTest  {
 
     @Test
     public void citiesInitialization(){
-        int numberOfCity = GestionnairePlateau.initCities().size();
+        int numberOfCity = InitCities.initCities().size();
         Assert.assertEquals(numberOfCity,CITIES_NUMBER);
     }
 

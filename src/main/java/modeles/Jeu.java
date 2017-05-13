@@ -7,26 +7,13 @@ import interfaces.JeuListener;
 
 import java.util.Map;
 
+/**
+ * Classe modelisant le jeu (toute la partie metier)
+ */
 public class Jeu implements ThrowListener {
 
-	public static final int NOMBRE_CARTES_TRANSPORT_WAGON = 80;
-	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU = 60;
-	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE_PAR_COULEUR = 4;
-	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE_PAR_COULEUR = 6;
-	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE = 24;
-	public static final int NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE = 36;
-	public static final int NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR = 11;
-	public static final int NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR = 4;
-	public static final int NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE = 14;
-
 	// Joeur qui est entrain d'effectuer un coup
-	//private Joueur joueurCourant = new Joueur("Joueur 1","red");
 	private Joueur joueurCourant = null;
-	// private int nombreDeCartePioche;
-
-	// on peut utiliser un dictionnary pour les perfs..
-	// HashMap associant un joueur a un score pour un jeu donne
-	// private HashMap<String, Integer> scoresJoueurs;
 
 	// joueurs participants a une partie
 	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
@@ -38,19 +25,18 @@ public class Jeu implements ThrowListener {
 	// Villes d'une partie
 	private Map<String,Ville> villes;
 
-	/*
-	 * pions de la partie dans la "Banque" ==> les pions qui n'ont pas ete
-	 * distribue aux joueurs et qui seront utiles pour les échanges de pions
-	 * avec les joeurs
-	 */
-	// private ArrayList<Pion> pions = new ArrayList<Pion>();
-
-	// private ArrayList<Carte> cartesTransportWagonDefausse = new
-	// ArrayList<Carte>();
-	// private ArrayList<Carte> cartesTransportBateauDefausse = new
-	// ArrayList<Carte>();
-
+	// Gestionnaire de pioches d'une partie
 	private GestionnairePioches gestionnairePioches;
+
+	// Listeners du jeu
+	private List<JeuListener> listeners = new ArrayList<JeuListener>();
+
+
+	/*
+    *
+	* SINGLETON "efficace"
+	*
+	*/
 
 	private static class JeuWrapper{
 		private static Jeu instanceJeu = new Jeu();
@@ -61,27 +47,35 @@ public class Jeu implements ThrowListener {
 	}
 
 
-	public void piocherCarteTransport(Object o) {
-		Carte cartePioche;
-		if (o instanceof Bateau) {
-			cartePioche = this.gestionnairePioches.getPiocheCartesTransportBateau().piocherCarte();
-		} else {
-			cartePioche = this.gestionnairePioches.getPiocheCartesTransportWagon().piocherCarte();
-		}
-		this.joueurCourant.ajouterCarteTransport((CarteTransport) cartePioche);
+	/*
+    *
+	* CONSTRUCTEURS
+	*
+	*/
 
-	}
-
+	/**
+	 * Construit un jeu (utiliee pour le testing..)
+	 * @param gestionnairePioches
+	 */
 	public Jeu(GestionnairePioches gestionnairePioches) {
 		super();
 		this.gestionnairePioches = gestionnairePioches;
 	}
 
+	/**
+	 * Construit un jeu
+	 */
 	public Jeu(){
 		this.gestionnairePioches = new GestionnairePioches();
 		this.villes = GestionnairePlateau.cities;
 		this.routes = GestionnairePlateau.initRoads(GestionnairePlateau.parsePlateau());
 	}
+
+	/*
+	*
+	* FONCTIONS
+	*
+	*/
 
 	public boolean detecterTropJokersVisibles() {
 		return (this.gestionnairePioches.detecterTropJokersVisibles()>=3);
@@ -90,14 +84,93 @@ public class Jeu implements ThrowListener {
 
 	public void initialiserJeu() {
 		this.gestionnairePioches.initialiserPioches();
-
-		//FOR TESTING
-		System.out.println("REFRACTOR THIS L82, Jeu.java");
-
-		/*Joueur deuxiemeJoueur = new Joueur("Guillaume");
-		this.joueurs.add(this.joueurCourant);
-		this.joueurs.add(deuxiemeJoueur);*/
 	}
+
+	public void initialiserMainDesJoueurs(){
+		for (Joueur joueurCourant:
+			 this.joueurs) {
+			joueurCourant.initialiserMainJoueur();
+		}
+	}
+
+	/**
+	 * Methode qui aide a simuler le fonctionnement d'une liste circulaire pour faire ("a chacun son tour")
+	 */
+	public void determinerIndexJoueurSuivant(){
+		if(this.indexJeu<joueurs.size()-1){
+			this.indexJeu++;
+		}else{
+			this.indexJeu=0;
+		}
+	}
+
+	/**
+	 * Methode realisant un tour de jeu
+	 * Reset les points d'action du joueur precedent (le danger est ridicule..)
+	 * Change le joueur courant
+	 */
+	public void realiserTourDeJeu(){
+		this.joueurCourant.reseterCapaciteJoueur();
+		this.determinerIndexJoueurSuivant();
+		this.joueurCourant = this.joueurs.get(this.indexJeu);
+	}
+
+	/**
+	 * Methode determinant si chaque joueur n'est pas dans la regle de fin du jeu (6 pions restants)
+	 * @return
+	 */
+	public boolean determinerFinJeu(){
+		for (Joueur joueurConcerne:
+				this.joueurs) {
+			if (joueurConcerne.getNbBateauxEtWagonsConfondus()<= ConstantesJeu.NOMBRE_PIONS_FIN_JEU){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Retourne le suivant le nombre de joueurs le nombre total de tour a realiser
+	 * en vue d'annoncer au moment opportun la fin du jeu
+	 * @return
+	 */
+	public int determinerNombreToursTotauxRestants(){
+		return this.joueurs.size()*ConstantesJeu.NOMBRE_TOUR_PAR_JOUEUR_FIN_JEU;
+	}
+
+	/*
+	*
+	* EVENEMENTS ET LISTENERS
+	*
+	*/
+
+	public void addListener(JeuListener listener) {
+		listeners.add(listener);
+	}
+
+	/**
+	 * Methode permettant de rafraichir l'interface de maniere intelligence
+	 * sans faire un () --> (while (true) refresh())
+	 */
+	public void refreshInterface() {
+		// Notifie tous les listeners
+		for (JeuListener jl : listeners)
+			jl.refreshInterface();
+	}
+
+	/**
+	 * Methode permettant de recuperer des evenements
+	 */
+	@Override
+	public void Catch() {
+		this.realiserTourDeJeu();
+	}
+
+	/*
+	*
+	* GETTER & SETTER
+	*
+	*/
 
 	public Joueur getJoueurCourant() {
 		return joueurCourant;
@@ -123,56 +196,7 @@ public class Jeu implements ThrowListener {
 		this.joueurs = joueurs;
 	}
 
-	public void determinerIndexJoueurSuivant(){
-		if(this.indexJeu<joueurs.size()-1){
-			this.indexJeu++;
-		}else{
-			this.indexJeu=0;
-		}
-	}
-
-	public void realiserTourDeJeu(){
-		//We change the joueurCourant
-		this.joueurCourant.reseterCapaciteJoueur();
-		determinerIndexJoueurSuivant();
-		this.joueurCourant = this.joueurs.get(this.indexJeu);
-		//System.out.println("JOUEUR PRECEDENT : "+this.joueurCourant.getPseudo());
-	}
-
-	//EVENTS
-	@Override
-	public void Catch() {
-		//System.out.println("Ok je passe au joueur suivant :) !!");
-		this.realiserTourDeJeu();
-	}
-
-	private List<JeuListener> listeners = new ArrayList<JeuListener>();
-
-	public void addListener(JeuListener listener) {
-		listeners.add(listener);
-	}
-
-	public void refreshInterface() {
-		// Notify everybody that may be interested.
-		for (JeuListener jl : listeners)
-			jl.refreshInterface();
-	}
-
 	public void setJoueurCourant(Joueur joueurCourant) {
 		this.joueurCourant = joueurCourant;
-	}
-
-	public boolean determinerFinJeu(){
-		for (Joueur joueurConcerne:
-				this.joueurs) {
-			if (joueurConcerne.getNbBateauxEtWagonsConfondus()<= ConstantesJeu.NOMBRE_PIONS_FIN_JEU){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public int determinerNombreToursTotauxRestants(){
-		return this.joueurs.size()*ConstantesJeu.NOMBRE_TOUR_PAR_JOUEUR_FIN_JEU;
 	}
 }

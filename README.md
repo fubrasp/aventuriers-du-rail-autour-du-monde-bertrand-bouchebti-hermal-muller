@@ -1,80 +1,69 @@
-# TESTED
-* initialisation des pioches testee
-    * nombre d'elements selon le type etc..
-    * fonctionnement de la methode de pioche
+# Fonctionnalites implemantees
+* Prise de route
+    * Verification des cartes necessaires tout type de route confondues
+    * Constuction de ports
+    * Construction de routes
+    * Mise dans la defausse des pioches respectives 
+    * Mise a jour du score des joueurs
+
+* Echange de pions
+    * Echange de pions poour le joueur
+    * Mise a jour du score des joueurs 
+
+* Piocher des cartes transport
+    * Piocher des cartes wagons
+    * Pioches des cartes bateaux
+    * les transferer a la main du joueur
     
+* Piocher des cartes destinations
+    * Pioches des cartes destinations
+    * Choisir 1 a plusieurs cartes
+    * Obliger le choix d'au moins une carte
+    
+*  Gestion des cartes visibles
+    * Choisir aleatoirement de piocher une carte pour mettre jour un emplacement ou les cartes ont ete piochees
+    * Gerer la regle des 3 jokers
 
-# DONE
-* fix
-    * fix de la mauvaise id sur la mauvaise pioche (erreur d'innatention)
-    * fix bateaux doubles url (mauvais liens vers les images)
-    * fix cartes visibles bug (mauvais ordonnancement)
-    * fix de l'incomprhension des regles (les trains et les bateaux peuvent etre au 6 emplacements des cartes visibles)
-    * epuisement pioche a gerer (null)
-    * bug quand on resize les barres verticales (le xNUMBER)
-    * fix bug quand reset cartes visibles et une ou plus pioches est vide
-    * fix bug quand reset et pas assez de cartes restantes (<3 cards)
-    * fix bug carte destinations (texte affichee)
-    * fix texte des cartes destinations en dessous
-    * carte transport avec indicateur sexy (juste l'image + chiffre)
-    * gestion cas tres particulier cartes visibles (afficher image vides)
-    * Init
-    * fix cartes transport a refresh (verifier nombre OK)
-    * fix changement de main a chaque tour :)
-    * fix bug X0
-    * fix bug au minimum une carte destination (quand on veut ajouter des cartes destinations depuis son ecran)
-    * fix bug test (quand on pioche un wagon ==> incomprhensible) 
-    * fix image view sur toute la superficie des boutton (pas de solution satisfaisante pour l'instant)
-    * fix bug cartes visibles joker 3 regles initialisation (mauvais reset des points)
-    * vrai cartes en HD avec le modele derriere
-    * prevoir evenement quand pioche resetee ? 
-
-
-* refractor
-    * merger handle des 2 pioches
-    * merger les listes (Gestionnaire au final) de catesVisibles et refractor l'interface par consequent
-    * cleaner le code
-    * refractor methode de Jeu
-    * split des controllers
-
-
-* test
-    * tester pioches
-    * tester cartes visibles
-    * test cartes destinations
-
-
-* fonctionnalites
-    * gerer indicateur nombre (ne pas afficher 2 fois la meme carte dans la main du joueur)
-    * gerer cartes visibles
-    * gerer ajout cartes main du joueur
-    * gerer cas 3 jokers visibles (message d'informatione et reset)
-    * messages d'informations divers (en rapport avec la pioche cf OutilDialog.java)
-    * carte destinations clickables
-    * mettre scroll bar carte destinations
-    * mettre scroll bar pour la main du joueur
-    * alert moins de 1 destinations choisie
-    * gestion des actions limitees
-    * gestion tour par tour
-    * gestion de plusieurs joueurs    
-
-
-
-
-# TO DO
-* creer partie
-* ecran d'acceuil destinations
-* prendre une route
-* echanger des wagons et des bateaux
-* supprimer attribut bateau double ?
-    * refractor non repris d'exemple
-    * (carte destination selectionne encadree en rouge)
-    * Priorite
-        * commentaires en anglais
-    * En plus
-        * empilement des cartes
-        * bug cas des reinitialisation cartes visibles sans pioche ni defausse ? (a gerer une fois les autres parties dévellopees)
-            * si une carte visible est vide ? Quel attribut verifier ? --> repiocher ?
-            * quand lancer le reset ?
-                * des qu'une personne prend une route
-            * est ce que l'ecran de la carte destination doit etre plus complet ?    
+* Initialisation
+    * Au depart du jeu
+        * Initialisation des cartes transport 
+        * Choix des cartes destinations
+        
+* Gestion des actions
+    * Limiter les actions possibles
+        * 1 seule prise de route
+        * 1 seule carte joker visible
+        * 2 cartes piochees 
+        * 1 seul echange de pions
+    * Reset des points d'actions a chaque tour
+        
+* Rafraichissement de l'interface
+    * A chaque tour
+    
+* Gestion de la notion de tour par tour
+    * Evenements
+    * Passage au joueur suivant
+    
+* Sauvegarde d'une partie / Chargement d'une partie
+    * Utilisation de la serialisation
+    
+* Gestion reseau via RMI (version fournie en supplement de cette derniere)
+    * FONCTIONNEL
+        * Enregistrement des clients aupres du serveur
+        * Rafraichissement des clients (modele et UX) depuis via le serveur
+        * Gestion des pioches (transport, destinations) et cartes visibles via le seveur
+        * Tour par tour
+    * NON TERMINE
+        * Prise de route beugant (bug non determine)
+    * NON FAIT 
+        * Echanges avec serialisation
+            * Peu de sens en utilisant RMI
+            
+* Technologies et librairies employees
+    * JAVA SE, FX, RMI
+    * JUNIT 5 M3
+    * w3c DOM
+    * jfoenix (fenetres)
+    
+* Patterns
+    * MVC

@@ -73,7 +73,7 @@ public class PiocheTest {
         //We use pioche method on empty pioche
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
@@ -87,14 +87,14 @@ public class PiocheTest {
 
         Carte cartePiochee = pioche.piocherCarte();
 
-        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
+        assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et a une defausse", ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
         this.testCartePiocheRetiree(tailleAvantPioche, pioche.taille());
     }
 
     private ArrayList<CarteTransport> mettreDesCartesDansLaListeDeCartesVisibles(){
         ArrayList<CarteTransport> cartesVisibles = new ArrayList<CarteTransport>();
         for (int i=0; i<3; i++){
-            cartesVisibles.add(new CarteTransportWagon(CarteTransport.JOKER, true));
+            cartesVisibles.add(new CarteTransportWagon(ConstantesJeu.JOKER, true));
         }
         cartesVisibles.add(new CarteTransportBateau(Couleur.BLANC, true, false));
         cartesVisibles.add(new CarteTransportBateau(Couleur.ROUGE, false, true));
@@ -204,7 +204,7 @@ public class PiocheTest {
 
             ArrayList<Integer> values = ((ArrayList<Integer>) pair.getValue());
 
-            if (!pair.getKey().equals(CarteTransport.JOKER)) {
+            if (!pair.getKey().equals(ConstantesJeu.JOKER)) {
                 assertEquals("Nombre de carte de couleur " + pair.getKey() + " ne correspondant pas a la regle ", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_WAGON_PAR_COULEUR, ((int) values.get(0)));
                 assertEquals("Nombre de carte de ports inadequat pour la couleur " + pair.getKey() + " ne correspondant pas a la regle ", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_PORT_PAR_COULEUR, ((int) values.get(1)));
             } else {

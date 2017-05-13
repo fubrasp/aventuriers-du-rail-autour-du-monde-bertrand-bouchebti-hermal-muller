@@ -1,3 +1,4 @@
+import constantes.ConstantesJeu;
 import modeles.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,13 +124,13 @@ public class SelectionnerRouteTest {
         Assert.assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
         Assert.assertEquals(0,cartesUtilisees.size());
 
-        joueur.addSelectCard(new CarteTransport(CarteTransport.JOKER,false));
+        joueur.addSelectCard(new CarteTransport(ConstantesJeu.JOKER,false));
 
         // Doit renvoyer false car pas assez de joker selectionné
         Assert.assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
         Assert.assertEquals(0,cartesUtilisees.size());
 
-        joueur.addSelectCard(new CarteTransport(CarteTransport.JOKER,false));
+        joueur.addSelectCard(new CarteTransport(ConstantesJeu.JOKER,false));
         // Doit renvoyer true car 2 jokers sélectionnés
         Assert.assertTrue(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
         Assert.assertEquals(2,cartesUtilisees.size());
@@ -210,7 +211,7 @@ public class SelectionnerRouteTest {
          */
         CarteTransportBateau carteTransportBateauRouge = new CarteTransportBateau(Couleur.ROUGE,false,false);
         CarteTransportBateau carteTransportBateauRougeDouble = new CarteTransportBateau(Couleur.ROUGE,false,true);
-        CarteTransport carteTransportJoker = new CarteTransport(CarteTransport.JOKER,false);
+        CarteTransport carteTransportJoker = new CarteTransport(ConstantesJeu.JOKER,false);
 
         joueur.ajouterCarteTransport(carteTransportBateauRouge);
         joueur.ajouterCarteTransport(new CarteTransportBateau(Couleur.ROUGE,false,false));

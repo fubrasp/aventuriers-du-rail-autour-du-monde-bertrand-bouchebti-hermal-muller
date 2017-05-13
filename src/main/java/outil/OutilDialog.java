@@ -19,22 +19,33 @@ import java.util.*;
 /**
  * Created by bertran95u on 03/04/2017.
  */
-public class OutilDialog {
-    //public static String nomFichier = "src/main/resources/images/cartes/destinations/CarteDestinationCasablancaMarseille.png";
 
-    //controls needed for app:
+/**
+ * Classe gerant les pop et les fenetres interactives qui apparaissent au cours du jeu
+ */
+public class OutilDialog {
+
+    //Divers attributs utilisee par les differentes popup
     public static ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
     private ArrayList<ImageView> imagesViewsCartesDestinations = new ArrayList<ImageView>();
 
     public static Label lbltotal, lbllist;
-
-    //2 VBoxes for the labels and checkboxes
     private HBox vbchecks, vbImages,vblabels;
-
     private HBox hboxWM, hboxWR, hboxBM, hboxBR;
-
     private Label nbBM, nbBR, nbWM, nbWR;
 
+    /*
+    *
+	* CONSTRUCTEUR
+	*
+	*/
+
+    /**
+     * Methode qui Construit une fenetre type
+     * @param titre de la fenetre
+     * @param message dans la fenetre
+     * @return alert n
+     */
     private Alert makeDialog(String titre, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -43,6 +54,12 @@ public class OutilDialog {
         alert.showAndWait();
         return alert;
     }
+
+    /*
+    *
+	* POP UP D'INFORMATION TYPE
+	*
+	*/
 
     public void montrerDialogErreurJokers() {
         String titreDialog = "INFORMATION : JOKERS";
@@ -75,60 +92,91 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
-    public void montrerDialogDefaussesVides() {
-        String titreDialog = "INFORMATION : IMPOSSIBLE DE PIOCHER";
-        String messageDialog = "les pioches sont vides et leurs defausses aussi.";
+    public void montrerDialogAuMoinsUnerCarte(){
+        String titreDialog = "ERREUR : SELECTIONNEZ AU MOINS UNE CARTE";
+        String messageDialog = "Le Jeu impose le choix d'au moins 1 carte destination.";
         makeDialog(titreDialog, messageDialog);
     }
 
-    private void setHBoxStyle(ArrayList<HBox> hBoxs){
-        for (HBox hBox:
-             hBoxs) {
-            hBox.setSpacing(10);
-            hBox.setPadding(new Insets(20));
-        }
+    public void montrerDialogFinDuJeuProche(){
+        String titreDialog = "INFORMATION : FIN DU JEU DANS 2 TOURS";
+        String messageDialog = "Un joueur a moins de 6 pions.";
+        makeDialog(titreDialog, messageDialog);
     }
 
+    public void montrerDialogFinJeu(){
+        String titreDialog = "INFORMATION : JEU TERMINE";
+        String messageDialog = "Jeu termine.";
+        makeDialog(titreDialog, messageDialog);
+    }
+
+    /*
+    *
+	* POP UP D'INFORMATION PARTICULIERES
+	*
+	*/
+
     /**
-     * Method which manage destinations/itineraires alert
+     * Methode construisant la popup informant de l'obligation de prendre au moins une carte destination
+     * @param carteDestinationLieeAuBouton
+     */
+    public void montrerDialogCarteDestinationClickee(CarteDestination carteDestinationLieeAuBouton){
+        String titreDialog = "INFORMATION : CARTE DESTINATION "+carteDestinationLieeAuBouton.getReference();
+        String messageDialog = "Villes de passages :\n";
+        for (Ville villePassage:
+                carteDestinationLieeAuBouton.getVilles()) {
+            messageDialog+=villePassage.getNom()+"\n";
+        }
+        Alert alertDialogCarteDestination = new Alert(Alert.AlertType.INFORMATION);
+        alertDialogCarteDestination.setHeaderText(null);
+        alertDialogCarteDestination.setTitle(titreDialog);
+        ImageView imageAssocieeALaCarteDestination = OutilGraphique.creerImageView(OutilES.determinerUrl(carteDestinationLieeAuBouton));
+        alertDialogCarteDestination.setGraphic(imageAssocieeALaCarteDestination);
+        alertDialogCarteDestination.setContentText(messageDialog);
+        alertDialogCarteDestination.showAndWait();
+    }
+
+
+    /**
+     * Methode qui gere la fenetre des choix des destinations
      * @param cartesAChoisir
      */
     public void montrerDialogChoixCartesDestination(ArrayList<CarteDestination> cartesAChoisir) {
 
-        //hbox for checkboxes
+        //hbox pour checkboxes
         vbchecks = new HBox();
 
-        //hbox for images
+        //hbox pour images
         vbImages = new HBox();
 
-        //hbox for labels
+        //hbox pour labels
         vblabels = new HBox();
         this.setHBoxStyle(new ArrayList<HBox>(Arrays.asList(vbchecks, vbImages, vblabels)));
 
-
+        //Est dynamique par rapport au nombre de cartes
         for (CarteDestination cd :
                 cartesAChoisir) {
-            //Create checkbox from 1 to 4, depending of what remain in the pioche
+            //Creer les checkbox
             this.checkBoxes.add(new CheckBox(cd.getReference()));
 
-            //Create imageView for cartes destination
+            //Creer une imageView pour les cartes destinations
             //On mettera le nom de fichier en dynamique (determine grace a la reference) quand on aura toutes les cartes..
             ImageView nouvelleImageView = OutilGraphique.creerImageView(OutilES.determinerUrl(cd));
             this.imagesViewsCartesDestinations.add(nouvelleImageView);
             this.vbImages.getChildren().add(nouvelleImageView);
         }
-        //Create two labels in order to inform the gamer
+        //Creer 2 labalels qui informent le joueur
         lbltotal = new Label("Cartes destination/itineraire choisies");
         lbllist = new Label("None");
 
-        //Add all things to vboxes
+        //Ajoute tout les elements necessaires aux checkbox
         //Checkboxes et image views list have the same size
         CheckBox elementCourant;
         for (int i = 0; i < this.checkBoxes.size(); i++) {
             elementCourant = this.checkBoxes.get(i);
+            //Ajout du comportement aux checkbox
             elementCourant.setOnAction(e -> PiochesController.handleButtonAction(e));
             this.vbchecks.getChildren().add(elementCourant);
-            //this.vbImages.getChildren().add(this.imagesViewsCartesDestinations.get(i));
         }
         vblabels.getChildren().addAll(lbltotal, lbllist);
 
@@ -151,63 +199,23 @@ public class OutilDialog {
         checkBoxes.clear();
     }
 
-    public void montrerDialogCarteDestinationClickee(CarteDestination carteDestinationLieeAuBouton){
-        String titreDialog = "INFORMATION : CARTE DESTINATION "+carteDestinationLieeAuBouton.getReference();
-        String messageDialog = "Villes de passages :\n";
-        for (Ville villePassage:
-             carteDestinationLieeAuBouton.getVilles()) {
-            messageDialog+=villePassage.getNom()+"\n";
-        }
-        Alert alertDialogCarteDestination = new Alert(Alert.AlertType.INFORMATION);
-        alertDialogCarteDestination.setHeaderText(null);
-        alertDialogCarteDestination.setTitle(titreDialog);
-        ImageView imageAssocieeALaCarteDestination = OutilGraphique.creerImageView(OutilES.determinerUrl(carteDestinationLieeAuBouton));
-        alertDialogCarteDestination.setGraphic(imageAssocieeALaCarteDestination);
-        alertDialogCarteDestination.setContentText(messageDialog);
-        alertDialogCarteDestination.showAndWait();
-    }
-
-    public void montrerDialogAuMoinsUnerCarte(){
-        String titreDialog = "ERREUR : SELECTIONNEZ AU MOINS UNE CARTE";
-        String messageDialog = "Le Jeu impose le choix d'au moins 1 carte destination.";
-        makeDialog(titreDialog, messageDialog);
-    }
-
-    public void montrerDialogFinDuJeuProche(){
-        String titreDialog = "INFORMATION : FIN DU JEU DANS 2 TOURS";
-        String messageDialog = "Un joueur a moins de 6 pions.";
-        makeDialog(titreDialog, messageDialog);
-    }
-
-    public void montrerDialogFinJeu(){
-        String titreDialog = "INFORMATION : JEU TERMINE";
-        String messageDialog = "Jeu termine.";
-        makeDialog(titreDialog, messageDialog);
-    }
-
     public void montrerDialogEchangePions(Text textPseudoJoueur,Text textScoreJoueur){
 
         VBox lignes = new VBox();
 
         //HBox pour les bateaux dans la main courante
         hboxBM = new HBox();
-        hboxBM.setSpacing(10);
-        hboxBM.setPadding(new Insets(20));
 
         //HBox pour les bateaux dans la réserve
         hboxBR = new HBox();
-        hboxBR.setSpacing(10);
-        hboxBR.setPadding(new Insets(20));
 
         //HBox pour les wagons dans la main courante
         hboxWM = new HBox();
-        hboxWM.setSpacing(10);
-        hboxWM.setPadding(new Insets(20));
 
         //HBox pour les wagons dans la réserve
         hboxWR = new HBox();
-        hboxWR.setSpacing(10);
-        hboxWR.setPadding(new Insets(20));
+
+        this.setHBoxStyle(new ArrayList<HBox>(){{add(hboxBM); add(hboxBR); add(hboxWM); add(hboxWR);}});
 
         Label infoBM = new Label("Nombre de bateaux dans la main :");
         nbBM = new Label(String.valueOf(Jeu.getInstance().getJoueurCourant().getNbPionsBateau()));
@@ -281,7 +289,6 @@ public class OutilDialog {
         alertCustomEchange.getDialogPane().contentProperty().set(root);
         alertCustomEchange.getButtonTypes().setAll(buttonOk, buttonAnnuler);
 
-
         Optional<ButtonType> result = alertCustomEchange.showAndWait();
         if(!result.isPresent()){
             //Alert is exited, no button pressed
@@ -293,6 +300,24 @@ public class OutilDialog {
 
         } else if (result.get() == buttonAnnuler){
             //Cancel button pressed
+        }
+    }
+
+    /*
+    *
+	* SOUS METHODES
+	*
+	*/
+
+    /**
+     * Methode privee permettant d'attribuer les memes proprietes au HBox
+     * @param hBoxs
+     */
+    private void setHBoxStyle(ArrayList<HBox> hBoxs){
+        for (HBox hBox:
+                hBoxs) {
+            hBox.setSpacing(10);
+            hBox.setPadding(new Insets(20));
         }
     }
 

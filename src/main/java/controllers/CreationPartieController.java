@@ -4,6 +4,7 @@ import application.MainApp;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import constantes.ConstantesJeu;
 import ecrancreationpartie.liste_joueur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,16 +25,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CreationPartieController implements Initializable {
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        combo_remplissage();// fonction qui ajouter les couleurs dans -> combobox
-
-        if(MainApp.nbr_joueur<2)
-            Start.setDisable(true);
-        else
-            Start.setDisable(false);
-    }
 
     @FXML
     private JFXTextField username;
@@ -52,6 +43,24 @@ public class CreationPartieController implements Initializable {
     @FXML
     private AnchorPane root = new AnchorPane() ;
 
+
+    /*
+    *
+	* INITIALISATION DU CONTROLEUR
+	*
+	*/
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        combo_remplissage();// fonction qui ajouter les couleurs dans -> combobox
+
+        if(MainApp.nbr_joueur<2)
+            Start.setDisable(true);
+        else
+            Start.setDisable(false);
+    }
+
     public  void LoadMenu(ActionEvent event)
     {
 
@@ -68,6 +77,12 @@ public class CreationPartieController implements Initializable {
         app_stage.show();
 
     }
+
+    /*
+	*
+	* FONCTIONS
+	*
+	*/
 
     @FXML
     void makelogin(ActionEvent event) {
@@ -113,33 +128,6 @@ public class CreationPartieController implements Initializable {
         {
             alert_function("Choisir une couleur SVP");
         }
-
-
-
-
-    }
-
-    @FXML
-    void start(ActionEvent event) {
-
-        ArrayList<Joueur> joueursChoisisPourLaPartieLocale = liste_joueur.list_joueur;
-        Jeu.getInstance().setJoueurs(joueursChoisisPourLaPartieLocale);
-        Jeu.getInstance().setJoueurCourant(liste_joueur.list_joueur.get(0));
-
-        Parent pere = null;
-        try {
-            //pere = FXMLLoader.load(MainApp.class.getResource("/sample.fxml"));
-
-            pere = FXMLLoader.load(MainApp.class.getResource(MainApp.CHEMIN_VUE_JEU));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //Scene welcome= new Scene(pere);
-        Stage app_stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        app_stage.hide();
-        app_stage.setScene(new Scene(pere, 1200, 800));
-        app_stage.show();
 
     }
 
@@ -198,6 +186,27 @@ public class CreationPartieController implements Initializable {
         return indice;
     }
 
+    @FXML
+    void start(ActionEvent event) {
+
+        ArrayList<Joueur> joueursChoisisPourLaPartieLocale = liste_joueur.list_joueur;
+        Jeu.getInstance().setJoueurs(joueursChoisisPourLaPartieLocale);
+        Jeu.getInstance().setJoueurCourant(liste_joueur.list_joueur.get(0));
+        Jeu.getInstance().initialiserMainDesJoueurs();
+        Parent pere = null;
+        try {
+
+            pere = FXMLLoader.load(MainApp.class.getResource(ConstantesJeu.CHEMIN_VUE_JEU));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage app_stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        app_stage.hide();
+        app_stage.setScene(new Scene(pere, 1200, 800));
+        app_stage.show();
+
+    }
 }
 
 

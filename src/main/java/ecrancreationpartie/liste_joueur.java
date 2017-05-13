@@ -7,6 +7,10 @@ import java.util.ArrayList;
 /**
  * Created by youssef on 01/05/2017.
  */
+
+/**
+ * Liste des joeurs pour l'ecran de creation de partie
+ */
 public class liste_joueur {
 
     public static ArrayList<Joueur> list_joueur=new ArrayList<Joueur>();

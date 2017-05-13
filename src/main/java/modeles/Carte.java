@@ -1,8 +1,17 @@
 package modeles;
 
+/**
+ * Classe mere modelisant une carte (sur type)
+ */
 public class Carte {
 
-    //BUT EMPECHER LES ERREURS DE COMPIL ET EVITER DES CATS DANS OUTIL GRAPHIQUE CREER BOUTTON
+    /*
+	*
+	* GETTER & SETTER
+	*
+	*/
+
+    //Empeche des erreurs de compilations
     public String getReference(){
         return "";
     }

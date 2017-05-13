@@ -1,20 +1,48 @@
 package modeles;
 
+import constantes.ConstantesJeu;
 import outil.OutilES;
 
+/**
+ * Classe modelisant une carte transport
+ */
 public class CarteTransport extends Carte {
+
+	//Couleur de la carte transport
 	protected int couleur;
+
+	//Capacite a etre utilisee pour construire des ports
 	private boolean port;
 
-	public final static int JOKER=666;
-	public final static int PIOCHE_REFAITE=999;
-	public final static int PAS_DE_CARTE_DANS_LA_DEFAUSSE=9999;
+	/*
+    *
+	* CONSTRUCTEUR
+	*
+	*/
 
-
+	/**
+	 * Construit une carte transport
+	 * @param couleur de la carte transport
+	 * @param port booleen a un port
+	 */
 	public CarteTransport(int couleur, boolean port) {
 		super();
 		this.couleur = couleur;
 		this.port = port;
+	}
+
+	/*
+	*
+	* GETTER & SETTER
+	*
+	*/
+
+	public String getUrlAssociatedWithColor(){
+		if(this.couleur!= ConstantesJeu.JOKER){
+			return this.couleur+ ConstantesJeu.EXTENSION_IMAGES;
+		}else{
+			return Integer.toString(ConstantesJeu.JOKER);
+		}
 	}
 
 	public int getCouleur() {
@@ -29,27 +57,24 @@ public class CarteTransport extends Carte {
 		return port;
 	}
 
-	public String getUrlAssociatedWithColor(){
-		if(this.couleur!=CarteTransport.JOKER){
-			return this.couleur+ OutilES.EXTENSION_IMAGES;
-		}else{
-			return Integer.toString(CarteTransport.JOKER);
-		}
-	}
-
 	public void setPort(boolean port) {
 		this.port = port;
 	}
 
-	@Override
-	public String toString() {
-		return "CarteTransport{" + "couleur --> "+this.couleur+", port --> "+this.port+"}";
-	}
-
+	//Evite le bug lie au sur type
+	//Identifiant unique d'une carte transport
 	public String getReference(){
 		return null;
 	}
 
+
+	/*
+	*
+	* EGALITES ET HASHCODES
+	*
+	*/
+
+	//On aurait pu faire un equals sur la reference aussi
 	public boolean compare(CarteTransport carteTransport){
 		if(carteTransport instanceof CarteTransportBateau){
 			return couleur == ((CarteTransportBateau)carteTransport).getCouleur()
@@ -61,20 +86,16 @@ public class CarteTransport extends Carte {
 			return false;
 		}
 	}
-	/*@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof CarteTransport){
-			if(obj instanceof CarteTransportBateau){
-				return couleur == ((CarteTransportBateau)obj).getCouleur()
-						&& port == ((CarteTransportBateau)obj).isPort()
-						&& ((CarteTransportBateau)this).isBateauDouble() == ((CarteTransportBateau) obj).isBateauDouble();
-			}else if(obj instanceof CarteTransportWagon){
-				return couleur == ((CarteTransport)obj).getCouleur() && port == ((CarteTransport)obj).port;
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
-	}*/
+
+	/*
+	*
+	* TO STRING ET AFFICHAGES
+	*
+	*/
+
+	@Override
+	public String toString() {
+		return "CarteTransport{" + "couleur --> "+this.couleur+", port --> "+this.port+"}";
+	}
+
 }

@@ -2,6 +2,7 @@ package application;
 
 import java.io.*;
 
+import constantes.ConstantesJeu;
 import modeles.Jeu;
 import javafx.application.*;
 import javafx.fxml.*;
@@ -9,12 +10,10 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
+/**
+ * Classe principale chargant le jeu
+ */
 public class MainApp extends Application {
-	
-	private static final String CHEMIN_ROOT_LAYOUT = "/RootLayout.fxml";
-	public static final String CHEMIN_VUE_JEU = "/JeuView.fxml";
-	private static final String TITRE_APPLICATION = "Les aventuriers du rail autour du monde : BERTRAND - BOUCHEBTI - HERMAL - MULLER";
-
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -27,30 +26,31 @@ public class MainApp extends Application {
 	    this.jeu = Jeu.getInstance();
 	    this.jeu.initialiserJeu();
         this.jeu.getGestionnairePioches().preparerPioches();
-	    System.out.println("MAIN_APP");
     }
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle(TITRE_APPLICATION);
+        this.primaryStage.setTitle(ConstantesJeu.TITRE_APPLICATION);
 
+        //Charge le canvas de la fenetre
         initRootLayout();
 
-        showPersonOverview();
+        //Charge l'ecran de creation des joueurs
+        showGameStartView();
     }
 
     /**
-     * Initializes the root layout.
+     * Initialise le layout root
      */
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
+            //Charge le fichier FXML
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(CHEMIN_ROOT_LAYOUT));
+            loader.setLocation(MainApp.class.getResource(ConstantesJeu.CHEMIN_ROOT_LAYOUT));
             rootLayout = (BorderPane) loader.load();
 
-            // Show the scene containing the root layout.
+            // Montre la scene liee au leayout
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -60,46 +60,41 @@ public class MainApp extends Application {
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Montre l'ecran start integree au layout root
      */
-    public void showPersonOverview() {
+    public void showGameStartView() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
 
-            //Parent root = null;
-            //root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
             loader.setLocation(getClass().getResource("/sample.fxml"));
-
-            //loader.setLocation(MainApp.class.getResource(MainApp.CHEMIN_VUE_JEU));
-
+            
             AnchorPane personOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
             rootLayout.setCenter(personOverview);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
+    /*
+	*
+	* GETTER & SETTER
+	*
+	*/
 
     public Jeu getJeu() {
         return jeu;
     }
 
+
+    /*
+	*
+	* MAIN
+	*
+	*/
+
     public static void main(String[] args) {
         launch(args);
-
-        /*for (:
-             ) {
-
-        }*/
     }
 }

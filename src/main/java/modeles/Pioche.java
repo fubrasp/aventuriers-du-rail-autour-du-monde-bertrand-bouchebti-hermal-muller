@@ -1,13 +1,29 @@
 package modeles;
 
+import constantes.ConstantesJeu;
 import java.util.*;
 
+/**
+ * Classe modelisant une pioche
+ */
 public abstract class Pioche {
-	// Cartes d'un deck servant de pioche
+
+	// Cartes de la pioche
 	protected ArrayList<Carte> cartes = new ArrayList<Carte>();
+
+	// Defausse associee a la pioche
 	protected ArrayList<Carte> cartesDefaussees = new ArrayList<Carte>();
 
+	/*
+    *
+	* CONSTRUCTEURS
+	*
+	*/
 
+	/**
+	 * Construit une pioche
+	 * @param cartes a utiliser pour la pioche
+	 */
 	public Pioche(ArrayList<Carte> cartes) {
 		super();
 		this.cartes = cartes;
@@ -18,33 +34,47 @@ public abstract class Pioche {
 		this.cartes = new ArrayList<Carte>();
 	}
 
+	/*
+	*
+	* FONCTIONS
+	*
+	*/
+
 	public void melanger() {
 		Collections.shuffle(this.cartes);
 	}
 
+	/**
+	 * Gere la pioche
+	 * @return
+	 */
 	public Carte piocherCarte() {
 		Carte carteTransportRetournee = null;
 
 		int indexDernierElement=this.cartes.size() - 1;
 
+		//Cas nominal
 		if(indexDernierElement>=0){
 			Carte cartePiochee=this.cartes.get(indexDernierElement);
 
 			this.cartes.remove(indexDernierElement);
 			
 			carteTransportRetournee = cartePiochee;
+		//Pioche vide
 		}else{
+			//Reconstruction de la pioche
 			boolean resultat = reconstruirePiocheAvecDefausse();
 			if(resultat){
-				carteTransportRetournee = new CarteTransport(CarteTransport.PIOCHE_REFAITE, false);
+				carteTransportRetournee = new CarteTransport(ConstantesJeu.PIOCHE_REFAITE, false);
+			//resconstruction impossible
 			}else{
-				carteTransportRetournee = new CarteTransport(CarteTransport.PAS_DE_CARTE_DANS_LA_DEFAUSSE, false);
+				carteTransportRetournee = new CarteTransport(ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE, false);
 			}
 		}
+		//Pas d'objet null renvoye
 		return carteTransportRetournee;
 	}
 
-	//All is working here tested manually..
 	public boolean reconstruirePiocheAvecDefausse(){
 		//Si on a bien une defausse avec des cartes
 		if(this.cartesDefaussees.size()>=1){
@@ -62,9 +92,11 @@ public abstract class Pioche {
 		}
 	}
 
-	public void ajouterCarte(Carte c) {
-		this.cartes.add(c);
-	}
+	/*
+	*
+	* GETTER & SETTER
+	*
+	*/
 
 	public void ajouterCarteDefausse(Carte carteDefaussee){
 		this.cartesDefaussees.add(carteDefaussee);
