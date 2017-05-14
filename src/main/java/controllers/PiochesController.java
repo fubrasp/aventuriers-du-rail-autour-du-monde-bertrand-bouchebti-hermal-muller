@@ -82,7 +82,13 @@ public class PiochesController implements Initializable, JeuListener {
         this.refreshInterface();
 
         nombresTourTotauxRestants = Jeu.getInstance().determinerNombreToursTotauxRestants();
+    }
 
+    private void testAInitialiserSesCartesDestinations(){
+        if(!Jeu.getInstance().getJoueurCourant().isaInitialiseeSesCartesDestinations()){
+            this.gererPiocheDestination();
+            Jeu.getInstance().getJoueurCourant().setaInitialiseeSesCartesDestinations(true);
+        }
     }
 
     public void initializationCartesVisibles() {
@@ -108,6 +114,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     @FXML
     private void handleEchangerPions() {
+        this.testAInitialiserSesCartesDestinations();
         if(INTJ.verifierCapaciteJoueur()){
             outilDialog.montrerDialogEchangePions(textPseudoJoueur, textScoreJoueur);
             INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_ECHANGE_PIONS);
@@ -122,6 +129,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     @FXML
     private void handlePiocheBateau() {
+        this.testAInitialiserSesCartesDestinations();
         this.piocher(ConstantesJeu.PIOCHE_BATEAU);
     }
 
@@ -130,6 +138,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     @FXML
     private void handlePiocheWagon() {
+        this.testAInitialiserSesCartesDestinations();
         this.piocher(ConstantesJeu.PIOCHE_WAGON);
     }
 
@@ -138,6 +147,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     @FXML
     private void handleDialogNouvelleDestination() {
+        this.testAInitialiserSesCartesDestinations();
         this.gererPiocheDestination();
     }
 
@@ -146,6 +156,7 @@ public class PiochesController implements Initializable, JeuListener {
      */
     @FXML
     private void handleTourFini() {
+        this.testAInitialiserSesCartesDestinations();
         this.lancerEvenement();
     }
 
@@ -249,7 +260,12 @@ public class PiochesController implements Initializable, JeuListener {
                 outilDialog.montrerDialogErreurPiocheDestination();
             } else {
                 //On choisit des cartes parmi celle ci
-                this.carteDestinations = piocheDestination.piocherCartesDestination();
+                if(Jeu.getInstance().getJoueurCourant().isaInitialiseeSesCartesDestinations()){
+                    this.carteDestinations = piocheDestination.piocherCartesDestination();
+                }else{
+                    this.carteDestinations = piocheDestination.piocherCartesDestinationsInitialisation();
+                }
+
                 INTJ.diminuerCapaciteJoueur(ConstantesJeu.VALEUR_CARTE_DESTINATIONS_PIOCHEES);
                 //Cas d'erreur si aucune carte n'a ete choisie
                 if (this.carteDestinations.isEmpty()) {
@@ -324,6 +340,8 @@ public class PiochesController implements Initializable, JeuListener {
         nouveauAnchorPaneClickable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                testAInitialiserSesCartesDestinations();
+
                 //On connait la position dans le VBox
 
                 //Lorsqu'un un click sur l'element est effectue on place la carte dans la main du joueur
@@ -438,9 +456,8 @@ public class PiochesController implements Initializable, JeuListener {
     private void ajouterDestinationUser() {
         //On recupere le resultat de l'alert
         //Cas d'erreur, on recurse sur la demande de destinations
-        if (choixUtilisateursCartesDestinations.isEmpty()) {
-            //A VERIFIER
-            outilDialog.montrerDialogAuMoinsUnerCarte();
+        if (choixUtilisateursCartesDestinations.isEmpty()||(!Jeu.getInstance().getJoueurCourant().isaInitialiseeSesCartesDestinations()&&choixUtilisateursCartesDestinations.size()<ConstantesJeu.NOMBRES_DE_CARTES_MINIMUM_DESTINATIONS_INITIALISATION)) {
+            outilDialog.montrerDialogAuMoinsUneOuPlusieursrCarte(Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().nombreDeCarteMinimaleDeCartesAChoisirPopup());
             outilDialog.montrerDialogChoixCartesDestination(Jeu.getInstance().getGestionnairePioches().getPiocheCartesDestination().getCartesPrecedentes());
             ajouterDestinationUser();
         } else {

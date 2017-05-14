@@ -40,6 +40,9 @@ public class Joueur {
     //Attribut limitant les actions(prendre une route, piocher, echanger des pions) du joueur
     private int capaciteJeu = 2;
 
+    //Attribut permettant d'effectuer l'initialisation des cartes destinations pour la prmeiere fois
+    private boolean aInitialiseeSesCartesDestinations = false;
+
     //Attribut permettant d'eviter la double apparition d'une popup informative de fin de jeu
     private boolean aEuInformationFinDuJeu = false;
 
@@ -59,10 +62,10 @@ public class Joueur {
         this.pseudo = pseudo;
         this.score = 0;
         this.cartesDestination = new ArrayList<CarteDestination>();
-        this.nbPionsBateau = 20;
-        this.nbPionsBateauReserve = 5;
-        this.nbPionsWagons = 40;
-        this.nbPionsWagonsReserve = 10;
+        this.nbPionsBateau = ConstantesJeu.NOMBRE_PIONS_BATEAU_INITIALISATION;
+        this.nbPionsBateauReserve = ConstantesJeu.NOMBRE_PIONS_BATEAU_RESERVE_INITIALISATION;
+        this.nbPionsWagons = ConstantesJeu.NOMBRE_PIONS_WAGONS_INITIALISATION;
+        this.nbPionsWagonsReserve = ConstantesJeu.NOMBRE_PIONS_WAGONS_RESERVE_INITIALISATION;
         this.cartesTransport = new ArrayList<CarteTransport>();
         this.couleur = couleur;
     }
@@ -696,5 +699,13 @@ public class Joueur {
 
     public void setAEuInformationFinDuJeu(boolean aEuInformationFinDuJeu) {
         this.aEuInformationFinDuJeu = aEuInformationFinDuJeu;
+    }
+
+    public boolean isaInitialiseeSesCartesDestinations() {
+        return aInitialiseeSesCartesDestinations;
+    }
+
+    public void setaInitialiseeSesCartesDestinations(boolean aInitialiserSesCartesDestinations) {
+        this.aInitialiseeSesCartesDestinations = aInitialiserSesCartesDestinations;
     }
 }

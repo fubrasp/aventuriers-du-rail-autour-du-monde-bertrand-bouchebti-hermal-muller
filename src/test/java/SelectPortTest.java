@@ -1,5 +1,5 @@
 import modeles.*;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,32 +43,32 @@ public class SelectPortTest {
 
     @Test
     public void setVillePossesseurTest(){
-        Assert.assertFalse(luanda.hasPossesseur());
-        Assert.assertFalse(beij.hasPossesseur());
-        Assert.assertFalse(yaku.hasPossesseur());
-        Assert.assertFalse(rio.hasPossesseur());
+        assertFalse(luanda.hasPossesseur());
+        assertFalse(beij.hasPossesseur());
+        assertFalse(yaku.hasPossesseur());
+        assertFalse(rio.hasPossesseur());
 
         luanda.setPossesseur(joueur);
         rio.setPossesseur(joueur);
         yaku.setPossesseur(joueur);
 
-        Assert.assertTrue(luanda.hasPossesseur());
-        Assert.assertFalse(beij.hasPossesseur());
-        Assert.assertTrue(yaku.hasPossesseur());
-        Assert.assertTrue(rio.hasPossesseur());
+        assertTrue(luanda.hasPossesseur());
+        assertFalse(beij.hasPossesseur());
+        assertTrue(yaku.hasPossesseur());
+        assertTrue(rio.hasPossesseur());
     }
 
     @Test
     public void isRoadConstructedFunctionTest(){
-        Assert.assertFalse(joueur.isRoadConstructed(rio));
-        Assert.assertFalse(joueur.isRoadConstructed(luanda));
-        Assert.assertFalse(joueur.isRoadConstructed(yaku));
+        assertFalse(joueur.isRoadConstructed(rio));
+        assertFalse(joueur.isRoadConstructed(luanda));
+        assertFalse(joueur.isRoadConstructed(yaku));
 
         joueur.ajouterRoute(routeMaritimeGrise6);
 
-        Assert.assertTrue(joueur.isRoadConstructed(rio));
-        Assert.assertTrue(joueur.isRoadConstructed(luanda));
-        Assert.assertFalse(joueur.isRoadConstructed(yaku));
+        assertTrue(joueur.isRoadConstructed(rio));
+        assertTrue(joueur.isRoadConstructed(luanda));
+        assertFalse(joueur.isRoadConstructed(yaku));
     }
 
     @Test
@@ -76,19 +76,19 @@ public class SelectPortTest {
         ArrayList<CarteTransport> usedCards = new ArrayList<>();
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,true,false));
 
-        Assert.assertEquals(1, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
+        assertEquals(1, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
 
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,true,false));
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,false,true));
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,true,false));
         joueur.addSelectCard(new CarteTransportWagon(Couleur.VERT,true));
 
-        Assert.assertEquals(3, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
+        assertEquals(3, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
 
         joueur.addSelectCard(new CarteTransportWagon(Couleur.VERT,true));
         joueur.addSelectCard(new CarteTransportWagon(Couleur.VERT,true));
 
-        Assert.assertEquals(4, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
+        assertEquals(4, joueur.checkIfTwoShipTwoRailByColor(Couleur.VERT,usedCards));
     }
 
 

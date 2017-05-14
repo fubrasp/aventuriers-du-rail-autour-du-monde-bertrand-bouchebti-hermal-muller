@@ -2,7 +2,7 @@ import modeles.Jeu;
 import modeles.Joueur;
 import modeles.Route;
 import modeles.Ville;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,10 +59,10 @@ public class CheminTest {
 
     @Test
     public void roadContainsCityTest(){
-        Assert.assertFalse(routeMaritimeGrise6RioLuanda.containsCity(yaku));
-        Assert.assertTrue(routeMaritimeGrise6RioLuanda.containsCity(rio));
-        Assert.assertTrue(routeMaritimeGrise6RioLuanda.containsCity(luanda));
-        Assert.assertFalse(routeMaritimeGrise6RioLuanda.containsCity(beij));
+        assertFalse(routeMaritimeGrise6RioLuanda.containsCity(yaku));
+        assertTrue(routeMaritimeGrise6RioLuanda.containsCity(rio));
+        assertTrue(routeMaritimeGrise6RioLuanda.containsCity(luanda));
+        assertFalse(routeMaritimeGrise6RioLuanda.containsCity(beij));
     }
 
     @Test
@@ -71,19 +71,19 @@ public class CheminTest {
 
         joueur.constructChemin(chemins,routeTerrestreJaune2LimaCara);
 
-        Assert.assertEquals(routeTerrestreJaune2LimaCara,chemins.get(0).get(0));
+        assertEquals(routeTerrestreJaune2LimaCara,chemins.get(0).get(0));
 
         joueur.constructChemin(chemins,routeTerrestreVerte4CaraRio);
 
-        Assert.assertEquals(routeTerrestreVerte4CaraRio,chemins.get(0).get(1));
+        assertEquals(routeTerrestreVerte4CaraRio,chemins.get(0).get(1));
 
         joueur.constructChemin(chemins,routeMaritimeVerte3BuenValp);
 
-        Assert.assertEquals(routeMaritimeVerte3BuenValp,chemins.get(1).get(0));
+        assertEquals(routeMaritimeVerte3BuenValp,chemins.get(1).get(0));
 
         joueur.constructChemin(chemins,routeTerrestreGrise2LimaValp);
 
-        Assert.assertEquals(routeTerrestreGrise2LimaValp,chemins.get(0).get(3));
+        assertEquals(routeTerrestreGrise2LimaValp,chemins.get(0).get(3));
 
 
     }

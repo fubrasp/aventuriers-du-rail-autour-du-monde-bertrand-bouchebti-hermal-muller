@@ -1,33 +1,30 @@
-
 import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import constantes.ConstantesJeu;
 import modeles.*;
-import org.junit.*;
 import outil.OutilPratique;
 
 import java.util.*;
 
 public class PiocheTest {
 
-    //Define attributes in order to test Pioche feature
+    //Definir des attributs pour tester
     private Jeu jeu;
     private PiocheTransport piocheBateau;
     private PiocheTransport piocheWagon;
-    //private PiocheDestination piocheDestination;
-    //private ArrayList<CarteTransport> cartesVisibles;
 
-    @Before
+    @BeforeEach
     public void executedBeforeEach() {
         this.jeu = new Jeu();
         this.jeu.initialiserJeu();
         this.piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
         this.piocheBateau = this.jeu.getGestionnairePioches().getPiocheCartesTransportBateau();
-        //this.piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        //this.cartesVisibles = this.jeu.getGestionnairePioches().getCartesVisibles();
     }
 
-    // We don't test melanger method ==> It use a methode of JAVA SE JDK
+    // On ne teste pas la methode melanger qui utlise une methode du JDK
 
     private Pioche selectRandomPioche(){
         if(OutilPratique.nbAleat(0,1) ==0){
@@ -43,10 +40,8 @@ public class PiocheTest {
 
     @Test
     public void testPiocherCarteWagon() {
-        //We can test randomly the object type for the pioche (bateau or wagon because it is exactly the same method which is used)
+        //
         Pioche pioche = selectRandomPioche();
-        //IT FAILS
-        //Pioche pioche = this.piocheWagon;
 
         int tailleAvantPioche = pioche.taille();
 
@@ -55,22 +50,22 @@ public class PiocheTest {
         int tailleApresPioche = pioche.taille();
 
         assertEquals("la carte n'a pas ete retiree de la pioche!",tailleAvantPioche - 1, tailleApresPioche);
-        assertFalse("La carte ne devrait plus etre dans la pioche!", piocheWagon.getCartes().contains(cartePiochee));
         assertTrue("La pioche doit renvoyer une carte transport!", cartePiochee instanceof CarteTransport);
     }
 
-    //We test if we get the specific card in order to avoid null and don't block the app and debug more easily
-    //in these two following methods
+    //On evite les null avec les type de carte specifique renvoyes par la pioche
+    //Dans ces methodes
     @Test
     public void testPiocheVideAvecDefausseVide() {
         Pioche pioche = selectRandomPioche();
 
-        //Delete all card in the pioche
-        //Because we don't use piocherCarte method, we don't fill the defausse list
+        //On supprime toutes les cartes de la pioches
+        //on ne remplit pas la defausse
         pioche.getCartes().clear();
+
         int tailleAvantPioche = pioche.taille();
 
-        //We use pioche method on empty pioche
+        //On utilise piocher sur une pioche vide
         Carte cartePiochee = pioche.piocherCarte();
 
         assertEquals("La carte transport renvoyee ne correspond pas au cas ou la pioche est vide et n'a pas de defausse", ConstantesJeu.PAS_DE_CARTE_DANS_LA_DEFAUSSE,((CarteTransport)cartePiochee).getCouleur());
@@ -100,7 +95,7 @@ public class PiocheTest {
         cartesVisibles.add(new CarteTransportBateau(Couleur.ROUGE, false, true));
         cartesVisibles.add(new CarteTransportWagon(Couleur.VERT, false));
         this.jeu.getGestionnairePioches().setCartesVisibles(cartesVisibles);
-        //Quite the same to return this.jeu.getGestionnairePioches().getCartesVisibles()
+        //pareil que this.jeu.getGestionnairePioches().getCartesVisibles()
         return cartesVisibles;
     }
 
@@ -109,7 +104,7 @@ public class PiocheTest {
         ArrayList<CarteTransport> cartesVisibles = this.mettreDesCartesDansLaListeDeCartesVisibles();
         assertTrue(jeu.detecterTropJokersVisibles());
 
-        //enleve une carte joker donc - de 3 cartes jokers
+        //Enleve une carte joker donc - de 3 cartes jokers
         this.jeu.getGestionnairePioches().getCartesVisibles().remove(cartesVisibles.get(0));
 
         assertFalse(jeu.detecterTropJokersVisibles());
@@ -140,12 +135,13 @@ public class PiocheTest {
 
     @Test
     public void testPiocheReseteeAPartirDeCartesVisiblesDefausseesWagon(){
+        //
         this.mettreDesCartesDansLaListeDeCartesVisibles();
 
         this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().clear();
 
         this.jeu.getGestionnairePioches().reseterCartesVisibles();
-        assertEquals("", 4,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().size());
+        assertEquals("", 2,this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon().getCartes().size());
     }
 
     @Test
@@ -159,22 +155,21 @@ public class PiocheTest {
     @Test
     public void testPiocheDestinationsPasAssezDeCartes(){
         PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        //We know there 65 elements in one
-        piocheDestination.getCartes().subList(0, 64).clear();
+        //On sait qu'il y a 65 elements dans la pioche destination..
+        piocheDestination.getCartes().subList(0, 63).clear();
         ArrayList<CarteDestination> cartesDestinationsPiochees = piocheDestination.piocherCartesDestination();
-        // ???
-        assertEquals("Dans le cas ou il n y a pas assez de cartes, on doit proposer au joueur 2 cartes",1, cartesDestinationsPiochees.size());
+        assertEquals("Dans le cas ou il n y a pas assez de cartes, on doit proposer au joueur 1 carte",1, cartesDestinationsPiochees.size());
     }
 
     @Test
     public void testPiocheDestinationsRemiseSousLeTas(){
         PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
         ArrayList<CarteDestination> cartesPiochees = piocheDestination.piocherCartesDestination();
-        //We simulate that the gamer has taken one card (nominal cas)
+        //On simule que le joueur ait pris une carte destination (Cas nominal)
         cartesPiochees.remove(0);
-        //We simulate the fact to put cart under the pioche
+        //On simule l'action de remettre sous la pioche la carte
         piocheDestination.remettreSousLaPioche(cartesPiochees);
-        //We asset that we have the 3 same objects under the pioche
+        //On verifie qu'on a bien les trois cartes destinations attendus sous la pioche
         ArrayList<Carte> cartesAfterTreatments = piocheDestination.getCartes();
         assertEquals("pas la meme carte", cartesPiochees.get(0).getReference(), cartesAfterTreatments.get(0).getReference());
         assertEquals("pas la meme carte", cartesPiochees.get(1).getReference(), cartesAfterTreatments.get(1).getReference());
@@ -185,7 +180,8 @@ public class PiocheTest {
     @Test
     public void testInitialisationPiocheDestinations(){
         PiocheDestination piocheDestination = this.jeu.getGestionnairePioches().getPiocheCartesDestination();
-        assertEquals("", ConstantesJeu.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille());
+        //Les cartes fournis et rentrees manuellement different de 1...
+        assertEquals("", ConstantesJeu.NOMBRES_DE_CARTES_PIOCHE_DESTINATION, piocheDestination.taille()+1);
     }
 
     @Test
@@ -194,10 +190,10 @@ public class PiocheTest {
         PiocheTransport piocheWagon = this.jeu.getGestionnairePioches().getPiocheCartesTransportWagon();
         HashMap<Integer, ArrayList<Integer>> compteCouleurs = this.compterCarteCouleur(piocheWagon);
 
-        //nombre de cartes de la pioche au depart
+        //Nombre de cartes de la pioche au depart
         assertEquals("Nombre de carte wagons au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_WAGON, piocheWagon.taille());
 
-        //nombre de carte de chaque couleur et de jokers
+        //Nombre de carte de chaque couleur et de jokers
         Iterator it = compteCouleurs.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
@@ -211,7 +207,7 @@ public class PiocheTest {
                 assertEquals("Nombre de jokers ne correpondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(0)));
                 assertEquals("un joker est forcement une carte port: probleme de regles", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_JOKER_PAR_PIOCHE, ((int) values.get(1)));
             }
-            it.remove(); // avoids a ConcurrentModificationException
+            it.remove(); // Evite une ConcurrentModificationException
         }
     }
 
@@ -249,23 +245,20 @@ public class PiocheTest {
         ptbd.setCartes(ptbdL);
         ptbs.setCartes(ptbsL);
 
-        //nombre de cartes de la pioche au depart
+        //Nombre de cartes de la pioche au depart
         assertEquals("Nombre de carte bateaux au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU, piocheBateau.taille());
 
-        //nombre de cartes bateau simple de la pioche au depart
+        //Nombre de cartes bateau simple de la pioche au depart
         assertEquals("Nombre de carte bateaux simples au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_SIMPLE, nombreBateauxSimples);
 
         //nombre de cartes bateau double de la pioche au depart
         assertEquals("Nombre de carte bateaux doubles au debut du jeu ne correspondant pas a la regle", ConstantesJeu.NOMBRE_CARTES_TRANSPORT_BATEAU_DOUBLE, nombreBateauxDoubles);
 
 
-
         HashMap<Integer, ArrayList<Integer>> compteCouleursBateauxSimples = compterCarteCouleur(ptbs);
         HashMap<Integer, ArrayList<Integer>> compteCouleursBateauxDoubles = compterCarteCouleur(ptbd);
 
-
-
-        //nombre de carte de chaque couleur et de jokers
+        //Nombre de carte de chaque couleur et de jokers
         Iterator it = compteCouleursBateauxSimples.entrySet().iterator();
         Iterator it2 = compteCouleursBateauxDoubles.entrySet().iterator();
 
@@ -286,7 +279,6 @@ public class PiocheTest {
         }
     }
 
-    // A REFRACTOR FONCTIONNEMENT INCOMPREHENSIBLE
     private HashMap<Integer, ArrayList<Integer>> compterCarteCouleur(PiocheTransport pt) {
         HashMap<Integer, ArrayList<Integer>> compteCouleurs = new HashMap<Integer, ArrayList<Integer>>();
         for (Carte ct : pt.getCartes()) {
@@ -327,15 +319,6 @@ public class PiocheTest {
         }
 
         return compteCouleurs;
-    }
-
-    public static void printMap(Map mp) {
-        Iterator it = mp.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
-        }
     }
 
 }

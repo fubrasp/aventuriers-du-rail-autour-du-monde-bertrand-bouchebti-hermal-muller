@@ -5,6 +5,7 @@
     * Construction de routes
     * Mise dans la defausse des pioches respectives 
     * Mise a jour du score des joueurs
+    * modelisation de la carte via un arbre DOM
 
 * Echange de pions
     * Echange de pions poour le joueur
@@ -67,3 +68,21 @@
     
 * Patterns
     * MVC
+    
+# Liens avec les cours
+    * Structuration de documents
+        * DOM, plateau de jeu
+        * XML, plateau de jeu
+        * Jackson, enregistrement de parties
+    
+    * Reseau 
+        * RMI ports, IP, Client/Serveur
+    
+    * POA
+        * JAVA et librairies
+        * MVC
+        
+    * GL
+        * Partie conceptuelle
+        * Architecture du projet
+        * Methode agile    

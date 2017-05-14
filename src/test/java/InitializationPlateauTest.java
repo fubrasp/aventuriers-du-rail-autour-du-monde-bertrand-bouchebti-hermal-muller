@@ -1,9 +1,11 @@
 import modeles.GestionnairePlateau;
 import modeles.InitCities;
 import modeles.Ville;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class InitializationPlateauTest  {
     final static int CITIES_NUMBER = 48;
     final static int ROADS_NUMBER = 130;
 
-    @Before
+    @BeforeEach
     public void executedBeforeEach() {
         cities = Collections.emptyList();
         list = GestionnairePlateau.parsePlateau();
@@ -25,13 +27,13 @@ public class InitializationPlateauTest  {
     @Test
     public void citiesInitialization(){
         int numberOfCity = InitCities.initCities().size();
-        Assert.assertEquals(numberOfCity,CITIES_NUMBER);
+        assertEquals(numberOfCity,CITIES_NUMBER);
     }
 
     @Test
     public void roadsInitialisation(){
         int numberOfRoads = GestionnairePlateau.initRoads(list).size();
-        Assert.assertEquals(numberOfRoads,ROADS_NUMBER);
+        assertEquals(numberOfRoads,ROADS_NUMBER);
     }
 
 

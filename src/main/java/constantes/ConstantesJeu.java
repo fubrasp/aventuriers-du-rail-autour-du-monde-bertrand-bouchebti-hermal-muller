@@ -25,10 +25,23 @@ public class ConstantesJeu {
 
     //Cartes destinations
     public final static int NOMBRES_DE_CARTES_PIOCHE_DESTINATION = 65;
+    public final static int NOMBRES_DE_CARTES_DESTINATIONS_TOUR_PAR_TOUR = 4;
+    public final static int NOMBRES_DE_CARTES_DESTINATIONS_INITIALISATION = 5;
+
+    public final static int NOMBRES_DE_CARTES_MINIMUM_DESTINATIONS_INITIALISATION = 3;
+    public final static int NOMBRES_DE_CARTES_DESTINATIONS_MINIMUM_APRES_INITIALISATION = 1;
+
 
     //Initialisation de la main du joueur
     public static final int NOMBRE_CARTES_BATEAU_INITIALISATION = 7;
     public static final int NOMBRE_CARTES_WAGON_INITIALISATION = 3;
+
+    //Initialisation des pions
+    public static final int NOMBRE_PIONS_WAGONS_INITIALISATION = 40;
+    public static final int NOMBRE_PIONS_BATEAU_INITIALISATION = 20;
+    public static final int NOMBRE_PIONS_BATEAU_RESERVE_INITIALISATION = 5;
+    public static final int NOMBRE_PIONS_WAGONS_RESERVE_INITIALISATION = 10;
+
 
     //System d'actions (limitations)
 

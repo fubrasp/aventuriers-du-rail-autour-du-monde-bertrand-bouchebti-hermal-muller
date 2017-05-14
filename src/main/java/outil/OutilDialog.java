@@ -92,9 +92,9 @@ public class OutilDialog {
         makeDialog(titreDialog, messageDialog);
     }
 
-    public void montrerDialogAuMoinsUnerCarte(){
+    public void montrerDialogAuMoinsUneOuPlusieursrCarte(int nombreDeCartesMinimal){
         String titreDialog = "ERREUR : SELECTIONNEZ AU MOINS UNE CARTE";
-        String messageDialog = "Le Jeu impose le choix d'au moins 1 carte destination.";
+        String messageDialog = "Le Jeu impose le choix d'au moins " + nombreDeCartesMinimal + " carte(s) destination.";
         makeDialog(titreDialog, messageDialog);
     }
 

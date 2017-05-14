@@ -1,5 +1,7 @@
 package modeles;
 
+import constantes.ConstantesJeu;
+
 import java.util.*;
 
 /**
@@ -42,6 +44,14 @@ public class PiocheDestination extends Pioche {
 	 * @return ArrayList<CarteDestination> liste de 4 cartes ou moins (en fonction de l'etat de la pioche)
 	 */
 	public ArrayList<CarteDestination> piocherCartesDestination(){
+		return this.piocherCartesDestinations(ConstantesJeu.NOMBRES_DE_CARTES_DESTINATIONS_TOUR_PAR_TOUR);
+	}
+
+	public ArrayList<CarteDestination> piocherCartesDestinationsInitialisation(){
+		return this.piocherCartesDestinations(ConstantesJeu.NOMBRES_DE_CARTES_DESTINATIONS_INITIALISATION);
+	}
+
+	private ArrayList<CarteDestination> piocherCartesDestinations(int nombreDeCartes){
 		this.cartesPrecedentes.clear();
 		ArrayList<CarteDestination> cartesPiocheesPourChoixUtilisateurs = new ArrayList<CarteDestination>();
 		int nombreCartesDestinations = this.cartes.size()-1;
@@ -49,7 +59,7 @@ public class PiocheDestination extends Pioche {
 		//Cas nominal
 		if(!this.cartes.isEmpty()){
 			CarteDestination carteCourante = null;
-			for(int i = nombreCartesDestinations; i>nombreCartesDestinations-4;i--){
+			for(int i = nombreCartesDestinations; i>nombreCartesDestinations-nombreDeCartes;i--){
 				carteCourante = ((CarteDestination)this.cartes.get(i));
 				cartesPiocheesPourChoixUtilisateurs.add(carteCourante);
 				this.cartesPrecedentes.add(carteCourante);
@@ -76,6 +86,15 @@ public class PiocheDestination extends Pioche {
 
 	public void initialiserPiocheDestinations(){
 		this.cartes.addAll(InitPiocheDestination.initDestinationsItineraires());
+	}
+
+	public int nombreDeCarteMinimaleDeCartesAChoisirPopup(){
+		boolean b = Jeu.getInstance().getJoueurCourant().isaInitialiseeSesCartesDestinations();
+		if(b){
+			return ConstantesJeu.NOMBRES_DE_CARTES_DESTINATIONS_MINIMUM_APRES_INITIALISATION;
+		}else{
+			return ConstantesJeu.NOMBRES_DE_CARTES_MINIMUM_DESTINATIONS_INITIALISATION;
+		}
 	}
 
 	/*

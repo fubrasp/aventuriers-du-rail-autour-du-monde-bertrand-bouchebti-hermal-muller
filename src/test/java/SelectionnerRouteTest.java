@@ -1,6 +1,6 @@
 import constantes.ConstantesJeu;
 import modeles.*;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import outil.OutilCarte;
@@ -39,19 +39,19 @@ public class SelectionnerRouteTest {
     @Test
     public void setPossesseurToRouteTest(){
         // Test la fonction isTaken qui renvoie false si la route n'a pas de posesseur et qui renvoie true dans le cas contraire
-        Assert.assertFalse(routeTerrestreJaune3YakuBeij.isTaken());
+        assertFalse(routeTerrestreJaune3YakuBeij.isTaken());
         routeTerrestreJaune3YakuBeij.setPossesseur(joueur);
-        Assert.assertTrue(routeTerrestreJaune3YakuBeij.isTaken());
+        assertTrue(routeTerrestreJaune3YakuBeij.isTaken());
     }
 
     @Test
     public void nbJokerBesoinTest(){
         // Test la fonction nbJokerBesoin qui renvoie le nombre de joker besoin en fonction du nombre de carte manquante
-        Assert.assertEquals(0, OutilCarte.nbJokerBesoin(0));
-        Assert.assertEquals(1, OutilCarte.nbJokerBesoin(2));
-        Assert.assertEquals(2,OutilCarte.nbJokerBesoin(4));
-        Assert.assertEquals(3,OutilCarte.nbJokerBesoin(5));
-        Assert.assertEquals(3,OutilCarte.nbJokerBesoin(6));
+        assertEquals(0, OutilCarte.nbJokerBesoin(0));
+        assertEquals(1, OutilCarte.nbJokerBesoin(2));
+        assertEquals(2,OutilCarte.nbJokerBesoin(4));
+        assertEquals(3,OutilCarte.nbJokerBesoin(5));
+        assertEquals(3,OutilCarte.nbJokerBesoin(6));
     }
 
     @Test
@@ -68,18 +68,18 @@ public class SelectionnerRouteTest {
         joueur.addSelectCard(new CarteTransportBateau(Couleur.JAUNE,false,false));
 
         // Selectionne une route terrestre jaune de 3 cases
-        Assert.assertEquals(0,OutilCarte.prendreRouteCouleur(routeTerrestreJaune3YakuBeij,
+        assertEquals(0,OutilCarte.prendreRouteCouleur(routeTerrestreJaune3YakuBeij,
                 cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(0,cartesUtilisees.size());
+        assertEquals(0,cartesUtilisees.size());
 
         // Ajoute 2 cartes transport wagon jaune simple au joueur
         joueur.addSelectCard(new CarteTransportWagon(Couleur.JAUNE,false));
         joueur.addSelectCard(new CarteTransportWagon(Couleur.JAUNE,false));
 
         // Selectionne une route terrestre jaune de 3 cases
-        Assert.assertEquals(2,OutilCarte.prendreRouteCouleur(routeTerrestreJaune3YakuBeij,
+        assertEquals(2,OutilCarte.prendreRouteCouleur(routeTerrestreJaune3YakuBeij,
                 cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(2,cartesUtilisees.size());
+        assertEquals(2,cartesUtilisees.size());
     }
 
     @Test
@@ -97,17 +97,17 @@ public class SelectionnerRouteTest {
         joueur.addSelectCard(new CarteTransportBateau(Couleur.ROUGE,false,false));
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,false,false));
 
-        Assert.assertEquals(2,OutilCarte.prendreRouteCouleur(routeMaritimeVerte4ReykMurm,
+        assertEquals(2,OutilCarte.prendreRouteCouleur(routeMaritimeVerte4ReykMurm,
                 cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(2,cartesUtilisees.size());
+        assertEquals(2,cartesUtilisees.size());
 
         cartesUtilisees.clear();
 
         // Selectionne un bateau vert double en plus
         joueur.addSelectCard(new CarteTransportBateau(Couleur.VERT,false,true));
-        Assert.assertEquals(4,OutilCarte.prendreRouteCouleur(routeMaritimeVerte4ReykMurm,
+        assertEquals(4,OutilCarte.prendreRouteCouleur(routeMaritimeVerte4ReykMurm,
                 cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(3,cartesUtilisees.size());
+        assertEquals(3,cartesUtilisees.size());
     }
 
     @Test
@@ -121,19 +121,19 @@ public class SelectionnerRouteTest {
         ArrayList<CarteTransport> cartesUtilisees = new ArrayList<>();
 
         // Doit renvoyer false car pas assez de joker selectionné
-        Assert.assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(0,cartesUtilisees.size());
+        assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
+        assertEquals(0,cartesUtilisees.size());
 
         joueur.addSelectCard(new CarteTransport(ConstantesJeu.JOKER,false));
 
         // Doit renvoyer false car pas assez de joker selectionné
-        Assert.assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(0,cartesUtilisees.size());
+        assertFalse(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
+        assertEquals(0,cartesUtilisees.size());
 
         joueur.addSelectCard(new CarteTransport(ConstantesJeu.JOKER,false));
         // Doit renvoyer true car 2 jokers sélectionnés
-        Assert.assertTrue(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
-        Assert.assertEquals(2,cartesUtilisees.size());
+        assertTrue(OutilCarte.utiliserJoker(nbJokerBesoin,cartesUtilisees,joueur.getSelectedCards()));
+        assertEquals(2,cartesUtilisees.size());
     }
 
     @Test
@@ -147,17 +147,17 @@ public class SelectionnerRouteTest {
         CarteTransportBateau carteTransportBateauDoubleVerte = new CarteTransportBateau(Couleur.VERT,false,true);
 
         // Doit renvoyer 0 car 0 carte sélectionné
-        Assert.assertEquals(0,OutilCarte.getScorePourUneCouleur(routeMaritimeVerte4ReykMurm,Couleur.VERT,cartesUtilisees,
+        assertEquals(0,OutilCarte.getScorePourUneCouleur(routeMaritimeVerte4ReykMurm,Couleur.VERT,cartesUtilisees,
                 joueur.getSelectedCards()));
-        Assert.assertEquals(0,cartesUtilisees.size()); // Verifie le nombre de carte utilisée
+        assertEquals(0,cartesUtilisees.size()); // Verifie le nombre de carte utilisée
 
         joueur.addSelectCard(carteTransportBateauVerte);
         joueur.addSelectCard(carteTransportBateauDoubleVerte);
 
         // Doit renvoyer 3 car ajout d'un bateau simple vert(score 1) + ajout d'un bateau vert double (score 2)
-        Assert.assertEquals(3,OutilCarte.getScorePourUneCouleur(routeMaritimeVerte4ReykMurm,Couleur.VERT,cartesUtilisees,
+        assertEquals(3,OutilCarte.getScorePourUneCouleur(routeMaritimeVerte4ReykMurm,Couleur.VERT,cartesUtilisees,
                 joueur.getSelectedCards()));
-        Assert.assertEquals(2,cartesUtilisees.size());
+        assertEquals(2,cartesUtilisees.size());
     }
 
     @Test
@@ -173,17 +173,17 @@ public class SelectionnerRouteTest {
         CarteTransportBateau carteTransportBateauRougeDouble = new CarteTransportBateau(Couleur.ROUGE,false,true);
 
         // Doit renvoyer 0 car 0 carte sélectionné
-        Assert.assertEquals(0,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
+        assertEquals(0,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
                 joueur.getSelectedCards()));
-        Assert.assertEquals(0,cartesUtilisees.size()); // Verifie le nombre de carte utilisée
+        assertEquals(0,cartesUtilisees.size()); // Verifie le nombre de carte utilisée
 
         joueur.addSelectCard(carteTransportBateauVerte);
         joueur.addSelectCard(carteTransportBateauDoubleVerte);
 
         // Doit renvoyer 3 car ajout d'un bateau simple vert(score 1) + ajout d'un bateau vert double (score 2)
-        Assert.assertEquals(3,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
+        assertEquals(3,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
                 joueur.getSelectedCards()));
-        Assert.assertEquals(2,cartesUtilisees.size());
+        assertEquals(2,cartesUtilisees.size());
 
         cartesUtilisees.clear(); // Reinitialise carte utilisé
         joueur.getSelectedCards().clear(); // Reinitalise les cartes selectionnées
@@ -199,9 +199,9 @@ public class SelectionnerRouteTest {
         joueur.addSelectCard(carteTransportBateauRougeDouble); //scoreCarteRouge +2
 
         // Doit renvoyer 7 car rouge est la couleur dont le score est plus élevé
-        Assert.assertEquals(7,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
+        assertEquals(7,OutilCarte.prendreRouteGrise(routeMaritimeGrise6RioLuan,cartesUtilisees,
                 joueur.getSelectedCards()));
-        Assert.assertEquals(5,cartesUtilisees.size());
+        assertEquals(5,cartesUtilisees.size());
     }
 
     @Test
@@ -227,7 +227,7 @@ public class SelectionnerRouteTest {
 
         joueur.defausserCartesUtilisees(cartesUtilisees);
 
-        Assert.assertEquals(3,joueur.getCartesTransport().size());
+        assertEquals(3,joueur.getCartesTransport().size());
     }
 
     @Test
@@ -242,26 +242,26 @@ public class SelectionnerRouteTest {
         joueur.addSelectCard(carteTransportWagonRouge);
         joueur.addSelectCard(carteTransportWagonRouge);
 
-        Assert.assertEquals(1,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
+        assertEquals(1,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
                 joueur.getSelectedCards()));
 
         joueur.addSelectCard(carteTransportWagonJaune);
 
-        Assert.assertEquals(1,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
+        assertEquals(1,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
                 joueur.getSelectedCards()));
 
         joueur.addSelectCard(carteTransportWagonJaune);
-        Assert.assertEquals(2,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
+        assertEquals(2,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
                 joueur.getSelectedCards()));
 
         cartesUtilisees.clear();
 
         joueur.addSelectCard(carteTransportWagonJaune);
         joueur.addSelectCard(carteTransportWagonJaune);
-        Assert.assertEquals(3,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
+        assertEquals(3,OutilCarte.prendreRoutePaire(routePaire3Cases,cartesUtilisees,
                 joueur.getSelectedCards()));
 
-        Assert.assertEquals(6,cartesUtilisees.size());
+        assertEquals(6,cartesUtilisees.size());
     }
 
 }
