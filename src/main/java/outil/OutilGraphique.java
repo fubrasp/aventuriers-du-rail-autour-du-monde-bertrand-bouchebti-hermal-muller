@@ -1,5 +1,8 @@
 package outil;
 
+import application.MainApp;
+import controllers.PiochesController;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -31,6 +34,7 @@ public class OutilGraphique {
 
     /**
      * Methode qui creer des images clickables
+     *
      * @param carte card concernee
      * @return anchorPane
      */
@@ -70,6 +74,7 @@ public class OutilGraphique {
 
     /**
      * Methode qui creer des images clickables pour les cartes destinations
+     *
      * @param carteDestinationChoisie
      * @param listeDestinations
      */
@@ -88,6 +93,7 @@ public class OutilGraphique {
 
     /**
      * Methode qui creer une image view sur mesure
+     *
      * @param cheminFichier
      * @return imageview creer a partir du fichier
      */
@@ -104,16 +110,18 @@ public class OutilGraphique {
 
     /**
      * Methode qui raffraichit les informations du joueur
+     *
      * @param textPseudoJoueur identifiant du joueur
-     * @param textScoreJoueur score du joueur
+     * @param textScoreJoueur  score du joueur
      */
-    public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur){
-        textPseudoJoueur.setText("Joueur : "+ Jeu.getInstance().getJoueurCourant().getPseudo());
-        textScoreJoueur.setText("Score :  "+Jeu.getInstance().getJoueurCourant().getScore());
+    public static void refreshUserInformations(Text textPseudoJoueur, Text textScoreJoueur) {
+        textPseudoJoueur.setText("Joueur : " + Jeu.getInstance().getJoueurCourant().getPseudo());
+        textScoreJoueur.setText("Score :  " + Jeu.getInstance().getJoueurCourant().getScore());
     }
 
     /**
      * Methode qui raffraichit les cartes destinations du joueur
+     *
      * @param listeDestinations
      */
     public void refreshUserDestinationCards(VBox listeDestinations) {
@@ -127,21 +135,22 @@ public class OutilGraphique {
     /**
      * Methode qui raffraichit les cartes transport du joueur
      * Ajoute dynamiquement les cartes a la main du joueur
+     *
      * @param listeBouttonsUserCourant
      */
-    public void refreshUserTransportCards(HBox listeBouttonsUserCourant){
+    public void refreshUserTransportCards(HBox listeBouttonsUserCourant) {
         System.out.println("refreshUserTransportCards");
         HashMap<String, Integer> occurenceCartesTransport = Jeu.getInstance().getJoueurCourant().compterOccurencesCartes();
 
-        for (CarteTransport carteTransportCourante:
+        for (CarteTransport carteTransportCourante :
                 Jeu.getInstance().getJoueurCourant().getCartesTransport()) {
 
             int nombreApparitions = occurenceCartesTransport.get(carteTransportCourante.getReference());
 
-            if(!listeBouttonsUserCourantContientCarte(listeBouttonsUserCourant, carteTransportCourante)){
+            if (!listeBouttonsUserCourantContientCarte(listeBouttonsUserCourant, carteTransportCourante)) {
 
                 AnchorPane anchorPaneAAjouter = OutilGraphique.creerAnchorPane(carteTransportCourante);
-                if(nombreApparitions>1){
+                if (nombreApparitions > 1) {
                     Text textCourant = ((Text) anchorPaneAAjouter.getChildren().get(1));
                     if (nombreApparitions >= 9) {
                         textCourant.setLayoutX(35);
@@ -153,10 +162,10 @@ public class OutilGraphique {
                         new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
-                                if(event.getButton() == MouseButton.SECONDARY){
+                                if (event.getButton() == MouseButton.SECONDARY) {
                                     // RIGHT CLICK
                                     Jeu.getInstance().getJoueurCourant().removeSelectCard(carteTransportCourante);
-                                }else{
+                                } else {
                                     // LEFT CLICK
                                     Jeu.getInstance().getJoueurCourant().addSelectCard(carteTransportCourante);
                                 }
@@ -168,20 +177,20 @@ public class OutilGraphique {
                                         .nbOccurenceCarteSelectionnee(carteTransportCourante);
                                 Text textCourant = ((Text) anchorPaneAAjouter.getChildren().get(2));
                                 textCourant.setFill(Color.BLUE);
-                                if(nbOccurence>0){
-                                    if(nbOccurence>nombreApparitions){
+                                if (nbOccurence > 0) {
+                                    if (nbOccurence > nombreApparitions) {
                                         // Permet au joueur de ne pas selectionner plus de carte que ce qu'il a dans la main
                                         Jeu.getInstance().getJoueurCourant().removeSelectCard(carteTransportCourante);
-                                        nbOccurence = nbOccurence-1;
+                                        nbOccurence = nbOccurence - 1;
                                     }
                                     anchorPaneAAjouter.setBorder(createBorder()); // ADD RED BORDER
                                     textCourant.setText("X" + nbOccurence);
-                                }else{
+                                } else {
                                     anchorPaneAAjouter.setBorder(null); // REMOVE BORDER
                                     textCourant.setText("");
                                 }
-                                System.out.println("NbOccurence : "+nbOccurence);
-                                System.out.println("Carte de la meme couleur selectionnee : "+Jeu.getInstance()
+                                System.out.println("NbOccurence : " + nbOccurence);
+                                System.out.println("Carte de la meme couleur selectionnee : " + Jeu.getInstance()
                                         .getJoueurCourant()
                                         .getSelectedCards()
                                         .get(carteTransportCourante
@@ -196,25 +205,25 @@ public class OutilGraphique {
 
     /**
      * Method equi determine si une carte est deja dans la main du joueur
+     *
      * @param listeBouttonsUserCourant main du joueur
-     * @param carteTransportCourante carte transport concernee
+     * @param carteTransportCourante   carte transport concernee
      * @return boolean
      */
-    private boolean listeBouttonsUserCourantContientCarte(HBox listeBouttonsUserCourant, CarteTransport carteTransportCourante){
-        for (Node ancCourant:
+    private boolean listeBouttonsUserCourantContientCarte(HBox listeBouttonsUserCourant, CarteTransport carteTransportCourante) {
+        for (Node ancCourant :
                 listeBouttonsUserCourant.getChildren()) {
-            if(((AnchorPane)ancCourant).getAccessibleText().equals(carteTransportCourante.getReference())){
+            if (((AnchorPane) ancCourant).getAccessibleText().equals(carteTransportCourante.getReference())) {
                 return true;
             }
         }
         return false;
     }
 
-    private Border createBorder(){
+    private Border createBorder() {
         return new Border(new BorderStroke(Color.RED,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
     }
-
 
 
 }

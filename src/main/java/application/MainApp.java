@@ -17,7 +17,6 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-
 	private Jeu jeu;
 
     public static int nbr_joueur=0;
@@ -86,7 +85,6 @@ public class MainApp extends Application {
     public Jeu getJeu() {
         return jeu;
     }
-
 
     /*
 	*

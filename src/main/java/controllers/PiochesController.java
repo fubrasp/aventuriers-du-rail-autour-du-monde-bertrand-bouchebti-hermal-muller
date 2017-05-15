@@ -84,7 +84,7 @@ public class PiochesController implements Initializable, JeuListener {
         nombresTourTotauxRestants = Jeu.getInstance().determinerNombreToursTotauxRestants();
     }
 
-    private void testAInitialiserSesCartesDestinations(){
+    public void testAInitialiserSesCartesDestinations(){
         if(!Jeu.getInstance().getJoueurCourant().isaInitialiseeSesCartesDestinations()){
             this.gererPiocheDestination();
             Jeu.getInstance().getJoueurCourant().setaInitialiseeSesCartesDestinations(true);
