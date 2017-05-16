@@ -118,6 +118,7 @@ public class GestionnairePlateau {
         Ville city1 = cities.get(roadMetaData[3]);
         Ville city2 = cities.get(roadMetaData[4]);
 
+        road.setId(roadClass);
         road.setCouleur(roadColor);
         road.setNombreEtapes(roadSize);
         road.setPossesseur(null);

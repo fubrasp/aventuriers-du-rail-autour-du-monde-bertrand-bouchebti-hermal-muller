@@ -4,9 +4,8 @@ import constantes.ConstantesJeu;
 import interfaces.INTJ;
 import events.Thrower;
 import interfaces.JeuListener;
-import outil.OutilDialog;
-import outil.OutilGraphique;
-import outil.OutilPratique;
+import javafx.stage.Stage;
+import outil.*;
 
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -17,6 +16,7 @@ import javafx.scene.text.*;
 import javafx.scene.input.*;
 import javafx.event.*;
 
+import java.io.File;
 import java.net.*;
 import java.util.*;
 
@@ -31,6 +31,9 @@ public class PiochesController implements Initializable, JeuListener {
     private OutilGraphique outilGraphique = new OutilGraphique();
 
     private static int compteurPositionNouveauBoutonsCartesVisibles = 0;
+
+    @FXML
+    private AnchorPane mainPane;
 
     //Cartes transport du joueur
     @FXML
@@ -528,5 +531,21 @@ public class PiochesController implements Initializable, JeuListener {
         this.listeBouttonsUserCourant.getChildren().clear();
         this.listeDestinations.getChildren().clear();
         this.rafraichirInterface();
+    }
+
+    @FXML
+    public void handleSauvegarder(){
+        Stage stage = (Stage)mainPane.getScene().getWindow();
+        File fileSelected = FileChooserSample.saveFile(stage);
+        ChargerPartie.sauvegarderPartie(Jeu.getInstance(),fileSelected);
+    }
+
+    @FXML
+    public void handleCharger(){
+        Stage stage = (Stage)mainPane.getScene().getWindow();
+        File fileSelected = FileChooserSample.selectFile(stage);
+        ChargerPartie.chargerPartie(fileSelected);
+        refreshInterface();
+        Jeu jeu = Jeu.getInstance();
     }
 }

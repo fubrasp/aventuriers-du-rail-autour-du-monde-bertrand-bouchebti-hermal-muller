@@ -5,6 +5,7 @@ package modeles;
  */
 public class Route {
 
+	private String id;
 
 	private Ville villeDepart;
 	private Ville villeArrivee;
@@ -138,6 +139,12 @@ public class Route {
 	public void setPossesseur(Joueur possesseur) {
 		this.possesseur = possesseur;
 	}
-	
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

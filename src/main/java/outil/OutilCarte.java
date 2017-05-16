@@ -294,5 +294,61 @@ public class OutilCarte {
         }
     }
 
+    /**
+     *  Créer une carte transport en fonction d'une référence
+     *  @param reference de la carte
+     *  @return carte transport
+     */
+    public static CarteTransport createCarteTransportByReference(String reference){
+        CarteTransport carteTransport = null;
+        boolean isPort = false;
+        int color = 0;
+        int stringLength = reference.length();
+
+        if(reference.substring(0,1).equals("W")){
+
+            if(reference.substring(1,2).equals("P")){
+                isPort = true;
+                color = Integer.valueOf(reference.substring(2,stringLength));
+            }else{
+                color = Integer.valueOf(reference.substring(1,stringLength));
+            }
+            carteTransport = new CarteTransportWagon(color,isPort);
+        }else if(reference.substring(0,1).equals("B")){
+            boolean isBateauDouble = true;
+            if(reference.substring(1,2).equals("P")){
+                isBateauDouble = false;
+                isPort = true;
+                color = Integer.valueOf(reference.substring(2,stringLength));
+            }else{
+                isPort = false;
+                color = Integer.valueOf(reference.substring(1,stringLength));
+            }
+            carteTransport = new CarteTransportBateau(color,isPort,isBateauDouble);
+        }
+
+        return carteTransport;
+    }
+
+    /**
+     *  Créer une carte destination en fonction d'une référence
+     *  @param reference de la carte
+     *  @return carte transport
+     */
+    public static CarteDestination createCarteDestinationByReference(String reference){
+        CarteDestination carteDestination = null;
+        String[] data = reference.split("_");
+
+        ArrayList<Ville> villes = new ArrayList<>();
+        for(int i=1;i<data.length;i++){
+            villes.add(Jeu.getInstance().getVilles().get(data[i]));
+        }
+
+        carteDestination = new CarteDestination(Integer.valueOf(data[0]),villes);
+
+
+        return carteDestination;
+    }
+
 
 }

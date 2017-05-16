@@ -1,6 +1,7 @@
 package modeles;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by bertran95u on 22/04/2017.
@@ -13,90 +14,92 @@ public class InitPiocheDestination {
     //On aurait aussi pu utiliser une enum
     public static ArrayList<CarteDestination> initDestinationsItineraires(){
 
-        Ville sydney = new Ville("Sydney", true);
+        Map<String,Ville> villes = Jeu.getInstance().getVilles();
 
-        Ville athina = new Ville("Athina", true);
-        Ville manila = new Ville("Manila", true);
+        Ville sydney = villes.get("sydn");
 
-        Ville bangkok = new Ville("Bangkok", true);
-        Ville tokyo = new Ville("Tokyo", true);
+        Ville athina = villes.get("atbi");
+        Ville manila = villes.get("mani");
 
-        Ville buenosAires = new Ville("Buenos Aires", true);
+        Ville bangkok = villes.get("bang");
+        Ville tokyo = villes.get("toky");
 
-        Ville marseille = new Ville("Marseille", true);
+        Ville buenosAires = villes.get("buen");
 
-        Ville capTown = new Ville("Cap Town", true);
-        Ville jakarta = new Ville("Jakarta", true);
+        Ville marseille = villes.get("mars");
 
-        Ville caracas = new Ville("Caracas", true);
+        Ville capTown = villes.get("cape");
+        Ville jakarta = villes.get("jaka");
 
-        Ville casablanca = new Ville("Casablanca", true);
-        Ville honolulu = new Ville("Honolulu", true);
+        Ville caracas = villes.get("cara");
 
-        Ville yakutsk = new Ville("Yakutsk", false);
+        Ville casablanca = villes.get("casa");
+        Ville honolulu = villes.get("hono");
 
-        Ville darEsSalaam = new Ville("Dar Es Salaam", true);
+        Ville yakutsk = villes.get("yaku");
 
-        Ville djibouti = new Ville("Djibouti", false);
-        Ville lahore = new Ville("Lahore", false);
+        Ville darEsSalaam = villes.get("dar");
 
-        Ville edinburg = new Ville("Edinburg", true);
-        Ville luanda = new Ville("Luanda", true);
+        Ville djibouti = villes.get("djib");
+        Ville lahore = villes.get("labo");
 
-        Ville hongKong = new Ville("Hong Kong", true);
+        Ville edinburg = villes.get("edin");
+        Ville luanda = villes.get("luan");
 
-        Ville hamburg = new Ville("Hamburg", true);
-        Ville beijing = new Ville("Beijing", false);
+        Ville hongKong = villes.get("hong");
 
-        Ville lagos = new Ville("Lagos", true);
+        Ville hamburg = villes.get("hamb");
+        Ville beijing = villes.get("beij");
 
-        Ville tehran = new Ville("Tehran", false);
+        Ville lagos = villes.get("lago");
 
-        Ville lima = new Ville("Lima", true);
+        Ville tehran = villes.get("tehr");
 
-        Ville losAngeles = new Ville("Los Angeles", true);
+        Ville lima = villes.get("lima");
 
-        Ville rioDeJaneiro = new Ville("Rio De Janeiro", true);
+        Ville losAngeles = villes.get("losa");
 
-        Ville christchurch = new Ville("Christchurch", true);
+        Ville rioDeJaneiro = villes.get("rio");
 
-        Ville mexico = new Ville("Mexico", false);
+        Ville christchurch = villes.get("chri");
 
-        Ville mumbai = new Ville("Mumbai", true);
+        Ville mexico = villes.get("mexi");
 
-        Ville newYork = new Ville("New York", true);
+        Ville mumbai = villes.get("mumb");
 
-        Ville miami = new Ville("Miami", true);
-        Ville moskva = new Ville("Moskva", false);
+        Ville newYork = villes.get("newy");
 
-        Ville petropavlosk = new Ville("Petropavlovsk", true);
+        Ville miami = villes.get("miam");
+        Ville moskva = villes.get("mosk");
 
-        Ville toamasina = new Ville("Toamasina", true);
+        Ville petropavlosk = villes.get("petr");
 
-        Ville novosibirsk = new Ville("Novosibirsk", false);
-        Ville darwin = new Ville("Darwin", true);
+        Ville toamasina = villes.get("toam");
 
-        Ville reykjavik = new Ville("Reykjavik", true);
+        Ville novosibirsk = villes.get("novo");
+        Ville darwin = villes.get("darw");
 
-        Ville perth = new Ville("Perth", true);
+        Ville reykjavik = villes.get("reyk");
 
-        Ville valparaiso = new Ville("Valparaiso", true);
+        Ville perth = villes.get("pert");
 
-        Ville vancouver = new Ville("Vancouver", true);
+        Ville valparaiso = villes.get("valp");
 
-        Ville winnipeg = new Ville("Winnipeg", true);
+        Ville vancouver = villes.get("vanc");
 
-        Ville murmansk = new Ville("Murmansk", true);
+        Ville winnipeg = villes.get("winn");
 
-        Ville tiksi = new Ville("Tiksi", true);
+        Ville murmansk = villes.get("murm");
 
-        Ville cambridgeBay = new Ville("Cambridge Bay", true);
+        Ville tiksi = villes.get("tiks");
 
-        Ville anchorage = new Ville("Anchorage", true);
+        Ville cambridgeBay = villes.get("camb");
 
-        Ville alQahira = new Ville("Al Qahira", true);
+        Ville anchorage = villes.get("anch");
 
-        Ville portMeresby = new Ville("Port Moresby", true);
+        Ville alQahira = villes.get("alqa");
+
+        Ville portMeresby = villes.get("port");
 
         ArrayList<Ville> villesCDalZahiraSydney = new ArrayList<Ville>();
         villesCDalZahiraSydney.add(alQahira);

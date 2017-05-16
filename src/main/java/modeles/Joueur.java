@@ -9,6 +9,8 @@ import java.util.*;
  */
 public class Joueur {
 
+    private String id;
+
     //Liste des cartes de destinations ou itinéraires du joueur
     private ArrayList<CarteDestination> cartesDestination = new ArrayList<CarteDestination>();
 
@@ -59,6 +61,7 @@ public class Joueur {
      * @param couleur couleur associee au joueur utilisee pour la prise de route
      */
     public Joueur(String pseudo, String couleur) {
+        this.id = UUID.randomUUID().toString();
         this.pseudo = pseudo;
         this.score = 0;
         this.cartesDestination = new ArrayList<CarteDestination>();
@@ -707,5 +710,13 @@ public class Joueur {
 
     public void setaInitialiseeSesCartesDestinations(boolean aInitialiserSesCartesDestinations) {
         this.aInitialiseeSesCartesDestinations = aInitialiserSesCartesDestinations;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

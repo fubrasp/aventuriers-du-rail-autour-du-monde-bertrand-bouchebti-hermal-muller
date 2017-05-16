@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PiochesController">
+<AnchorPane fx:id="mainPane" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PiochesController">
    <children>
       <SplitPane dividerPositions="0.768170426065163" layoutX="14.0" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -33,6 +33,8 @@
                                                 <Font name="Arial Black" size="16.0" />
                                              </font>
                                           </Button>
+                                          <Button id="sauvegarder_partie" fx:id="bt_sauvegarder" layoutX="14.0" layoutY="93.0" mnemonicParsing="false" onAction="#handleSauvegarder" text="Sauvegarder" />
+                                          <Button id="charger_partie" fx:id="bt_charger" layoutX="14.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleCharger" text="Charger" />
                                        </children></AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>

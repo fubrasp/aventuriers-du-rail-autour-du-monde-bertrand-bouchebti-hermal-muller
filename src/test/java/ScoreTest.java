@@ -45,11 +45,11 @@ public class ScoreTest {
         this.joueur.setNbPionsWagons(60-joueur.getNbPionsBateau());
         this.joueur.setNbPionsWagonsReserve(50-joueur.getNbPionsWagons());
 
-        sydney = new Ville("Sydney", true);
-        buenos = new Ville("Buenos Aires", true);
-        bangkok = new Ville("Bangkok", true);
-        lima = new Ville("Lima", true);
-        lagos = new Ville("Lagos", true);
+        sydney = new Ville("sydn","Sydney", true);
+        buenos = new Ville("buen","Buenos Aires", true);
+        bangkok = new Ville("bang","Bangkok", true);
+        lima = new Ville("lima","Lima", true);
+        lagos = new Ville("lago","Lagos", true);
 
         ArrayList<Ville> CD1 = new ArrayList<Ville>();
         CD1.add(buenos);

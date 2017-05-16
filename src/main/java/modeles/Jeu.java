@@ -199,4 +199,12 @@ public class Jeu implements ThrowListener {
 	public void setJoueurCourant(Joueur joueurCourant) {
 		this.joueurCourant = joueurCourant;
 	}
+
+	public int getIndexJeu() {
+		return indexJeu;
+	}
+
+	public void setIndexJeu(int indexJeu) {
+		this.indexJeu = indexJeu;
+	}
 }

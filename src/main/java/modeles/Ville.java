@@ -1,6 +1,7 @@
 package modeles;
 
 public class Ville {
+	private String id;
 
 	//Nom de la ville
 	private String nom;
@@ -22,8 +23,9 @@ public class Ville {
 	 * @param nom de la ville
 	 * @param capacitePort capacite de la ville a acceuillir un port
 	 */
-	public Ville(String nom, boolean capacitePort) {
+	public Ville(String id, String nom, boolean capacitePort) {
 		super();
+		this.id = id;
 		this.nom = nom;
 		this.capacitePort = capacitePort;
 	}
@@ -49,6 +51,12 @@ public class Ville {
 	public boolean hasPossesseur(){
 		return this.possesseur != null;
 	}
-	
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

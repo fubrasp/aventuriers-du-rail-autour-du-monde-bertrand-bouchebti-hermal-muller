@@ -85,6 +85,15 @@ public class CarteDestination extends Carte {
 		return str;
 	}
 
+	public String getId(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(pointsScoreAssoccies);
+		for(Ville ville : villes){
+			sb.append("_").append(ville.getId());
+		}
+		return sb.toString();
+	}
+
 
 	/*
 	*
